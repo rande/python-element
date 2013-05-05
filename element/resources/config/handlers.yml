@@ -1,0 +1,15 @@
+services:
+    element.handler.blog.post:
+        class: element.handlers.blog.PostHandler
+        tags:
+            element.handler: 
+                - { name: blog.post }
+
+    element.handler.blog.index:
+        class: element.handlers.blog.IndexHandler
+        arguments: 
+            - '#@element.node.manager'
+            - '%element.data.dir%'
+        tags:
+            element.handler: 
+                - { name: blog.index }

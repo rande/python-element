@@ -1,0 +1,38 @@
+services:
+    element.flask.blueprint:
+        class: flask.Blueprint
+        arguments: 
+            - 'element'
+            - 'element'
+        kwargs:
+            template_folder: '%element.template.dir%'
+            static_folder:   '%element.static.dir%'
+        
+    element.flask.view.index:
+        class: [element.views, PathView.as_view]
+        arguments: 
+            - 'element_path'
+            - '@element.node.manager'
+            - '@element.context.creator'
+
+    element.context.creator:
+        class: element.context.ContextCreator
+
+    element.node.manager:
+        class: element.node.NodeManager
+        arguments: 
+            - '@ioc.extra.event_dispatcher'
+
+    element.loader.yaml:
+        class: element.loaders.YamlNodeLoader
+        arguments:
+            - '%element.data.dir%'
+        tags:
+            element.loader: 
+                - name: yaml
+
+    element.loader.inline:
+        class: element.loaders.InlineLoader
+        tags:
+            element.loader: 
+                - name: inline

@@ -1,0 +1,11 @@
+services:
+    element.disqus.handler:
+        class: element.handlers.disqus.DisqusHandler
+        arguments:
+            - rabaix
+        tags:
+            event.listener:
+                - { name: node.comment.list, method: listener }
+            
+            element.handler: 
+                - { name: disqus.comments }
