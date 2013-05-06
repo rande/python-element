@@ -1,6 +1,7 @@
 import ioc
 import os
 import element.event
+import re
 
 class Extension(ioc.component.Extension):
     def load(self, config, container_builder):
@@ -9,9 +10,20 @@ class Extension(ioc.component.Extension):
 
         loader = ioc.loader.YamlLoader()
         loader.load("%s/resources/config/services.yml" % path, container_builder)
-        loader.load("%s/resources/config/handlers.yml" % path, container_builder)
         loader.load("%s/resources/config/jinja.yml" % path, container_builder)
-        loader.load("%s/resources/config/disqus.yml" % path, container_builder)
+
+        # To do: add this as a configuration option
+        loader.load("%s/resources/config/handler_blog.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_disqus.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_contact.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_seo.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_page.yml" % path, container_builder)
+
+        # To do: add this as a configuration option
+        loader.load("%s/resources/config/listener_standardize.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_seo.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_errors.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_cache.yml" % path, container_builder)
 
         container_builder.parameters.set('element.web.public.dir', config.get('public_dir', "%s/resources/public" % path))
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
@@ -23,6 +35,9 @@ class Extension(ioc.component.Extension):
         container_builder.parameters.set('element.data.dir', config.get('data_dir', False))
 
         self.configure_flask(config, container_builder)
+        self.configure_handlers(config, container_builder)
+        self.configure_seo(config, container_builder)
+        self.configure_cache(config, container_builder)
 
     def configure_flask(self, config, container_builder):
         definition = container_builder.get('element.flask.blueprint')
@@ -30,20 +45,40 @@ class Extension(ioc.component.Extension):
         definition.add_call(
             'add_url_rule', 
             ['/'],
-            {'view_func': ioc.component.Reference('element.flask.view.index'), 'defaults': {'path': '/'}}
+            {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index'), 'defaults': {'path': '/'}}
         )
 
         definition.add_call(
             'add_url_rule', 
             ['/<path:path>'],
-            {'view_func': ioc.component.Reference('element.flask.view.index')}
+            {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index')}
         )
 
-    def post_build(self, container_builder, container):
-        event_dispatcher = container.get('ioc.extra.event_dispatcher')
-        # event_dispatcher.add_listener('element.node.load.fail', )
-        event_dispatcher.add_listener('element.node.load.success', element.event.normalize_node)
+    def configure_seo(self, config, container_builder):
+        seo = config.get('seo', {
+            'title_pattern': 'Python Element : %s'
+        })
+        
+        container_builder.parameters.set('element.seo.page.title_pattern', seo.get('title_pattern'))
 
+    def configure_handlers(self, config, container_builder):
+        handlers = config.get_dict('handlers')
+
+        discus = handlers.get('disqus', {'account': False})
+
+        container_builder.parameters.set('element.disqus.account', discus.get('account'))
+
+    def configure_cache(self, config, container_builder):
+        rules = []
+
+        for rule in config.get('cache_control', {}):
+            rule['path'] = re.compile(rule['path'])
+
+            rules.append(rule)
+
+        container_builder.parameters.set('element.cache.rules', rules)
+
+    def post_build(self, container_builder, container):
         manager = container.get('element.node.manager')
 
         # register handlers

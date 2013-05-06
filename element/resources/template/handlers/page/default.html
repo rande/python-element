@@ -1,0 +1,7 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    <h1>{{ context.node.title }}</h1>
+    
+    {{ content|safe }}
+{% endblock %}

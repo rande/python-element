@@ -1,0 +1,28 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    <h2>{{ context.node.title }}</h2>
+    
+    {% if sent %}
+        <p>Thanks, your message has been sent.</p>
+    {% else %}
+        <div>
+            <form action="" method="POST" novalidate="novalidate">
+                <label for="contact_name">Name:</label>
+                <input type="text" name="name" id="contact_name"/>
+            
+                <label for="contact_email">Email:</label>
+                <input type="text" name="email" id="contact_email"/>
+
+                <label for="contact_message">Message:</label>
+                <textarea name="message" id="contact_message"></textarea>
+
+                <input type="submit">
+            </form>
+        </div>
+    {% endif %}
+    
+{% endblock %}
+
+
+

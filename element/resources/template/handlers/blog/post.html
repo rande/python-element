@@ -1,13 +1,11 @@
 {% extends context.settings.base_template %}
 
-{% block title %}
-    {{ context.node.title }}
-{% endblock %}
-
 {% block content %}
     <h1>{{ context.node.published_at.strftime('%Y-%m-%d') }} - {{ context.node.title }}</h1>
     
-    {{ content|safe }}
+    <div class="element_blog_post">
+        {{ content|safe }}
+    </div>
 
     {{ render_node_event('node.comment.list', options={'subject': context.node})|safe }}
 

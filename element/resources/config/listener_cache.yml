@@ -1,0 +1,8 @@
+services:
+    element.listener.cache_control:
+        class: element.listeners.cache.CacheControl
+        kwargs:
+            rules: '%element.cache.rules%'
+        tags:
+            event.listener: 
+                - { name: element.node.render_response, method: cache_control }

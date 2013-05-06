@@ -1,0 +1,8 @@
+services:
+    element.handler.contact:
+        class: element.handlers.contact.ContactHandler
+        arguments:
+            - 'thomas.rabaix@gmail.com'
+        tags:
+            element.handler: 
+                - { name: contact.form }

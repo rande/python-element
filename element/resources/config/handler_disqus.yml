@@ -1,8 +1,8 @@
 services:
-    element.disqus.handler:
+    element.handler.disqus:
         class: element.handlers.disqus.DisqusHandler
         arguments:
-            - rabaix
+            - '%element.disqus.account%'
         tags:
             event.listener:
                 - { name: node.comment.list, method: listener }

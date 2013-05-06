@@ -1,0 +1,9 @@
+services:
+    element.handler.seo:
+        class: element.handlers.seo.SeoHandler
+        tags:
+            event.listener:
+                - { name: element.seo.headers, method: listener }
+            
+            element.handler: 
+                - { name: seo.headers }

@@ -11,6 +11,9 @@ class DisqusHandler(element.handlers.NodeHandler):
         }
 
     def execute(self, context, flask):
+        if not self.account:
+            return flask.make_response("")
+
         params = {
             'account': self.account,
         }

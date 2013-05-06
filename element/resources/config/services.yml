@@ -14,6 +14,7 @@ services:
             - 'element_path'
             - '@element.node.manager'
             - '@element.context.creator'
+            - '@ioc.extra.event_dispatcher'
 
     element.context.creator:
         class: element.context.ContextCreator

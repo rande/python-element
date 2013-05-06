@@ -1,0 +1,11 @@
+services:
+    element.listener.errors:
+        class: element.listeners.errors.ErrorListener
+        arguments:
+            - '@element.node.manager'
+        tags:
+            event.listener: 
+                - { name: element.node.not_found, method: handle_400_error }
+                - { name: element.node.internal_error, method: handle_500_error }
+
+                

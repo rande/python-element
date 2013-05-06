@@ -1,5 +1,6 @@
 import markdown, os
 import element.handlers
+import datetime
 
 class IndexHandler(element.handlers.NodeHandler):
     def __init__(self, node_manager, data_dir):
@@ -16,6 +17,8 @@ class IndexHandler(element.handlers.NodeHandler):
 
         lfrom = len(self.data_dir) + 1
 
+        now = datetime.datetime.now()
+
         for root, dirs, files in os.walk("%s/%s" % (self.data_dir, context.node.id)):
             for f in files:
                 if root[lfrom - 1:] == context.node.id:
@@ -25,6 +28,8 @@ class IndexHandler(element.handlers.NodeHandler):
 
                 if not node or node.type != 'blog.post':
                     continue  
+                elif node.published_at > now: # not published futur post
+                    continue
                 else:
                     nodes.append(node)
 

@@ -1,0 +1,13 @@
+services:
+    element.seo.page:
+        class: element.listeners.seo.SeoPage
+        arguments:
+            - "%element.seo.page.title_pattern%"
+
+    element.listener.seo:
+        class: element.listeners.seo.SeoListener
+        arguments:
+            - "@element.seo.page"
+        tags:
+            event.listener: 
+                - { name: element.node.load.success, method: add_seo }
