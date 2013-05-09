@@ -4,11 +4,18 @@ import datetime
 
 class Standardize(object):
     def normalize_node(self, event):
+        node = event.get('node')
+        self.normalize(node)
+
+    def normalize_nodes(self, event):
+        for node in event.get('nodes'):
+            self.normalize(node)
+
+    def normalize(self, node):
         """
         Normalize node to make sure the default fields are set properly
         """
-        node = event.get('node')
-
+        
         if 'created_at' not in node.data or not node.data['created_at']:
             node.data['created_at'] = datetime.datetime.now()
 
@@ -24,6 +31,15 @@ class Standardize(object):
         if 'enabled' not in node.data:
             node.data['enabled'] = True
 
+        if 'content' not in node.data:
+            node.data['content'] = False
+
+        if 'tags' not in node.data:
+            node.data['tags'] = []
+
+        if 'category' not in node.data:
+            node.data['category'] = False
+
         if 'response' not in node.data:
             node.data['response'] = {}
 
@@ -37,6 +53,7 @@ class Standardize(object):
         defaults.update(node.data['response'])
 
         node.data['response'] = defaults
+
 
     def render_response(self, event):
         event.get('response').status_code = event.get('context').node.response['status_code']

@@ -1,38 +1,45 @@
 import yaml, os
+import element.node
 
 class NodeManager(object):
-    def __init__(self, event_dispatcher):
+    def __init__(self, db, event_dispatcher):
         self.handlers = {}
-        self.loaders = {}
+        self.db = db
         self.event_dispatcher = event_dispatcher
 
     def add_handler(self, name, handler):
         self.handlers[name] = handler
 
-    def add_loader(self, name, loader):
-        self.loaders[name] = loader
+    def get_nodes(self, selector=None, **kwargs):
+        nodes = []
+
+        for data in self.db.find(**kwargs):
+            nodes.append(element.node.Node(data['id'], data['type'] if 'type' in data else None, data))
+
+        event = self.event_dispatcher.dispatch('element.nodes.load.success', {
+            'nodes': nodes
+        })
+
+        return event.get('nodes')
 
     def get_node(self, id):
         node = None
 
         if isinstance(id, Node):
             return id
-            
-        for name, loader in self.loaders.iteritems():
-            if loader.supports(id):
-                node = loader.load(id)
-
-                break
-
-        if not node:
-            event = self.event_dispatcher.dispatch('element.node.load.fail', {
-                'id': id
-            })
-        else:
-            event = self.event_dispatcher.dispatch('element.node.load.success', {
-                'node': node
-            })
         
+        data = self.db.retrieve(id)
+
+        # always assume a fail
+        event_name = 'element.node.load.fail'
+        params = {'id': id}
+
+        if data:
+            event_name = 'element.node.load.success'
+            params = {'node': element.node.Node(id, data['type'] if 'type' in data else None, data)}
+
+        event = self.event_dispatcher.dispatch(event_name, params)
+
         if event.has('node'):
             return event.get('node')
 

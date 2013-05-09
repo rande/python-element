@@ -1,6 +1,16 @@
 import element.handlers
 import element.node
 
+from flask.ext.wtf import Form
+import wtforms, wtforms.validators
+
+
+class ContactForm(Form):
+    name = wtforms.TextField('name', validators=[wtforms.validators.DataRequired()])
+    email = wtforms.TextField('email', validators=[wtforms.validators.Email(), wtforms.validators.DataRequired()])
+    message = wtforms.TextAreaField('message', validators=[wtforms.validators.DataRequired()])
+
+
 class Contact(object):
     def __init__(self, name=None, email=None, message=None):
         self.name = name
@@ -8,8 +18,9 @@ class Contact(object):
         self.message = message
 
 class ContactHandler(element.handlers.NodeHandler):
-    def __init__(self, email):
+    def __init__(self, email, mailer):
         self.email = email
+        self.mailer = mailer
 
     def get_defaults(self, node):
         return {
@@ -17,20 +28,33 @@ class ContactHandler(element.handlers.NodeHandler):
         }
 
     def execute(self, context, flask):
+
+        contact = Contact()
+        form = ContactForm(obj=contact)
+
         params = {
             'sent': False,
-            'context': context
+            'context': context,
+            'form': form
         }
 
-        if flask.request.method == "POST":
-            contact = Contact(
-                flask.request.form['name'],
-                flask.request.form['email'],
-                flask.request.form['message'],
+        if form.validate_on_submit():
+
+            form.populate_obj(contact)
+
+            message = "Message sent from %s (%s)\n\n%s\n\n-- End message\n\n" % (
+                contact.name, contact.email, contact.message
             )
 
-            # send an email
-            #  => RTFM (when online of cour)
+            mail = self.mailer.create(
+                To=context.node.email['to'],
+                From=context.node.email['from'],
+                Subject=context.node.email['subject'], 
+                Body=message
+            )
+
+            self.mailer.send(mail)
+
             return flask.redirect(flask.request.path + '?confirmation')
 
         if 'confirmation' in flask.request.args:

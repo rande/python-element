@@ -3,19 +3,43 @@
 {% block content %}
     <h2>{{ context.node.title }}</h2>
     
+    {% if form.errors %}
+    <ul class="errors">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                <li>{{ form[field_name].label }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     {% if sent %}
         <p>Thanks, your message has been sent.</p>
     {% else %}
         <div>
             <form action="" method="POST" novalidate="novalidate">
-                <label for="contact_name">Name:</label>
-                <input type="text" name="name" id="contact_name"/>
-            
-                <label for="contact_email">Email:</label>
-                <input type="text" name="email" id="contact_email"/>
+                {{ form.csrf_token }}
 
-                <label for="contact_message">Message:</label>
-                <textarea name="message" id="contact_message"></textarea>
+                {{ form.name.label }} {{ form.name(size=20) }}
+                {% if form.name.errors %}
+                    <ul class="errors">
+                        {% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+
+                {{ form.email.label }} {{ form.email(size=20) }}
+                {% if form.email.errors %}
+                    <ul class="errors">
+                        {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+
+                {{ form.message.label }} {{ form.message(size=20) }}
+                {% if form.message.errors %}
+                    <ul class="errors">
+                        {% for error in form.message.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
 
                 <input type="submit">
             </form>

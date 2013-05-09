@@ -13,7 +13,7 @@ class PathView(MethodView):
     def get(self, path):
         # load the node
         node = self.get_node(path)
-
+        
         # load the related node's handler
         handler = self.node_manager.get_handler(node)
 
@@ -38,12 +38,12 @@ class PathView(MethodView):
 
         return self.render_node(node, handler)
 
-    def get_node(self, path):
-        node = self.node_manager.get_node(path)
+    def get_node(self, id):
+        node = self.node_manager.get_node(id)
 
         if not node:
             event = self.event_dispatcher.dispatch('element.node.not_found', {
-                'path': path,
+                'path': id,
                 'status_code': 404
             })
 

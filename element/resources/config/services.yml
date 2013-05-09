@@ -22,12 +22,20 @@ services:
     element.node.manager:
         class: element.node.NodeManager
         arguments: 
+            - '@element.manager.default'
             - '@ioc.extra.event_dispatcher'
+
+    element.manager.default:
+        class: element.manager.fs.FsManager
+        arguments:
+            - '%element.data.dir%'
+            - '@element.loader.chain'
+
+    element.loader.chain:
+        class: element.loaders.LoaderChain
 
     element.loader.yaml:
         class: element.loaders.YamlNodeLoader
-        arguments:
-            - '%element.data.dir%'
         tags:
             element.loader: 
                 - name: yaml

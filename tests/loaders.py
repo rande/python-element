@@ -6,15 +6,14 @@ import os
 
 class TestYamlNodeLoader(unittest.TestCase):
     def setUp(self):
-        path = os.path.dirname(os.path.abspath(__file__))
-
-        self.loader = element.loaders.YamlNodeLoader("%s/fixtures/data" % path)
+        self.path = "%s/fixtures/data" % os.path.dirname(os.path.abspath(__file__))
+        self.loader = element.loaders.YamlNodeLoader()
 
     def test_init(self):
-        self.assertTrue(self.loader.supports("2013/my-post-content"))
-        self.assertFalse(self.loader.supports("2013/fake"))
+        self.assertTrue(self.loader.supports("%s/2013/my-post-content.yml" % self.path))
+        self.assertFalse(self.loader.supports("%s/2013/fake.yml" % self.path))
 
-        node = self.loader.load("2013/my-post-content")
+        node = self.loader.load("%s/2013/my-post-content.yml" % self.path)
 
         self.assertEquals("blog.post", node.type)
         self.assertIsInstance(node, element.node.Node)

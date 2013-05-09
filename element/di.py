@@ -22,8 +22,10 @@ class Extension(ioc.component.Extension):
         # To do: add this as a configuration option
         loader.load("%s/resources/config/listener_standardize.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_seo.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_default_index.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_errors.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_cache.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_actions.yml" % path, container_builder)
 
         container_builder.parameters.set('element.web.public.dir', config.get('public_dir', "%s/resources/public" % path))
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
@@ -91,10 +93,11 @@ class Extension(ioc.component.Extension):
                 manager.add_handler(option['name'], container.get(id))
 
         # register loaders
+        loader_chain = container.get('element.loader.chain')
         for id in container_builder.get_ids_by_tag('element.loader'):
             definition = container_builder.get(id)
             for option in definition.get_tag('element.loader'):     
                 if 'name' not in option:
                     break  
 
-                manager.add_loader(option['name'], container.get(id))
+                loader_chain.add_loader(option['name'], container.get(id))

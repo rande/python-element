@@ -4,8 +4,6 @@ class CacheControl(object):
     def __init__(self, rules=None):
         self.rules = rules or []
 
-        print rules
-
     def cache_control(self, event):
         response = event.get('response')
         request = event.get('request')

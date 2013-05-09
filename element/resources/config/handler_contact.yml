@@ -3,6 +3,7 @@ services:
         class: element.handlers.contact.ContactHandler
         arguments:
             - 'thomas.rabaix@gmail.com'
+            - '@ioc.extra.mailer'
         tags:
             element.handler: 
                 - { name: contact.form }

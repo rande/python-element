@@ -3,35 +3,25 @@ import element.handlers
 import datetime
 
 class IndexHandler(element.handlers.NodeHandler):
-    def __init__(self, node_manager, data_dir):
+    def __init__(self, node_manager):
         self.node_manager = node_manager
-        self.data_dir     = data_dir
-
+        
     def get_defaults(self, node):
         return {
             'template': 'handlers/blog/index.html'
         }
 
     def execute(self, context, flask):
-        nodes = []
-
-        lfrom = len(self.data_dir) + 1
+        # lfrom = len(self.data_dir) + 1
 
         now = datetime.datetime.now()
 
-        for root, dirs, files in os.walk("%s/%s" % (self.data_dir, context.node.id)):
-            for f in files:
-                if root[lfrom - 1:] == context.node.id:
-                    continue
+        nodes = self.node_manager.get_nodes(path=context.node.id, type='blog.post', selector=lambda node: now > node.published_at)
 
-                node = self.node_manager.get_node("%s/%s" % (root[lfrom:], f[:-4]))
+                # if root[lfrom - 1:] == context.node.id:
+                #     continue
 
-                if not node or node.type != 'blog.post':
-                    continue  
-                elif node.published_at > now: # not published futur post
-                    continue
-                else:
-                    nodes.append(node)
+                # node = self.node_manager.get_node("%s/%s" % (root[lfrom:], f[:-4]))
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)
 
