@@ -1,0 +1,14 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    {% if content %}
+        {{ content }}
+    {% else %}
+        <div class="alert">
+            <strong>Warning!</strong> The action does not provide a valid custom template, so the default one is used.
+            <br />
+            <br />
+            Please adapt your code.
+        </div>
+    {% endif %}
+{% endblock %}

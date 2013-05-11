@@ -24,7 +24,7 @@ class ContactHandler(element.handlers.NodeHandler):
 
     def get_defaults(self, node):
         return {
-            'template': 'handlers/contact/form.html'
+            'template': 'element:handlers/contact/form.html'
         }
 
     def execute(self, context, flask):

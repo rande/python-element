@@ -34,6 +34,9 @@ class Standardize(object):
         if 'content' not in node.data:
             node.data['content'] = False
 
+        if 'title' not in node.data:
+            node.data['title'] = "No title defined"
+
         if 'tags' not in node.data:
             node.data['tags'] = []
 

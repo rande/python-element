@@ -16,6 +16,14 @@ services:
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
 
+    element.flask.view.action:
+        class: element.views.ActionView
+        arguments: 
+            - '@element.node.manager'
+            - '@element.context.creator'
+            - '@ioc.extra.event_dispatcher'
+            - '@service_container'
+
     element.context.creator:
         class: element.context.ContextCreator
 

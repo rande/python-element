@@ -6,7 +6,7 @@ class PageHandler(element.handlers.NodeHandler):
     
     def get_defaults(self, node):
         return {
-            'template': 'handlers/page/default.html'
+            'template': 'element:handlers/page/default.html'
         }
 
     def execute(self, context, flask):

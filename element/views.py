@@ -1,19 +1,22 @@
 from flask.views import MethodView, View
 import flask
+import element.node
 
-class PathView(MethodView):
-    def __init__(self, node_manager, context_creator, event_dispatcher):
-        self.node_manager = node_manager
-        self.context_creator = context_creator
-        self.event_dispatcher = event_dispatcher
+class Dispatcher(object):
+    def render_node(self, node, handler):
+        # build the execution context
+        context = self.context_creator.build(node, handler)
 
-    def post(self, path):
-        return self.get(path)
+        # render the response
+        event = self.event_dispatcher.dispatch('element.node.render_response', {
+            'response': handler.execute(context, flask),
+            'context': context,
+            'request': flask.request
+        })
 
-    def get(self, path):
-        # load the node
-        node = self.get_node(path)
-        
+        return event.get('response')
+
+    def execute(self, node):
         # load the related node's handler
         handler = self.node_manager.get_handler(node)
 
@@ -38,6 +41,48 @@ class PathView(MethodView):
 
         return self.render_node(node, handler)
 
+class ActionView(MethodView, Dispatcher):
+    def __init__(self, node_manager, context_creator, event_dispatcher, container):
+        self.node_manager = node_manager
+        self.context_creator = context_creator
+        self.event_dispatcher = event_dispatcher
+
+    def dispatch(self, **kwargs):
+        if '_controller' not in kwargs:
+            return
+
+        serviceId, method = kwargs['_controller'].split(":")
+
+        del kwargs['_controller']
+
+        node = element.node.Node('action://%s' % serviceId, 'action.unit', {
+            'serviceId': serviceId,
+            'method': method,
+            'kwargs': kwargs,
+            'request': flask.request
+        })
+
+        event = self.event_dispatcher.dispatch('element.node.load.success', {
+            'node': node
+        })
+
+        return self.execute(event.get('node'))
+
+class PathView(MethodView, Dispatcher):
+    def __init__(self, node_manager, context_creator, event_dispatcher):
+        self.node_manager = node_manager
+        self.context_creator = context_creator
+        self.event_dispatcher = event_dispatcher
+
+    def post(self, path):
+        return self.get(path)
+
+    def get(self, path):
+        # load the node
+        node = self.get_node(path)
+        
+        return self.execute(node)
+
     def get_node(self, id):
         node = self.node_manager.get_node(id)
 
@@ -53,16 +98,3 @@ class PathView(MethodView):
             node = event.get('node')
 
         return node
-
-    def render_node(self, node, handler):
-        # build the execution context
-        context = self.context_creator.build(node, handler)
-
-        # render the response
-        event = self.event_dispatcher.dispatch('element.node.render_response', {
-            'response': handler.execute(context, flask),
-            'context': context,
-            'request': flask.request
-        })
-
-        return event.get('response')

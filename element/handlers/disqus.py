@@ -7,7 +7,7 @@ class DisqusHandler(element.handlers.NodeHandler):
 
     def get_defaults(self, node):
         return {
-            'template': 'handlers/disqus/comments.html'
+            'template': 'element:handlers/disqus/comments.html'
         }
 
     def execute(self, context, flask):

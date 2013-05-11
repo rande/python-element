@@ -5,7 +5,6 @@ import re
 
 class Extension(ioc.component.Extension):
     def load(self, config, container_builder):
-
         path = os.path.dirname(os.path.abspath(__file__))
 
         loader = ioc.loader.YamlLoader()
@@ -13,6 +12,7 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/jinja.yml" % path, container_builder)
 
         # To do: add this as a configuration option
+        loader.load("%s/resources/config/handler_action.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_blog.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_disqus.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_contact.yml" % path, container_builder)
@@ -30,7 +30,8 @@ class Extension(ioc.component.Extension):
         container_builder.parameters.set('element.web.public.dir', config.get('public_dir', "%s/resources/public" % path))
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
-
+        container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
+        
         if not config.get('data_dir', False):
             raise Exception("Please configure the data_dir settings")
 
@@ -101,3 +102,4 @@ class Extension(ioc.component.Extension):
                     break  
 
                 loader_chain.add_loader(option['name'], container.get(id))
+

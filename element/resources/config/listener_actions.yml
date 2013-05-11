@@ -1,0 +1,8 @@
+services:
+    element.listener.actions:
+        class: element.listeners.actions.FlaskActionLoader
+        arguments:
+            - '%element.web.base_url%'
+        tags:
+            event.listener: 
+                - { name: ioc.container.built, method: load_action }

@@ -1,11 +1,11 @@
 services:
-    element.jinja.master:
+    element.jinja2.master:
         class: element.jinja.Core
         arguments: 
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
         tags:
-            jinja.global:
+            jinja2.global:
                 - { name: render_node,       method: render_node}
                 - { name: render_node_event, method: render_node_event}

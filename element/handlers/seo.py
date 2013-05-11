@@ -4,7 +4,7 @@ import element.node
 class SeoHandler(element.handlers.NodeHandler):
     def get_defaults(self, node):
         return {
-            'template': 'handlers/seo/headers.html'
+            'template': 'element:handlers/seo/headers.html'
         }
 
     def execute(self, context, flask):
