@@ -1,0 +1,6 @@
+services:
+    element.handler.action.redirect:
+        class: element.handlers.action.RedirectHandler
+        tags:
+            element.handler: 
+                - { name: action.redirect }

@@ -30,3 +30,15 @@ class ActionHandler(object):
         }))
 
         return response
+
+class RedirectHandler(object):
+    def get_defaults(self, node):
+        return {}
+
+    def execute(self, context, flask):
+        redirect = context.node.redirect
+
+        if redirect[0:1] != '/':
+            redirect = "%s/%s" % (context.node.id, redirect)
+
+        return flask.redirect(redirect)
