@@ -18,6 +18,7 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/handler_contact.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_seo.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_page.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_static.yml" % path, container_builder)
 
         # To do: add this as a configuration option
         loader.load("%s/resources/config/listener_standardize.yml" % path, container_builder)
@@ -31,7 +32,15 @@ class Extension(ioc.component.Extension):
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
         container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
-        
+        container_builder.parameters.set('element.static.mapping', {
+            'jpg': 'image/jpeg',
+            'png': 'image/png',
+            'gif': 'image/gif',
+            'js': 'application/x-javascript; charset=utf-8',
+            'css': 'text/css',
+            'json': 'application/json',
+        })
+
         if not config.get('data_dir', False):
             raise Exception("Please configure the data_dir settings")
 
