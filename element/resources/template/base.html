@@ -34,9 +34,7 @@
                     </button>
                     <div class="nav-collapse collapse">
                       <ul class="nav">
-                        <li><a href="{{ url_for('element.element_path') }}">Thomas R.</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='blog') }}">Blog</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='contact') }}">Contact</a></li>
+                        
                       </ul>
                     </div><!--/.nav-collapse -->
                   </div>
@@ -45,39 +43,14 @@
             </div>
           </div>
 
-            <div class="row">
-                <div class="span12">
-                    <div id="content">{% block content %}{% endblock %}</div>
-                </div>
-            </div>
+          {% block content %}{% endblock %}
+
         </div>
 
         <footer>
           <div class="container">
             <div class="row">
-              <div class="span7">
-                <h3 class="footer-title">About</h3>
-                <p>I am Thomas Rabaix, 31 years old, web lover and working as software architect, living in Paris, France.<br /><br />
 
-                I really like all internet technologies used behind the scene to make "thing happen". I have used different flavors of MVC frameworks : My homebrew framework, Java Struts, Python Django, PHP Symfony (running this website) and Ruby RoR (running this website). On top of that I like to add interactivities with some Javascript : Ajax with the help of some nice abstraction librairies such as jQuery or AngularJS.
-                </p>
-              </div> <!-- /span8 -->
-
-              <div class="span5">
-                <div class="footer-banner">
-                  <h3 class="footer-title">Thomas Rabaix</h3>
-                  <ul>
-                    <li>Symfony2 Expert</li>
-                    <li>Sonata Project lead dev</li>
-                    <li>Python enthusiast</li>
-                    <li>Technical Manager</li>
-                    <li>Work @ Ekino</li>
-                  </ul>
-                  
-                  <a href="https://github.com/rande" target="_blank">https://github.com/rande</a> <br />
-                  <a href="https://twitter.com/th0masr" target="_blank">https://twitter.com/th0masr</a>
-                </div>
-              </div>
             </div>
           </div>
         </footer>
