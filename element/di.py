@@ -10,6 +10,7 @@ class Extension(ioc.component.Extension):
         loader = ioc.loader.YamlLoader()
         loader.load("%s/resources/config/services.yml" % path, container_builder)
         loader.load("%s/resources/config/jinja.yml" % path, container_builder)
+        loader.load("%s/resources/config/command.yml" % path, container_builder)
 
         # To do: add this as a configuration option
         loader.load("%s/resources/config/handler_action.yml" % path, container_builder)

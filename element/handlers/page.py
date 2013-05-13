@@ -13,7 +13,7 @@ class PageHandler(element.handlers.NodeHandler):
 
         content = context.node.content
         if context.node.format == 'markdown':
-            content = markdown.markdown(context.node.content)
+            content = markdown.markdown(context.node.content, ['tables'])
 
         params = {
             'context': context, 

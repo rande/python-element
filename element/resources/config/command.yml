@@ -1,0 +1,8 @@
+services:
+    element.command.list_node:
+        class: element.command.ListTypeCommand
+        arguments: 
+            - '@element.node.manager'
+        tags:
+            command:
+                - { name: 'element:list' }
