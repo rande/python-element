@@ -1,0 +1,8 @@
+title: Internal Server Error
+type: page.default
+format: markdown
+content: |
+    An error occurs while rendering the page.
+
+    Sorry for any inconvenients, try again or wait a bit for the technical
+    team to fix the issue.

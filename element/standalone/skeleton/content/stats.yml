@@ -1,0 +1,15 @@
+title: Stats
+type: action.collection
+actions:
+    stats_parameters:
+        path: /parameters
+        methods: ['GET']
+        defaults:
+            _controller: ioc.extra.stats.views.parameters:execute
+            type: all
+
+    stats_services:
+        path: /services
+        methods: ['GET']
+        defaults:
+            _controller: ioc.extra.stats.views.services:execute

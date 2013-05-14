@@ -1,0 +1,49 @@
+element:
+    data_dir: '%project.root_folder%/content'
+    base_url: '%base_url%'
+
+    seo:
+        title_pattern: %seo.title_pattern%
+    
+    cache_control:
+        - { "path": "^blog.*",              "Cache-Control": ['public', 's-maxage=3600']}
+        - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
+        - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+        - { "path": "^.*[jpg|png|gif]$",    "Cache-Control": ['public', 's-maxage=14212800']}
+
+    handlers:
+        disqus:
+            settings: {}
+            account: account name
+
+
+ioc.extra.flask:
+    app:
+        port:               8080
+        name:               ''
+        static_path:        ''
+        static_url_path:    ''
+        static_folder:      'static'
+        template_folder:    'templates'
+        instance_path:      ''
+
+    config: # use to populate the instance_relative_config kwargs
+        LOGGER_NAME:        ioc
+        SECRET_KEY:         MyKey
+
+    blueprints:
+        element.flask.blueprint: { url_prefix: '%element.web.base_url%'}
+
+ioc.extra.event:
+
+ioc.extra.stats:
+
+ioc.extra.command:
+
+ioc.extra.jinja2:
+
+ioc.extra.mailer:
+    host:       smtp.localhost
+    port:       
+    user:       
+    password:   

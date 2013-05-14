@@ -1,0 +1,6 @@
+title: Contact
+type: contact.form
+email:
+    to: an-email@localhost
+    from: 'no-reply@localhost'
+    subject: 'Contact Form localhost'
