@@ -11,5 +11,6 @@ setup(
     author_email="thomas.rabaix@gmail.com",
     url="https://github.com/rande/python-element",
     packages = find_packages(),
-    install_requires=["ioc", "markdown"],
+    install_requires=["markdown"],
+    include_package_data = True,
 )

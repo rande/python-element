@@ -1,6 +1,5 @@
 import ioc
 import os
-import element.event
 import re
 
 class Extension(ioc.component.Extension):
