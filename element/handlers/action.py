@@ -1,5 +1,3 @@
-import flask
-
 class ActionHandler(object):
     def __init__(self, container):
         self.container = container
@@ -32,6 +30,9 @@ class ActionHandler(object):
         return response
 
 class RedirectHandler(object):
+    def __init__(self, base_url):
+        self.base_url = base_url
+
     def get_defaults(self, node):
         return {}
 
@@ -41,4 +42,4 @@ class RedirectHandler(object):
         if redirect[0:1] != '/':
             redirect = "%s/%s" % (context.node.id, redirect)
 
-        return flask.redirect(redirect)
+        return flask.redirect("%s/%s" % (self.base_url, redirect))

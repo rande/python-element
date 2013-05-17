@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name="element",
@@ -10,7 +10,6 @@ setup(
     author="Thomas Rabaix",
     author_email="thomas.rabaix@gmail.com",
     url="https://github.com/rande/python-element",
-    py_modules=["element"],
-    packages = ['element'],
+    packages = find_packages(),
     install_requires=["ioc", "markdown"],
 )

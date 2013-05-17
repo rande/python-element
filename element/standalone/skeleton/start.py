@@ -42,4 +42,4 @@ Python IoC - Thomas Rabaix <thomas.rabaix@gmail.com>
 
     command_manager = container.get('ioc.extra.command.manager')
 
-    sys.exit(command_manager.execute(argv, sys.stdout))
+    sys.exit(command_manager.execute(sys.argv, sys.stdout))

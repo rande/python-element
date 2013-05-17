@@ -9,15 +9,12 @@ class FsManager(object):
         self.loader = manager
 
     def retrieve(self, id):
-        print "%s/%s" % (self.path, self.get_id(id))
-
         return self.loader.load("%s/%s" % (self.path, self.get_id(id)))
 
     def exists(self, id):
         return os.path.isfile("%s/%s" % (self.path, self.get_id(id)))
 
     def get_id(self, id):
-
         filename, extension = os.path.splitext(id)
 
         if extension:

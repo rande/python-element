@@ -18,7 +18,7 @@ if __name__ == '__main__':
     print "  -   to: `%s` ... " % options.destination
     
     shutil.copytree(source, options.destination)
-    
+
     print 
     print "2. You can now run the small demo project:"
     print "  cd %s" % options.destination
