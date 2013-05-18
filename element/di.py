@@ -38,8 +38,8 @@ class Extension(ioc.component.Extension):
             'png': 'image/png',
             'gif': 'image/gif',
             'js': 'application/x-javascript; charset=utf-8',
-            'css': 'text/css',
-            'json': 'application/json',
+            'css': 'text/css; charset=utf-8',
+            'json': 'application/json; charset=utf-8',
         })
 
         if not config.get('data_dir', False):
@@ -57,13 +57,13 @@ class Extension(ioc.component.Extension):
 
         definition.add_call(
             'add_url_rule', 
-            ['/'],
+            [''],
             {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index'), 'defaults': {'path': '/'}}
         )
 
         definition.add_call(
             'add_url_rule', 
-            ['/<path:path>'],
+            ['<path:path>'],
             {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index')}
         )
 

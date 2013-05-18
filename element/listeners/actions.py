@@ -22,7 +22,7 @@ class FlaskActionLoader(object):
                     settings['defaults'] = {}
 
                 flask.add_url_rule(
-                    "%s/%s%s" % (self.base_url, node.id, settings['path']), 
+                    "%s%s%s" % (self.base_url, node.id, settings['path']), 
                     endpoint=name,
                     view_func=container.get('element.flask.view.action').dispatch,
                     methods=settings['methods'],

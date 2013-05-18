@@ -7,7 +7,8 @@ services:
         kwargs:
             template_folder: '%element.template.dir%'
             static_folder:   '%element.static.dir%'
-        
+            static_url_path: 'element/static'
+            
     element.flask.view.index:
         class: [element.views, PathView.as_view]
         arguments: 

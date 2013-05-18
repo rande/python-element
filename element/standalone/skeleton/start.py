@@ -1,6 +1,24 @@
 # -*- coding: UTF-8 -*-
 import sys, logging, os, argparse, ioc
 
+container = None
+
+def get_container(parameters=None):
+    global container
+
+    if container:
+        return container
+
+    files = [
+        'config/config.yml',
+        'config/services.yml',
+        'config/parameters_%s.yml' % parameters['ioc.env'],
+    ]
+    
+    container = ioc.build(files, parameters=parameters)
+
+    return container
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(add_help=False) 
     parser.add_argument('--verbose', '-v', action='count', help="verbose level", default=False)
@@ -17,13 +35,8 @@ if __name__ == "__main__":
         'ioc.env': options.env,
         'project.root_folder': os.path.dirname(os.path.realpath(__file__))
     }
-
-    files = [
-        'config/services.yml',
-        'config/parameters_%s.yml' % options.env,
-    ]
     
-    container = ioc.build(files, parameters=parameters)
+    container = get_container(parameters)
 
     if not container.has('ioc.extra.command.manager'):
         sys.stdout.write(

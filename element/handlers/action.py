@@ -37,9 +37,4 @@ class RedirectHandler(object):
         return {}
 
     def execute(self, context, flask):
-        redirect = context.node.redirect
-
-        if redirect[0:1] != '/':
-            redirect = "%s/%s" % (context.node.id, redirect)
-
-        return flask.redirect("%s/%s" % (self.base_url, redirect))
+        return flask.redirect("%s%s/%s" % (self.base_url, context.node.id, context.node.redirect))

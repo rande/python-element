@@ -1,10 +1,13 @@
+parameters: 
+    base_url: '/'
+
 element:
     data_dir: '%project.root_folder%/content'
     base_url: '%base_url%'
 
     seo:
-        title_pattern: %seo.title_pattern%
-    
+        title_pattern: "%seo.title_pattern%"
+    # 
     cache_control:
         - { "path": "^blog.*",              "Cache-Control": ['public', 's-maxage=3600']}
         - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
@@ -16,14 +19,13 @@ element:
             settings: {}
             account: account name
 
-
 ioc.extra.flask:
     app:
         port:               8080
         name:               ''
         static_path:        ''
         static_url_path:    ''
-        static_folder:      'static'
+        static_folder:      '%project.root_folder%/resoures/static'
         template_folder:    'templates'
         instance_path:      ''
 
@@ -32,7 +34,8 @@ ioc.extra.flask:
         SECRET_KEY:         MyKey
 
     blueprints:
-        element.flask.blueprint: { url_prefix: '%element.web.base_url%'}
+        element.flask.blueprint: 
+            url_prefix: "%element.web.base_url%"
 
 ioc.extra.event:
 
