@@ -9,6 +9,7 @@
 
         <!-- Loading Bootstrap -->
         <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+
         <link href="{{ url_for('element.static', filename='flat-ui/css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ url_for('element.static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
 
@@ -35,7 +36,11 @@
                     </button>
                     <div class="nav-collapse collapse">
                       <ul class="nav">
-                        
+                        <li><a href="{{ url_for('element.element_path') }}">Element</a></li>
+                        <li><a href="{{ url_for('element.element_path', path='blog') }}">Blog</a></li>
+                        <li><a href="{{ url_for('element.element_path', path='contact') }}">Contact</a></li>
+                        <li><a href="{{ url_for('element.element_path', path='resume') }}">Resume</a></li>
+                        <li><a href="{{ url_for('element.element_path', path='stats/parameters') }}">Stats</a></li>
                       </ul>
                     </div><!--/.nav-collapse -->
                   </div>
@@ -51,7 +56,27 @@
         <footer>
           <div class="container">
             <div class="row">
+              <div class="span7">
+                <h3 class="footer-title">About</h3>
+                <p>
+                  Python Element is a CMS based on python built on standard libraries, such as
+                  flask, jinja, markdown and other tools. 
 
+                </p>
+              </div> <!-- /span8 -->
+
+              <div class="span5">
+                <div class="footer-banner">
+                  <h3 class="footer-title">Python Element</h3>
+                  <ul>
+                    <li>Yaml Based</li>
+                    <li>Node handlers</li>
+                    <li>Flask with a bit of IOC</li>
+                  </ul>
+                  
+                  <a href="https://github.com/rande/python-element" target="_blank">View on Github</a>
+                </div>
+              </div>
             </div>
           </div>
         </footer>

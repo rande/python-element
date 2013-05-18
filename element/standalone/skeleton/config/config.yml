@@ -23,9 +23,9 @@ ioc.extra.flask:
     app:
         port:               8080
         name:               ''
-        static_path:        ''
+        static_path:        '/static'
         static_url_path:    ''
-        static_folder:      '%project.root_folder%/resoures/static'
+        static_folder:      '%project.root_folder%/resources/static'
         template_folder:    'templates'
         instance_path:      ''
 

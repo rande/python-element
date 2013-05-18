@@ -29,7 +29,6 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/listener_cache.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_actions.yml" % path, container_builder)
 
-        container_builder.parameters.set('element.web.public.dir', config.get('public_dir', "%s/resources/public" % path))
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
         container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
