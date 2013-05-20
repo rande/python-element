@@ -55,9 +55,18 @@ class Node(object):
         self.data = data or {}
 
     def __getattr__(self, name):
-        return self.data[name]
+        if name in self.data:
+            return self.data[name]
+
+        return None
 
 class NodeContext(object):
     def __init__(self, node, settings=None):
         self.node = node
         self.settings = settings or {}
+
+    def __getattr__(self, name):
+        if name in self.settings:
+            return self.settings[name]
+
+        return None

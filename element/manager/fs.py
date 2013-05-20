@@ -15,14 +15,12 @@ class FsManager(object):
         return os.path.isfile("%s/%s" % (self.path, self.get_id(id)))
 
     def get_id(self, id):
-        filename, extension = os.path.splitext(id)
-
-        if extension:
+        if os.path.isfile("%s/%s" % (self.path, id)):
             return id
 
         return "%s.yml" % id
-
-    def find(self, type=None, path=None):
+        
+    def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None):
         """
         Of course this is not optimized at all
 
@@ -34,13 +32,16 @@ class FsManager(object):
         options = options = {}
 
         lookup_path = self.path
-
         if path:
             lookup_path = "%s/%s" % (self.path, path)
 
-        lookup_type = False
+        lookup_types = types or []
         if type:
-            lookup_type = type
+            lookup_types.append(type)
+
+        lookup_tags = tags or []
+        if tag:
+            lookup_tags.append(tag)
 
         nodes = []
         for (path, dirs, files) in os.walk(lookup_path):
@@ -61,7 +62,18 @@ class FsManager(object):
                 if node['id'][-4:] == '.yml':
                     node['id'] = node['id'][:-4]
 
-                if 'type' not in node or (lookup_type and node['type'] != lookup_type):
+                if 'type' not in node or (len(lookup_types) > 0 and node['type'] not in lookup_types):
+                    continue
+
+                if len(lookup_tags) > 0 and 'tags' not in node:
+                    continue
+
+                if 'tags' in node and len(lookup_tags) > 0:
+                    for tag in lookup_tags:
+                        if tag not in node['tags']:
+                            continue
+
+                if category and 'category' not in node and category != node['category']:
                     continue
 
                 nodes.append(node)

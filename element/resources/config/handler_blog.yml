@@ -4,11 +4,3 @@ services:
         tags:
             element.handler: 
                 - { name: blog.post }
-
-    element.handler.blog.index:
-        class: element.handlers.blog.IndexHandler
-        arguments: 
-            - '@element.node.manager'
-        tags:
-            element.handler: 
-                - { name: blog.index }

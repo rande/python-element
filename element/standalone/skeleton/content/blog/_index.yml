@@ -1,2 +1,5 @@
-title: Blog Post
-type: blog.index
+title: Posts
+type: node.index
+filters:
+    types: [blog.post]
+    path: /

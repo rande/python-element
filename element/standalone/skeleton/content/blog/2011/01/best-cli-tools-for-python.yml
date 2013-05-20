@@ -4,6 +4,7 @@ format: markdown
 enabled: 1
 published_at: Fri, 18 Sep 2009 19:19:16
 comment_enabled: 
+tags: [python]
 content: | 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus, 
     at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique 
