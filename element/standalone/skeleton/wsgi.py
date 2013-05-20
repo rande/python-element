@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 from start import get_container
-import os
+import os, logging
 
 """
 This script must by the wsgi handler to start the application. 
