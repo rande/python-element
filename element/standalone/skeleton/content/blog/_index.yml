@@ -2,4 +2,4 @@ title: Posts
 type: node.index
 filters:
     types: [blog.post]
-    path: /
+    path: /blog
