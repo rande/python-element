@@ -1,0 +1,8 @@
+services:
+    element.handler.feed.rss:
+        class: element.handlers.feed.RssHandler
+        arguments: 
+            - '@element.node.manager'
+        tags:
+            element.handler: 
+                - { name: element.feed.rss }
