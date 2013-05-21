@@ -69,9 +69,13 @@ class FsManager(object):
                     continue
 
                 if 'tags' in node and len(lookup_tags) > 0:
+                    skip = False
                     for tag in lookup_tags:
                         if tag not in node['tags']:
-                            continue
+                            skip = True
+
+                    if skip:
+                        continue
 
                 if category and 'category' not in node and category != node['category']:
                     continue
