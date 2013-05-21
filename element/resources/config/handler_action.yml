@@ -1,8 +1,8 @@
 services:
-    element.handler.action.unit:
+    element.handler.node.aciton:
         class: element.handlers.action.ActionHandler
         arguments:
             - '@service_container'
         tags:
             element.handler: 
-                - { name: action.unit }
+                - { name: node.action }

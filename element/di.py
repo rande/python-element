@@ -41,6 +41,10 @@ class Extension(ioc.component.Extension):
             'js': 'application/x-javascript; charset=utf-8',
             'css': 'text/css; charset=utf-8',
             'json': 'application/json; charset=utf-8',
+            'txt': 'text/plain; charset=utf-8',
+            'xml': 'text/xml; charset=utf-8',
+            'rss': 'application/rss+xml; charset=utf-8',
+            'ico': 'image/x-icon'
         })
 
         if not config.get('data_dir', False):

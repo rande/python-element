@@ -55,7 +55,7 @@ class ActionView(MethodView, Dispatcher):
 
         del kwargs['_controller']
 
-        node = element.node.Node('action://%s' % serviceId, 'action.unit', {
+        node = element.node.Node('action://%s' % serviceId, 'node.action', {
             'serviceId': serviceId,
             'method': method,
             'kwargs': kwargs,

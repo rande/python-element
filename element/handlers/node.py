@@ -60,4 +60,11 @@ class IndexHandler(element.handlers.NodeHandler):
             'nodes': nodes
         }
 
-        return flask.make_response(flask.render_template(context.settings['template'], **params))
+        response = flask.make_response(flask.render_template(context.settings['template'], **params))
+
+        self.alter_response(response)
+        
+        return response
+
+    def alter_response(self, response):
+        pass

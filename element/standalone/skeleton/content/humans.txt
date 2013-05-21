@@ -1,0 +1,9 @@
+This website is running on top of python 
+with the Element Context Execution Framework
+made by Thomas Rabaix - https://github.com/rande/python-element
+
+This also includes:
+ - Flask
+ - Jinja
+ - Markdow
+ - and other nice python libs
