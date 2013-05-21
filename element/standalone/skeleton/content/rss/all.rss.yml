@@ -1,4 +1,4 @@
-title: All New Content
+title: All items
 type: element.feed.rss
 filters:
     types:      [blog.post]

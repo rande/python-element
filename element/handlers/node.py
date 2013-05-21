@@ -44,8 +44,6 @@ class IndexHandler(element.handlers.NodeHandler):
     def execute(self, context, flask):
         now = datetime.datetime.now()
 
-        print context.settings
-
         nodes = self.node_manager.get_nodes(
             path=context.path,
             type=context.type,
