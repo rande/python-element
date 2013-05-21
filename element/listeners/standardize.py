@@ -47,6 +47,7 @@ class Standardize(object):
             node.data['response'] = {}
 
         defaults = {
+            'status_code': None,
             'Cache-Control': [
                 'no-cache'
             ],
@@ -58,4 +59,5 @@ class Standardize(object):
 
 
     def render_response(self, event):
-        pass
+        if event.get('context').node.response['status_code']:
+            event.get('response').status_code = event.get('context').node.response['status_code']
