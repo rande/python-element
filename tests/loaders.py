@@ -15,9 +15,10 @@ class TestYamlNodeLoader(unittest.TestCase):
 
         node = self.loader.load("%s/2013/my-post-content.yml" % self.path)
 
-        self.assertEquals("blog.post", node.type)
-        self.assertIsInstance(node, element.node.Node)
-        self.assertIsNotNone(node.data)
+        self.assertEquals("blog.post", node['type'])
+        self.assertEquals("My Post Content", node['title'])
+
+        self.assertIsNotNone(node['content'])
 
 class TestInlineLoader(unittest.TestCase):
 
@@ -34,7 +35,6 @@ class TestInlineLoader(unittest.TestCase):
 
     def test_load(self):
         node = self.loader.load({'type': 'hello', 'id': 'salut'})
-        self.assertIsInstance(node, element.node.Node)
 
-        self.assertEquals('hello', node.type)
-        self.assertEquals('salut', node.id)
+        self.assertEquals('hello', node['type'])
+        self.assertEquals('salut', node['id'])

@@ -1,5 +1,6 @@
 import yaml, os
 import element.node
+import exceptions
 
 class NodeManager(object):
     def __init__(self, db, event_dispatcher):
@@ -28,7 +29,10 @@ class NodeManager(object):
         if isinstance(id, Node):
             return id
         
-        data = self.db.retrieve(id)
+        try:
+            data = self.db.retrieve(id)
+        except:
+            return None
 
         # always assume a fail
         event_name = 'element.node.load.fail'

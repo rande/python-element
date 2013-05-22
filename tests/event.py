@@ -13,7 +13,7 @@ class TestEvent(unittest.TestCase):
             'node': element.node.Node('id', 'my type', {"published_at": "Wed, 16 Nov 2005 19:26:18"})
         })
 
-        normalize.normalize(event)
+        normalize.normalize_node(event)
 
         self.assertIsInstance(event.get('node'), element.node.Node)
         self.assertTrue(event.get('node').enabled)

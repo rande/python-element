@@ -3,12 +3,6 @@
 import os.path, sys, glob
 import unittest
 
-base = sys.path[0] + '/../..'
-sys.path.insert(0, base + "/vendor/ioc")
-sys.path.insert(0, base + "/vendor/shirka")
-sys.path.insert(0, base + "/vendor/element")
-
-
 def add_tests(suite, loader, path):
 
     for path in glob.glob(path):
