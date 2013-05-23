@@ -33,8 +33,17 @@ class RedirectHandler(object):
     def __init__(self, base_url):
         self.base_url = base_url
 
+        if self.base_url[-1] == '/':
+             self.base_url = self.base_url[:-1]
+
     def get_defaults(self, node):
         return {}
 
     def execute(self, context, flask):
-        return flask.redirect("%s%s/%s" % (self.base_url, context.node.id, context.node.redirect))
+        if 'http://' == context.node.redirect[0:7] or 'https://' == context.node.redirect[0:8]:
+            return flask.redirect(context.node.redirect)
+
+        if context.node.redirect[0] == '/': # absolute uri
+            return flask.redirect("%s%s" % (self.base_url, context.node.redirect))
+
+        return flask.redirect("%s/%s/%s" % (self.base_url, context.node.id, context.node.redirect))
