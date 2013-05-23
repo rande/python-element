@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>{{ context.settings.title }}</title>
+    <link href="{{ context.node.id }}" rel="self" />
+
+    {% for item in nodes %}
+        <entry>
+            <title>{{ item.title }}</title>
+            <link href="http://example.org/2003/12/13/atom03" />
+            <link rel="alternate" type="text/html" href="{{ url_for('.element_path', path=item.id, _external=True) }}"/>
+            <id>{{ url_for('.element_path', path=item.id, _external=True) }}</id>
+            <summary><![CDATA[ {{ item|markup|safe }} ]]></summary>
+        </entry>
+    {% endfor %}
+</feed>

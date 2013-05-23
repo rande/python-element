@@ -1,0 +1,6 @@
+title: All items
+type: element.feed.atom
+filters:
+    types:      [blog.post]
+    tags:       
+    category:   

@@ -28,7 +28,7 @@ class IndexHandler(element.handlers.NodeHandler):
             node.data['filters']['path'] = None
 
         defaults = {
-            'template': self.get_base_template(),
+            'template': self.get_base_template(node),
             'path': node.data['filters']['path'],
             'types': node.data['filters']['types'],
             'tags': node.data['filters']['tags'],
@@ -38,8 +38,8 @@ class IndexHandler(element.handlers.NodeHandler):
 
         return defaults
 
-    def get_base_template(self):
-        return 'element:handlers/node/index.html'
+    def get_base_template(self, node):
+        return node.template or 'element:handlers/node/index.html'
 
     def execute(self, context, flask):
         now = datetime.datetime.now()

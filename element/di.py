@@ -20,7 +20,7 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/handler_page.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_static.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_redirect.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_rss.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_feed.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_node.yml" % path, container_builder)
 
         # To do: add this as a configuration option

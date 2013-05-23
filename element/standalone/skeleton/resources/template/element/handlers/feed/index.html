@@ -1,0 +1,19 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    <h1>{{ context.node.title }}</h1>
+
+    <p>
+        The feeds list is generated from an <a href="https://github.com/rande/python-element/blob/master/element/standalone/skeleton/content/feeds/_index.yml">index</a> file. The file contains a reference to a custom template and some filters so limit the result to feed elements.
+        So it is pretty for a node to overwrite default template.
+    </p>
+
+    <ul>
+        {% for node in nodes %}
+            <li>
+                <a href="{{ url_for('.element_path', path=node.id) }}">{{ node.title }}</a>
+                - {{ url_for('.element_path', path=node.id, _external=True) }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

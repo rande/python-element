@@ -1,5 +1,0 @@
-title: Feeds List
-type: node.index
-filters:
-    types: [element.feed.rss]
-    path: /rss
