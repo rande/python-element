@@ -5,7 +5,7 @@ class FsManager(object):
     This class handle loading of definition from the Filesystem
     """
     def __init__(self, path, manager):
-        self.path = path
+        self.path = os.path.realpath(path)
         self.loader = manager
 
     def retrieve(self, id):
@@ -27,6 +27,9 @@ class FsManager(object):
             supported options:
                 - path: the path to look up
                 - type: the node type
+                - types: retrieve types defined
+                - tags: retrieve node matching tags
+                - category: retrieve node matching the category
 
         """
         options = options = {}
@@ -50,6 +53,9 @@ class FsManager(object):
 
                 if filename[0:len(self.path)] != self.path:
                     # security issue, try to access path outside the self.path
+                    continue
+
+                if not self.loader.supports(filename):
                     continue
 
                 node = self.loader.load(filename)

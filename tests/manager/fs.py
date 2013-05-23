@@ -8,11 +8,24 @@ import os
 class TestFsManager(unittest.TestCase):     
     def test(self):
 
-        loader = element.loaders.LoaderChain()
+        loader = element.loaders.YamlNodeLoader()
         
-        path = "%s/../fixtures/" % os.path.dirname(os.path.abspath(__file__))
-        
+        path = "%s/../fixtures/data/" % os.path.dirname(os.path.abspath(__file__))
+
         fs = element.manager.fs.FsManager(path, loader)
 
-        fs.find()
-        
+        cases = [
+            ({'path': "/../private"}, 0),
+            ({}, 1),
+            ({'type': 'blog.post'}, 1),
+            ({'type': 'fake'}, 0),
+            ({'type': 'fake', 'types': ['blog.post']}, 1),
+            ({'types': ['blog.post', 'fake']}, 1),
+            ({'types': [], 'tags': ['red', 'yellow']}, 1),
+            ({'types': [], 'tags': ['red', 'yellow', 'brown']}, 0),
+            ({'types': [], 'tags': []}, 1)
+        ]
+
+        for kwarg, expected in cases:
+            nodes = fs.find(**kwarg)
+            self.assertEquals(expected, len(nodes))
