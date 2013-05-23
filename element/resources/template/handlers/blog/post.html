@@ -4,7 +4,7 @@
     <h1>{{ context.node.published_at.strftime('%Y-%m-%d') }} - {{ context.node.title }}</h1>
     
     <div class="element_blog_post">
-        {{ content|safe }}
+        {{ context|markup|safe }}
     </div>
 
     {{ render_node_event('node.comment.list', options={'subject': context.node})|safe }}

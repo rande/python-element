@@ -9,3 +9,5 @@ services:
             jinja2.global:
                 - { name: render_node,       method: render_node}
                 - { name: render_node_event, method: render_node_event}
+            jinja2.filter:
+                - { name: markup,            method: markup}

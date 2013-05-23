@@ -1,4 +1,6 @@
 import flask
+import element.node
+import markdown
 
 class Core(object):
     def __init__(self, node_manager, context_creator, dispatcher):
@@ -33,3 +35,17 @@ class Core(object):
             return "<!-- no listener registered for event: %s -->" % event_name
 
         return self.render_node(event.get('node'))
+
+    def markup(self, content, format=None):
+        if isinstance(content, element.node.NodeContext):
+            format = content.node.format
+            content = content.node.content
+
+        if isinstance(content, element.node.Node):
+            format = content.format
+            content = content.content
+
+        if format == 'markdown':
+            return markdown.markdown(content)
+
+        return content
