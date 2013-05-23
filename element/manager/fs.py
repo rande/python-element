@@ -20,7 +20,7 @@ class FsManager(object):
 
         return "%s.yml" % id
         
-    def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None):
+    def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None, offset=None, limit=None):
         """
         Of course this is not optimized at all
 
@@ -88,7 +88,8 @@ class FsManager(object):
 
                 nodes.append(node)
 
-        return nodes
+
+        return nodes[offset:limit]
 
     def find_one(self, options=None, selector=None, **kwargs):
         return find(**kwargs)[0]
