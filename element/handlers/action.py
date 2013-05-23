@@ -12,7 +12,7 @@ class ActionHandler(object):
 
         context.settings['flask'] = flask
 
-        result = getattr(service, context.node.method)(context, **context.node.kwargs)
+        result = getattr(service, context.node.method)(context, **(context.node.kwargs or {}))
 
         # the service return a response nothing to do ...
         if isinstance(result, flask.Response): 
@@ -22,12 +22,10 @@ class ActionHandler(object):
             template, params = result
             return flask.make_response(flask.render_template(template, **params))
 
-        response = flask.make_response(flask.render_template(context.settings['template'], **{
+        return flask.make_response(flask.render_template(context.settings['template'], **{
             'context': context,
             'content': result
         }))
-
-        return response
 
 class RedirectHandler(object):
     def __init__(self, base_url):
