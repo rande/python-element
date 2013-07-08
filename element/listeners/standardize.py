@@ -61,3 +61,5 @@ class Standardize(object):
     def render_response(self, event):
         if event.get('context').node.response['status_code']:
             event.get('response').status_code = event.get('context').node.response['status_code']
+
+        event.get('response').headers['X-Content-Generator'] = 'Python Element - Thomas Rabaix - http://github.com/rande/python-element'

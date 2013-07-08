@@ -14,7 +14,6 @@ class FlaskActionLoader(object):
 
         for node in nodes:
             for name, settings in node.actions.iteritems():
-
                 if 'methods' not in settings:
                     settings['methods'] = ['GET']
 
@@ -27,5 +26,4 @@ class FlaskActionLoader(object):
                     view_func=container.get('element.flask.view.action').dispatch,
                     methods=settings['methods'],
                     defaults=settings['defaults']
-                )
-
+                )        

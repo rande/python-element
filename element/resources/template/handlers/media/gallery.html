@@ -1,0 +1,30 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h1>{{ context.node.title }}</h1>
+            
+            {{ context|markup|safe }}
+            
+            <div class="element_media_gallery">
+                {% for line in lines %}
+                    <div class="span3">
+                        {% for pos in line %}
+                            {{ render_node(medias[pos], defaults={
+                                'format':       context.node.parameters.format,
+                                'mode':         'preview',
+                                'base_template': False
+                            })|safe }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {{ render_node_event('node.comment.list', options={'subject': context.node})|safe }}
+
+    {{ render_node_event('node.comment.form', options={'subject': context.node})|safe }}
+    
+{% endblock %}

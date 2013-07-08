@@ -1,0 +1,5 @@
+title: Photos gallery
+type: node.index
+filters:
+    types: [media.gallery]
+    path: /gallery

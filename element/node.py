@@ -57,8 +57,12 @@ class Node(object):
         self.id = id
         self.type = type
         self.data = data or {}
+        self.methods = {}
 
     def __getattr__(self, name):
+        if name in self.methods:
+            return functools.partial(self.methods[name], self)
+
         if name in self.data:
             return self.data[name]
 

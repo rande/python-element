@@ -23,7 +23,6 @@ class CacheControl(object):
 
         return self.get_default()
 
-    
     def get_default(self):
         return {
             'Cache-Control': ['private', 'must-revalidate']

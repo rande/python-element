@@ -9,17 +9,34 @@ class FsManager(object):
         self.loader = manager
 
     def retrieve(self, id):
-        return self.loader.load("%s/%s" % (self.path, self.get_id(id)))
+        return self.loader.load(self.get_path(id))
 
     def exists(self, id):
-        return os.path.isfile("%s/%s" % (self.path, self.get_id(id)))
+        return os.path.isfile(self.get_path(id))
 
-    def get_id(self, id):
-        if os.path.isfile("%s/%s" % (self.path, id)):
-            return id
+    def get_path(self, id):
 
-        return "%s.yml" % id
-        
+        paths = [
+            ("%s/%s" % (self.path, id), id),
+            ("%s/%s.yml" % (self.path, id), id),
+            ("%s/%s/_index.yml" % (self.path, id), id),
+        ]
+
+        for path, id in paths:
+            if os.path.isfile(path):
+                return path
+
+    
+    def save(self, id, type, data):        
+        path = self.get_path(id)
+
+        data['type'] = type
+
+        print path, data
+
+        self.loader.save(path, data)
+
+
     def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None, offset=None, limit=None):
         """
         Of course this is not optimized at all
@@ -68,6 +85,9 @@ class FsManager(object):
                 if node['id'][-4:] == '.yml':
                     node['id'] = node['id'][:-4]
 
+                    if node['id'][-6:] == '_index':
+                        node['id'] = node['id'][:-7]
+
                 if 'type' not in node or (len(lookup_types) > 0 and node['type'] not in lookup_types):
                     continue
 
@@ -87,7 +107,6 @@ class FsManager(object):
                     continue
 
                 nodes.append(node)
-
 
         return nodes[offset:limit]
 

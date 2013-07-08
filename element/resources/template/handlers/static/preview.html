@@ -1,0 +1,20 @@
+{% extends context.base_template %}
+
+{% block content %}
+    <div class="media">
+        {% if context.node.is_image() %}
+            <a href="{{ url_for('.element_path', path=context.node.id) }}">
+                <img 
+                    src="{{ url_for('.element_path', path=context.node.id, format=context.format) }}"
+                    class="img-polaroid" 
+                    width="200px">
+            </a>
+        {% endif %}
+
+        {% if context.node.is_video() %}
+            TODO: implement a javascript video player ...
+        {% endif %}
+
+        <!-- {{ context.node.id }} -->
+    </div>
+{% endblock %}

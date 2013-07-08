@@ -22,6 +22,7 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/handler_redirect.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_feed.yml" % path, container_builder)
         loader.load("%s/resources/config/handler_node.yml" % path, container_builder)
+        loader.load("%s/resources/config/handler_media.yml" % path, container_builder)
 
         # To do: add this as a configuration option
         loader.load("%s/resources/config/listener_standardize.yml" % path, container_builder)
@@ -30,14 +31,18 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/listener_errors.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_cache.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_actions.yml" % path, container_builder)
+        loader.load("%s/resources/config/listener_media.yml" % path, container_builder)
 
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
         container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
         container_builder.parameters.set('element.static.mapping', {
             'jpg': 'image/jpeg',
+            'JPG': 'image/jpeg',
             'png': 'image/png',
+            'PNG': 'image/png',
             'gif': 'image/gif',
+            'GIF': 'image/gif',
             'js': 'application/x-javascript; charset=utf-8',
             'css': 'text/css; charset=utf-8',
             'json': 'application/json; charset=utf-8',

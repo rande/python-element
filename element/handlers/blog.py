@@ -1,6 +1,4 @@
-import markdown, os
 import element.handlers
-import datetime
 
 class PostHandler(element.handlers.NodeHandler):
     

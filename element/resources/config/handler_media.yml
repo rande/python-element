@@ -1,0 +1,15 @@
+services:
+    element.handler.media.gallery:
+        class: element.handlers.media.GalleryHandler
+        tags:
+            element.handler: 
+                - { name: media.gallery }
+
+    element.handler.media.media:
+        class: element.handlers.media.MediaHandler
+        tags:
+            element.handler: 
+                - { name: media.media }
+
+            # jinja2.global:
+            #     - { name: element_media_thumbnail, method: thumbnail}

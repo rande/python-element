@@ -8,8 +8,9 @@ class Core(object):
         self.context_creator = context_creator
         self.dispatcher = dispatcher
 
-    def render_node(self, node):
-        
+    def render_node(self, node, defaults=None):
+        defaults = defaults or {}
+
         # load the node
         node = self.node_manager.get_node(node)
 
@@ -23,7 +24,7 @@ class Core(object):
             return "<!-- unable to found the node handler -->";
         
         # build the execution context
-        context = self.context_creator.build(node, handler)
+        context = self.context_creator.build(node, handler, defaults)
 
         # render the response
         return handler.execute(context, flask).data

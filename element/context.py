@@ -12,4 +12,7 @@ class ContextCreator(object):
         settings.update(handler.get_defaults(node))
         settings.update(defaults or {})
 
+        if not settings['base_template']:
+            settings['base_template'] = 'element:empty.html'
+
         return NodeContext(node, settings)
