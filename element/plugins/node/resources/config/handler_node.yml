@@ -1,0 +1,8 @@
+services:
+    element.plugins.node.index:
+        class: element.plugins.node.node.IndexHandler
+        arguments: 
+            - '@element.node.manager'
+        tags:
+            element.handler: 
+                - { name: node.index }

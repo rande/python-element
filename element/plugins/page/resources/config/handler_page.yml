@@ -1,0 +1,6 @@
+services:
+    element.plugins.page.default:
+        class: element.plugins.page.page.PageHandler
+        tags:
+            element.handler: 
+                - { name: page.default }

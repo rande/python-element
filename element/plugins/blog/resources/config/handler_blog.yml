@@ -1,0 +1,6 @@
+services:
+    element.plugins.blog.post:
+        class: element.plugins.blog.blog.PostHandler
+        tags:
+            element.handler: 
+                - { name: blog.post }

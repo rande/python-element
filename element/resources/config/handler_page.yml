@@ -1,6 +1,0 @@
-services:
-    element.handler.page.default:
-        class: element.handlers.page.PageHandler
-        tags:
-            element.handler: 
-                - { name: page.default }

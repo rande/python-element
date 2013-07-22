@@ -1,0 +1,8 @@
+services:
+    element.plugins.action.redirect:
+        class: element.plugins.action.action.RedirectHandler
+        arguments:
+            - '%element.web.base_url%'
+        tags:
+            element.handler: 
+                - { name: action.redirect }

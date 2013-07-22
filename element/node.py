@@ -1,6 +1,9 @@
-import yaml, os
+import yaml, os, functools
 import element.node
 import exceptions
+
+class NodeHandler(object):
+    pass
 
 class NodeManager(object):
     def __init__(self, db, event_dispatcher):

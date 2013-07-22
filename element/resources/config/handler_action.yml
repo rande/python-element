@@ -1,8 +1,0 @@
-services:
-    element.handler.node.aciton:
-        class: element.handlers.action.ActionHandler
-        arguments:
-            - '@service_container'
-        tags:
-            element.handler: 
-                - { name: node.action }

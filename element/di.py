@@ -8,49 +8,12 @@ class Extension(ioc.component.Extension):
 
         loader = ioc.loader.YamlLoader()
         loader.load("%s/resources/config/services.yml" % path, container_builder)
-        loader.load("%s/resources/config/jinja.yml" % path, container_builder)
         loader.load("%s/resources/config/command.yml" % path, container_builder)
-
-        # To do: add this as a configuration option
-        loader.load("%s/resources/config/handler_action.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_blog.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_disqus.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_contact.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_seo.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_page.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_static.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_redirect.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_feed.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_node.yml" % path, container_builder)
-        loader.load("%s/resources/config/handler_media.yml" % path, container_builder)
-
-        # To do: add this as a configuration option
-        loader.load("%s/resources/config/listener_standardize.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_seo.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_default_index.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_errors.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_cache.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_actions.yml" % path, container_builder)
-        loader.load("%s/resources/config/listener_media.yml" % path, container_builder)
+        loader.load("%s/resources/config/api.yml" % path, container_builder)
 
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
         container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
-        container_builder.parameters.set('element.static.mapping', {
-            'jpg': 'image/jpeg',
-            'JPG': 'image/jpeg',
-            'png': 'image/png',
-            'PNG': 'image/png',
-            'gif': 'image/gif',
-            'GIF': 'image/gif',
-            'js': 'application/x-javascript; charset=utf-8',
-            'css': 'text/css; charset=utf-8',
-            'json': 'application/json; charset=utf-8',
-            'txt': 'text/plain; charset=utf-8',
-            'xml': 'text/xml; charset=utf-8',
-            'rss': 'application/rss+xml; charset=utf-8',
-            'ico': 'image/x-icon'
-        })
 
         if not config.get('data_dir', False):
             raise Exception("Please configure the data_dir settings")
@@ -58,9 +21,6 @@ class Extension(ioc.component.Extension):
         container_builder.parameters.set('element.data.dir', config.get('data_dir', False))
 
         self.configure_flask(config, container_builder)
-        self.configure_handlers(config, container_builder)
-        self.configure_seo(config, container_builder)
-        self.configure_cache(config, container_builder)
 
     def configure_flask(self, config, container_builder):
         definition = container_builder.get('element.flask.blueprint')
@@ -77,29 +37,6 @@ class Extension(ioc.component.Extension):
             {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index')}
         )
 
-    def configure_seo(self, config, container_builder):
-        seo = config.get('seo', {
-            'title_pattern': 'Python Element : %s'
-        })
-        
-        container_builder.parameters.set('element.seo.page.title_pattern', seo.get('title_pattern'))
-
-    def configure_handlers(self, config, container_builder):
-        handlers = config.get_dict('handlers')
-
-        discus = handlers.get('disqus', {'account': False})
-
-        container_builder.parameters.set('element.disqus.account', discus.get('account'))
-
-    def configure_cache(self, config, container_builder):
-        rules = []
-
-        for rule in config.get('cache_control', {}):
-            rule['path'] = re.compile(rule['path'])
-
-            rules.append(rule)
-
-        container_builder.parameters.set('element.cache.rules', rules)
 
     def post_build(self, container_builder, container):
         manager = container.get('element.node.manager')

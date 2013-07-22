@@ -1,0 +1,32 @@
+services:
+    element.plugins.proxy.media.medias:
+        class: element.plugins.media.listener.ProxyMediasMethod
+        arguments:
+            - '@element.node.manager'
+
+    element.plugins.proxy.media.static:
+        class: element.plugins.media.listener.ProxyStaticMethod
+        arguments:
+            - {
+                'document': [ 
+                    'pdf', 'txt', 'rtf',
+                    'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pttx',
+                    'odt', 'odg', 'odp', 'ods', 'odc', 'odf', 'odb',
+                    'csv', 'xml', 'zip'
+                ],
+                'image':    ['jpg', 'png', 'jpeg', 'gif'],
+                'video':    ['avi', 'mpg', 'mpg4']
+            }
+            
+    element.plugins.listener.media:
+        class: element.plugins.media.listener.MediaListener
+        arguments:
+            - '@element.plugins.proxy.media.medias'
+            - '@element.plugins.proxy.media.static'
+        tags:
+            event.listener: 
+                - { name: element.node.load.success, method: add_methods }
+                - { name: element.nodes.load.success, method: add_methods }
+
+
+        

@@ -1,0 +1,11 @@
+services:
+    element.plugins.disqus:
+        class: element.plugins.disqus.disqus.DisqusHandler
+        arguments:
+            - '%element.disqus.account%'
+        tags:
+            event.listener:
+                - { name: node.comment.list, method: listener }
+            
+            element.handler: 
+                - { name: disqus.comments }

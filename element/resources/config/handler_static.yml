@@ -1,8 +1,0 @@
-services:
-    element.handler.static:
-        class: element.handlers.static.StaticHandler
-        arguments:
-            - '%element.data.dir%'
-        tags:
-            element.handler: 
-                - { name: element.static }

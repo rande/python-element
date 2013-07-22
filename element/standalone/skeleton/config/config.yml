@@ -5,9 +5,28 @@ element:
     data_dir: '%project.root_folder%/content'
     base_url: '%base_url%'
 
-    seo:
-        title_pattern: "%seo.title_pattern%"
-    # 
+element.plugins.action:
+
+element.plugins.blog:
+
+element.plugins.contact:
+
+element.plugins.errors:
+
+element.plugins.feed:
+
+element.plugins.media:
+
+element.plugins.node:
+
+element.plugins.page:
+
+element.plugins.static:
+
+element.plugins.seo:
+    title_pattern: "%seo.title_pattern%"
+
+element.plugins.cache:
     cache_control:
         - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
         - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
@@ -15,10 +34,9 @@ element:
         - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
         - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
         
-    handlers:
-        disqus:
-            settings: {}
-            account: account name
+element.plugins.disqus:
+    settings: {}
+    account: account name
 
 ioc.extra.flask:
     app:
@@ -51,3 +69,5 @@ ioc.extra.mailer:
     port:       
     user:       
     password:   
+
+ioc.extra.locator:

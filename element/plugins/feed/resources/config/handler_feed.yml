@@ -1,0 +1,16 @@
+services:
+    element.plugins.feed.rss:
+        class: element.plugins.feed.feed.RssHandler
+        arguments: 
+            - '@element.node.manager'
+        tags:
+            element.handler: 
+                - { name: element.feed.rss }
+
+    element.plugins.feed.atom:
+        class: element.plugins.feed.feed.AtomHandler
+        arguments: 
+            - '@element.node.manager'
+        tags:
+            element.handler: 
+                - { name: element.feed.atom }

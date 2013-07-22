@@ -1,0 +1,8 @@
+services:
+    element.plugins.static:
+        class: element.plugins.static.static.StaticHandler
+        arguments:
+            - '%element.data.dir%'
+        tags:
+            element.handler: 
+                - { name: element.static }

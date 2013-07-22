@@ -1,0 +1,10 @@
+services:
+    element.plugins.default_index:
+        class: element.plugins.action.action.DefaultIndex
+        arguments:
+            - '@element.node.manager'
+        tags:
+            event.listener: 
+                - { name: element.node.not_found, method: default_index }
+
+                
