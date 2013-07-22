@@ -13,12 +13,13 @@ class NodeManager(object):
 
     def add_handler(self, name, handler):
         self.handlers[name] = handler
+        handler.code = name
 
     def get_nodes(self, selector=None, **kwargs):
         nodes = []
 
         for data in self.db.find(**kwargs):
-            nodes.append(element.node.Node(data['id'], data['type'] if 'type' in data else None, data))
+            nodes.append(Node(data['id'], data['type'] if 'type' in data else None, data))
 
         event = self.event_dispatcher.dispatch('element.nodes.load.success', {
             'nodes': nodes
@@ -43,7 +44,7 @@ class NodeManager(object):
 
         if data:
             event_name = 'element.node.load.success'
-            params = {'node': element.node.Node(id, data['type'] if 'type' in data else None, data)}
+            params = {'node': Node(id, data['type'] if 'type' in data else None, data)}
 
         event = self.event_dispatcher.dispatch(event_name, params)
 

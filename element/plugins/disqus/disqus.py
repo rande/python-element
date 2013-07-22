@@ -1,7 +1,6 @@
-import element.handlers
 import element.node
 
-class DisqusHandler(element.handlers.NodeHandler):
+class DisqusHandler(element.node.NodeHandler):
     def __init__(self, account):
         self.account = account
 

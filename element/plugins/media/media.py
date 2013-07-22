@@ -1,6 +1,6 @@
-import element.handlers
+import element.node
 
-class GalleryHandler(element.handlers.NodeHandler):
+class GalleryHandler(element.node.NodeHandler):
 
     def get_defaults(self, node):
         return {
@@ -26,7 +26,7 @@ class GalleryHandler(element.handlers.NodeHandler):
         
         return flask.make_response(flask.render_template(context.settings['template'], **params))
 
-class MediaHandler(element.handlers.NodeHandler)    :
+class MediaHandler(element.node.NodeHandler):
 
     def get_defaults(self, node):
         return {

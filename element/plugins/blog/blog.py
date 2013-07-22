@@ -1,6 +1,6 @@
-import element.handlers
+import element.node
 
-class PostHandler(element.handlers.NodeHandler):
+class PostHandler(element.node.NodeHandler):
     
     def get_defaults(self, node):
         return {

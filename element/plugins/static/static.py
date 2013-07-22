@@ -1,6 +1,4 @@
-import element.handlers
 import element.node
-
 import os
 
 class StaticHandler(element.node.NodeHandler):

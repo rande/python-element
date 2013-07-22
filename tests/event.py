@@ -1,13 +1,13 @@
 # vim: set fileencoding=utf-8 :
 import unittest
 import ioc.event
-import element.listeners.standardize
+import element.plugins.node.standardize
 import element.node
 import datetime
 
 class TestEvent(unittest.TestCase):     
     def test_normalize(self):
-        normalize = element.listeners.standardize.Standardize()
+        normalize = element.plugins.node.standardize.Standardize()
 
         event = ioc.event.Event({
             'node': element.node.Node('id', 'my type', {"published_at": "Wed, 16 Nov 2005 19:26:18"})

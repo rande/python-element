@@ -1,4 +1,3 @@
-import element.handlers
 import element.node
 
 from flask.ext.wtf import Form
@@ -17,7 +16,7 @@ class Contact(object):
         self.email = email
         self.message = message
 
-class ContactHandler(element.handlers.NodeHandler):
+class ContactHandler(element.node.NodeHandler):
     def __init__(self, email, mailer):
         self.email = email
         self.mailer = mailer

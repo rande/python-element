@@ -1,8 +1,8 @@
 import markdown, os
-import element.handlers
+import element.node
 import datetime
 
-class PageHandler(element.handlers.NodeHandler):
+class PageHandler(element.node.NodeHandler):
     
     def get_name(self):
         return 'Page'

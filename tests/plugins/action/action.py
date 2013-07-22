@@ -2,7 +2,7 @@
 # vim: set fileencoding=utf-8 :
 import unittest
 import ioc.component
-import element.node, element.handlers.action
+import element.node, element.plugins.action
 import flask
 import ioc.exceptions
 import werkzeug.wrappers

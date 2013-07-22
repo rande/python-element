@@ -1,7 +1,6 @@
-import element.handlers
 import element.node
 
-class SeoHandler(element.handlers.NodeHandler):
+class SeoHandler(element.node.NodeHandler):
     def get_defaults(self, node):
         return {
             'template': 'element.plugins.seo:headers.html'

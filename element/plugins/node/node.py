@@ -1,8 +1,8 @@
 import markdown, os
-import element.handlers
+import element.node
 import datetime
 
-class IndexHandler(element.handlers.NodeHandler):
+class IndexHandler(element.node.NodeHandler):
     def __init__(self, node_manager):
         self.node_manager = node_manager
 
