@@ -1,0 +1,9 @@
+PyYaml
+ioc
+Flask
+Flask-WTF
+Jinja
+WTForms
+mailer
+python-dateutil
+Jinja2==2.6

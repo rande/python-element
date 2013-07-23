@@ -6,7 +6,7 @@ import ioc.event
 import element.loaders
 import mock 
 
-class TestNodeManager(unittest.TestCase):
+class NodeManagerTest(unittest.TestCase):
     def setUp(self):
 
         fs = element.manager.fs.FsManager(

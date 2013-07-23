@@ -5,7 +5,7 @@ import element.manager.fs
 import element.loaders
 import os
 
-class TestFsManager(unittest.TestCase):     
+class FsManagerTest(unittest.TestCase):     
     def test(self):
 
         loader = element.loaders.YamlNodeLoader()

@@ -5,7 +5,7 @@ import element.plugins.node.standardize
 import element.node
 import datetime
 
-class TestEvent(unittest.TestCase):     
+class EventTest(unittest.TestCase):     
     def test_normalize(self):
         normalize = element.plugins.node.standardize.Standardize()
 

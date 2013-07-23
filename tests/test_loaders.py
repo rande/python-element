@@ -4,7 +4,7 @@ import element.loaders
 import element.node
 import os
 
-class TestYamlNodeLoader(unittest.TestCase):
+class YamlNodeLoaderTest(unittest.TestCase):
     def setUp(self):
         self.path = "%s/fixtures/data" % os.path.dirname(os.path.abspath(__file__))
         self.loader = element.loaders.YamlNodeLoader()
@@ -20,7 +20,7 @@ class TestYamlNodeLoader(unittest.TestCase):
 
         self.assertIsNotNone(node['content'])
 
-class TestInlineLoader(unittest.TestCase):
+class InlineLoaderTest(unittest.TestCase):
 
     def setUp(self):
         self.loader = element.loaders.InlineLoader()
