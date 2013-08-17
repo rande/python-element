@@ -10,9 +10,9 @@ def get_container(parameters=None):
         return container
 
     files = [
-        'config/config.yml',
-        'config/services.yml',
-        'config/parameters_%s.yml' % parameters['ioc.env'],
+        '%s/config/config.yml' % (parameters['project.root_folder']),
+        '%s/config/services.yml' % (parameters['project.root_folder']),
+        '%s/config/parameters_%s.yml' % (parameters['project.root_folder'], parameters['ioc.env']),
     ]
     
     container = ioc.build(files, parameters=parameters)
