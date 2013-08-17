@@ -29,7 +29,7 @@ element.plugins.jquery:
 
 element.plugins.flatui:
 
-element.plugins.admin_angular:
+element.plugins.admin:
 
 element.plugins.api:
 
