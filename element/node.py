@@ -1,5 +1,4 @@
 import yaml, os, functools
-import element.node
 import exceptions
 
 class NodeHandler(object):
@@ -52,6 +51,12 @@ class NodeManager(object):
             return event.get('node')
 
         return None
+
+    def delete(self, node):
+        return self.db.delete(node.id)
+
+    def save(self, node):
+        return self.db.save(node.id, node.type, node.data)
 
     def get_handler(self, node):
         return self.handlers[node.type]

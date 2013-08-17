@@ -1,4 +1,5 @@
 import os
+from element.exceptions import SecurityAccessException
 
 class FsManager(object):
     """
@@ -12,10 +13,14 @@ class FsManager(object):
         return self.loader.load(self.get_path(id))
 
     def exists(self, id):
-        return os.path.isfile(self.get_path(id))
+        path = self.get_path(id)
+
+        if not path:
+            return False
+
+        return os.path.isfile(path)
 
     def get_path(self, id):
-
         paths = [
             ("%s/%s" % (self.path, id), id),
             ("%s/%s.yml" % (self.path, id), id),
@@ -24,18 +29,58 @@ class FsManager(object):
 
         for path, id in paths:
             if os.path.isfile(path):
-                return path
+                path = os.path.realpath(path)
+                break
 
-    
+        if not path.startswith(self.path):
+            raise SecurityAccessException(path)
+
+        return path
+
+    def get_new_path(self, id):
+        # the file exists, return the path
+        path = "%s/%s" % (self.path, id)
+        if os.path.isfile(path):
+            return path
+
+        # check if the extension is not yml ...
+        basename, extension = os.path.splitext(path)        
+        if extension != 'yml' and len(extension.strip()) > 0:
+            return path
+
+        # check is the yml def exist
+        path = "%s/%s.yml" % (self.path, id)
+        if os.path.isfile(path):
+            return path
+
+        # ok, check is a path exist, if so we try to save an index
+        path = "%s/%s" % (self.path, id)
+        if os.path.isdir(path):
+            return "%s/_index.yml" % path
+
+        # the path does not exist create it ...
+        return "%s/%s.yml" % (self.path, id)
+
+    def delete(self, id):
+        if not self.exists(id):
+            return False
+
+        os.remove(self.get_path(id))
+
+        return True
+
     def save(self, id, type, data):        
-        path = self.get_path(id)
+        path = self.get_new_path(id)
 
         data['type'] = type
 
-        print path, data
+        basepath, filename = os.path.split(path)
+        basename, extension = os.path.splitext(filename)
 
-        self.loader.save(path, data)
+        if not os.path.isdir(basepath):
+            os.makedirs(basepath)
 
+        return self.loader.save(path, data)
 
     def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None, offset=None, limit=None):
         """
@@ -68,9 +113,8 @@ class FsManager(object):
             for file in files:
                 filename = os.path.realpath("%s/%s" % (path, file))
 
-                if filename[0:len(self.path)] != self.path:
-                    # security issue, try to access path outside the self.path
-                    continue
+                if not filename.startswith(self.path):
+                    raise SecurityAccessException(filename)
 
                 if not self.loader.supports(filename):
                     continue
