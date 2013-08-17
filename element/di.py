@@ -36,7 +36,6 @@ class Extension(ioc.component.Extension):
             {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index')}
         )
 
-
     def post_build(self, container_builder, container):
         manager = container.get('element.node.manager')
 

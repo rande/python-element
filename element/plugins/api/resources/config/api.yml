@@ -1,21 +1,21 @@
 services:
-    element.api.node:
-        class: element.api.NodeView
+    element.api.view.node:
+        class: element.plugins.api.views.NodeView
         arguments: 
             - '@element.node.manager'
 
-    element.api.node.list:
-        class: element.api.ListView
+    element.api.view.node.list:
+        class: element.plugins.api.views.ListView
         arguments: 
             - '@element.node.manager'
 
-    element.api.handler:
-        class: element.api.HandlerView
+    element.api.view.handler:
+        class: element.plugins.api.views.HandlerView
         arguments: 
             - '@element.node.manager'
             - '@ioc.locator'
 
-    element.api.handler.list:
-        class: element.api.HandlerListView
+    element.api.view.handler.list:
+        class: element.plugins.api.views.HandlerListView
         arguments: 
             - '@element.node.manager'
