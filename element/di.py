@@ -9,7 +9,6 @@ class Extension(ioc.component.Extension):
         loader = ioc.loader.YamlLoader()
         loader.load("%s/resources/config/services.yml" % path, container_builder)
         loader.load("%s/resources/config/command.yml" % path, container_builder)
-        loader.load("%s/resources/config/api.yml" % path, container_builder)
 
         container_builder.parameters.set('element.template.dir', config.get('template', "%s/resources/template" % path))
         container_builder.parameters.set('element.static.dir', config.get('static', "%s/resources/static" % path))
