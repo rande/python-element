@@ -1,0 +1,33 @@
+title: API
+type: action.collection
+actions:
+    element_api_node:
+        path: /element/node/<path:path>.<_format>
+        methods: ['GET', 'PUT', 'POST', 'DELETE']
+        defaults:
+            _controller: element.api.view.node:execute
+
+    element_api_list_index:
+        path: /element/node.<_format>
+        methods: ['GET']
+        defaults:
+            _controller: element.api.view.node.list:execute
+            path: /
+
+    element_api_list:
+        path: /element/path/<path:path>.<_format>
+        methods: ['GET']
+        defaults:
+            _controller: element.api.view.node.list:execute
+
+    element_api_handler_list:
+        path: /element/handlers.<_format>
+        methods: ['GET']
+        defaults:
+            _controller: element.api.view.handler.list:execute
+
+    element_api_handler:
+        path: /element/handler/<code>.<_format>
+        methods: ['GET']
+        defaults:
+            _controller: element.api.view.handler:execute
