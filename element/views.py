@@ -47,7 +47,7 @@ class ActionView(MethodView, Dispatcher):
         self.context_creator = context_creator
         self.event_dispatcher = event_dispatcher
 
-    def dispatch(self, **kwargs):
+    def dispatch(self, *args, **kwargs):
         if '_controller' not in kwargs:
             return
 
@@ -55,10 +55,13 @@ class ActionView(MethodView, Dispatcher):
 
         del kwargs['_controller']
 
+        parameters = flask.request.args.to_dict()
+        parameters.update(kwargs)
+
         node = element.node.Node('action://%s' % serviceId, 'node.action', {
             'serviceId': serviceId,
             'method': method,
-            'kwargs': kwargs,
+            'kwargs': parameters,
             'request': flask.request
         })
 
