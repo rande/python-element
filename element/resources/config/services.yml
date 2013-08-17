@@ -6,8 +6,6 @@ services:
             - 'element'
         kwargs:
             template_folder: '%element.template.dir%'
-            static_folder:   '%element.static.dir%'
-            static_url_path: 'element/static'
             
     element.flask.view.index:
         class: [element.views, PathView.as_view]
@@ -39,14 +37,6 @@ services:
         arguments:
             - '%element.data.dir%'
             - '@element.loader.chain'
-
-    element.loader.static:
-        class: element.loaders.StaticNodeLoader
-        arguments:
-            - '%element.static.mapping%'
-        tags:
-            element.loader: 
-                - name: static
 
     element.loader.chain:
         class: element.loaders.LoaderChain

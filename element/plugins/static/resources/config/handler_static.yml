@@ -6,3 +6,17 @@ services:
         tags:
             element.handler: 
                 - { name: element.static }
+
+    element.loader.static:
+        class: element.plugins.static.loader.StaticNodeLoader
+        arguments:
+            - '%element.static.mapping%'
+        tags:
+            element.loader: 
+                - name: static
+
+    element.flask.plugins.static.view:
+        class: [element.plugins.static.views, StaticView.as_view]
+        arguments:
+            - 'static'
+            - '@ioc.locator'

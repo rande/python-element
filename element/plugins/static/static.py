@@ -12,7 +12,6 @@ class StaticHandler(element.node.NodeHandler):
         return 'Static'
 
     def execute(self, context, flask):
-
         if not context.mode or context.mode == 'raw':
             file = os.path.realpath(context.node.file)
 

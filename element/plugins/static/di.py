@@ -23,3 +23,15 @@ class Extension(ioc.component.Extension):
             'rss': 'application/rss+xml; charset=utf-8',
             'ico': 'image/x-icon'
         })
+
+    def post_load(self, container_builder):
+        definition = container_builder.get('element.flask.blueprint')
+
+        definition.add_call(
+            'add_url_rule', 
+            ['element/static/<string:module>/<path:path>'],
+            {
+                'methods': ['GET'], 
+                'view_func': ioc.component.Reference('element.flask.plugins.static.view')
+            }
+        )
