@@ -1,0 +1,6 @@
+services:
+    element.plugins.security.provider.in_memory:
+        class: element.plugins.security.provider.InMemoryProvider
+        arguments:
+            - "%element.plugins.security.in_memory_users%"
+
