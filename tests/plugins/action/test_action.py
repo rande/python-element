@@ -2,14 +2,14 @@
 # vim: set fileencoding=utf-8 :
 import unittest
 import ioc.component
-import element.node, element.plugins.action
+import element.node, element.plugins.action.action
 import flask
 import ioc.exceptions
 import werkzeug.wrappers
 
 class RedictHandlerTest(unittest.TestCase):
     def setUp(self):
-        self.handler = element.handlers.action.RedirectHandler("/baseurl")
+        self.handler = element.plugins.action.action.RedirectHandler("/baseurl")
 
     def test_get_defaults(self):
         self.assertEquals({}, self.handler.get_defaults({}))
@@ -54,7 +54,7 @@ class RedictHandlerTest(unittest.TestCase):
 class ActionHandlerTest(unittest.TestCase):
     def setUp(self):
         self.container = ioc.component.Container()
-        self.handler = element.handlers.action.ActionHandler(self.container)
+        self.handler = element.plugins.action.action.ActionHandler(self.container)
 
         app = flask.Flask('AAA')
         self.ctx = app.test_request_context()

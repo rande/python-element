@@ -3,6 +3,7 @@ import unittest
 import ioc.event
 import element.manager.fs
 import element.loaders
+import element.plugins.static.loader
 import os, shutil
 import element.exceptions
 
@@ -13,7 +14,7 @@ class FsManagerTest(unittest.TestCase):
             self.fixture, 
             element.loaders.LoaderChain([
                 ('yaml', element.loaders.YamlNodeLoader()),
-                ('static', element.loaders.StaticNodeLoader({
+                ('static', element.plugins.static.loader.StaticNodeLoader({
                     'jpg': 'image/jpeg',
                     'png': 'image/png',
                 })),
