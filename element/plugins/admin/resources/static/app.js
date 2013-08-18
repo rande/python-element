@@ -19,7 +19,6 @@ jQuery.ajax({
         jQuery(pager.results).each(function(key, handler) {
             handlers.push("/api/element/handler/" + handler.code + ".js?ctx=admin");
         });
-
         
     }
 });        
