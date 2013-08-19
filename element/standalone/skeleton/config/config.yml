@@ -5,6 +5,20 @@ element:
     data_dir: '%project.root_folder%/content'
     base_url: '%base_url%'
 
+element.plugins.security:
+    providers:
+        in_memory:
+            users: 
+                - {'username': 'admin', 'password': 'admin'}
+
+    access_control:
+        - { path: ^/admin/login$,       role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/logout$,      role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/.*,                 role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/,             role: ROLE_ADMIN }
+
+
 element.plugins.action:
 
 element.plugins.blog:

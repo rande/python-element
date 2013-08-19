@@ -4,3 +4,5 @@ services:
         arguments:
             - "%element.plugins.security.in_memory_users%"
 
+    element.plugins.security.access_map:
+        class: element.plugins.security.firewall.AccessMap
