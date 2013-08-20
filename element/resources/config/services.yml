@@ -7,6 +7,10 @@ services:
         kwargs:
             template_folder: '%element.template.dir%'
             
+        calls:
+            - [ before_app_request, ["@element.dispatcher.request#handle"]]
+            # - [ after_app_request, ["@element.dispatcher.response#handle"]]
+
     element.flask.view.index:
         class: [element.views, PathView.as_view]
         arguments: 
@@ -52,3 +56,17 @@ services:
         tags:
             element.loader: 
                 - name: inline
+
+    element.dispatcher.request:
+        class: element.event.FlaskElementDispatcher
+        arguments:
+            - '@ioc.extra.event_dispatcher'
+            - 'request'
+            - False
+
+    element.dispatcher.response:
+        class: element.event.FlaskElementDispatcher
+        arguments:
+            - '@ioc.extra.event_dispatcher'
+            - 'response'
+            - True
