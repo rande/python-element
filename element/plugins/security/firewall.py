@@ -16,7 +16,6 @@ class AccessMap(object):
             if rule.match(request.path):
                 return roles
 
-
 class FirewallMap(object):
     def __init__(self, map=None):
         map = map or []
@@ -51,4 +50,11 @@ class Firewall(object):
 
             if 'response' in event.data:
                 return
+
+ # Channel Listener: http => https
+ # security.context_listener.0 => load token from session and refresh the user
+ # LogoutListener => logout the user if the path exist
+ # UsernamePasswordFormAuthenticationListener => authenticated the user
+ # AnonymousAuthenticationListener => create anonymous token
+ # security.access_listener => check path with associated roles
 

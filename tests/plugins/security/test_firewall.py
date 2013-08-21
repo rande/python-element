@@ -52,4 +52,3 @@ class FirewallMapTest(unittest.TestCase):
         for path, expected in paths:
             request.path = path
             self.assertEquals(expected, map.get_context(request))
-
