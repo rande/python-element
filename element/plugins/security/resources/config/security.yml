@@ -6,3 +6,19 @@ services:
 
     element.plugins.security.access_map:
         class: element.plugins.security.firewall.AccessMap
+
+    element.plugins.security.firewall_map:
+        class: element.plugins.security.firewall.FirewallMap
+
+    element.plugins.security.handlers.access_map:
+        class: element.plugins.security.handler.AccessMapListener
+        arguments:
+            - '@element.plugins.security.access_map'
+
+    element.plugins.security.firewall:
+        class: element.plugins.security.firewall.Firewall
+        arguments:
+            - "@element.plugins.security.firewall_map"
+        tags:
+            event.listener: 
+                - { name: element.request, method: onRequest }

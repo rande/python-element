@@ -11,6 +11,20 @@ element.plugins.security:
             users: 
                 - {'username': 'admin', 'password': 'admin'}
 
+    firewalls:
+        public:
+            context:            public
+            pattern:            ^/(.*)
+            form_login:
+                provider:       element.plugins.security.provider.in_memory
+                # login_path:     /admin/login
+                # use_forward:    false
+                # check_path:     /admin/login_check
+                # failure_path:   null
+            # logout:
+                # path:           /admin/logout
+            anonymous:          true  # allow anonymous connection
+
     access_control:
         - { path: ^/admin/login$,       role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/logout$,      role: IS_AUTHENTICATED_ANONYMOUSLY }

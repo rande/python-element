@@ -1,4 +1,5 @@
 import ioc
+from ioc.component import Definition, Reference
 import os, re
 
 class Extension(ioc.component.Extension):
@@ -10,6 +11,7 @@ class Extension(ioc.component.Extension):
 
         self.configure_providers(config.get_dict('providers'), container_builder)
         self.configure_access_map(config.get('access_control', []), container_builder)
+        self.configure_firewalls(config.get_dict('firewalls', {}), container_builder)
 
     def configure_providers(self, config, container_builder):
         self.configure_inmemory_provider(config.get_dict('in_memory'), container_builder)
@@ -22,4 +24,31 @@ class Extension(ioc.component.Extension):
 
         for value in map:
             definition.add_call('add', arguments=[re.compile(value['path']), value['role']])
+
+    def configure_firewalls(self, config, container_builder):
+        self.configure_firewall_map(config, container_builder)
+
+    def configure_firewall_map(self, config, container_builder):
+
+        parameter = []
+        for context, settings in config.all().iteritems():
+            name = settings.get('context', context)
+            pattern = settings.get('pattern', '.*')
+
+            parameter.append((re.compile(pattern), self.get_firewall_context(name, settings, container_builder)))
+            
+        container_builder.get('element.plugins.security.firewall_map').arguments = [parameter]
+
+
+    def get_firewall_context(self, name, settings, container_builder):
+        handlers = []
+        if settings.get("anonymous", False):
+            id_anonymous = 'element.plugins.security.listener.anonymous.%s' % name
+            container_builder.add(id_anonymous, Definition('element.plugins.security.handler.AnonymousAuthenticationHandler', [name]))
+
+            handlers.append(Reference(id_anonymous))
+
+        handlers.append(Reference('element.plugins.security.handlers.access_map'))
+
+        return (handlers, None)
 

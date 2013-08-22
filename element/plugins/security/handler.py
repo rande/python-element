@@ -13,7 +13,7 @@ class AnonymousAuthenticationHandler(object):
         if event.has('token'): 
             return
 
-        event.data['token'] = AnonymousToken(self.key, 'anon.')
+        event.data['token'] = AnonymousToken(self.key, 'anon.', ['IS_AUTHENTICATED_ANONYMOUSLY'])
 
 class AccessMapListener(object):
     def __init__(self, map):
