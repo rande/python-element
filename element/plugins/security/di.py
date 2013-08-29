@@ -28,6 +28,8 @@ class Extension(ioc.component.Extension):
     def configure_firewalls(self, config, container_builder):
         self.configure_firewall_map(config, container_builder)
 
+
+
     def configure_firewall_map(self, config, container_builder):
 
         parameter = []
@@ -42,9 +44,30 @@ class Extension(ioc.component.Extension):
 
     def get_firewall_context(self, name, settings, container_builder):
         handlers = []
+
+        # create the FlaskContextHandler, this service load token from flask session handling
+        context_handler = Definition('element.plugins.security.handler.FlaskContextHandler', [
+            Reference('element.plugins.security.context'),
+            Reference('element.plugins.security.provider.in_memory'), # this need to be configurable
+            name
+        ], {'logger': Reference('element.logger')})
+
+        context_handler.add_tag('event.listener', { 
+            'name': 'element.response',
+            'method': 'handleResponse', 
+            'priority': 32 
+        })
+
+        handlers.append(context_handler)
+
+        container_builder.add('element.plugins.security.handlers.flask_context.%s' % name, context_handler)
+
         if settings.get("anonymous", False):
             id_anonymous = 'element.plugins.security.listener.anonymous.%s' % name
-            container_builder.add(id_anonymous, Definition('element.plugins.security.handler.AnonymousAuthenticationHandler', [name]))
+            container_builder.add(id_anonymous, Definition('element.plugins.security.handler.AnonymousAuthenticationHandler', 
+                [name],
+                {'logger': Reference('element.logger')}
+            ))
 
             handlers.append(Reference(id_anonymous))
 

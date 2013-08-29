@@ -3,7 +3,9 @@ services:
         class: element.plugins.security.provider.InMemoryProvider
         arguments:
             - "%element.plugins.security.in_memory_users%"
-
+        kwargs:
+            logger: '@element.logger'
+            
     element.plugins.security.access_map:
         class: element.plugins.security.firewall.AccessMap
 
@@ -14,6 +16,8 @@ services:
         class: element.plugins.security.handler.AccessMapListener
         arguments:
             - '@element.plugins.security.access_map'
+        kwargs:
+            logger: '@element.logger'
 
     element.plugins.security.firewall:
         class: element.plugins.security.firewall.Firewall
@@ -21,4 +25,11 @@ services:
             - "@element.plugins.security.firewall_map"
         tags:
             event.listener: 
-                - { name: element.request, method: onRequest }
+                - { name: element.request, method: onRequest, priority: 32 }
+        kwargs:
+            logger: '@element.logger'
+
+    element.plugins.security.context:
+        class: element.plugins.security.security.SecurityContext
+        kwargs:
+            logger: '@element.logger'

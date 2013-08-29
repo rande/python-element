@@ -9,3 +9,7 @@ class NoRequestFoundException(Exception):
 
 class AccessDeniedException(Exception):
     pass
+
+class UnsupportedUserException(Exception):
+    pass
+

@@ -23,7 +23,7 @@ class AnonymousAuthenticationHandlerTest(unittest.TestCase):
 
     def test_token_already_set(self):
         e = Event({
-            'token': Token()
+            'token': Token('key', 'user')
         })
         h = AnonymousAuthenticationHandler('provider_name')
 
@@ -41,7 +41,7 @@ class AccessMapListenerTest(unittest.TestCase):
 
         with self.assertRaises(NoRequestFoundException):
             AccessMapListener(AccessMap()).handle(Event({
-                'token': Token()
+                'token': Token('key', 'user')
             }))
 
     def test_no_rule_in_access_map(self):
@@ -49,7 +49,7 @@ class AccessMapListenerTest(unittest.TestCase):
         r.path = ""
         with self.assertRaises(AccessDeniedException):
            AccessMapListener(AccessMap()).handle(Event({
-                'token': Token(),
+                'token': Token('key', 'user'),
                 'request': r
             }))
 

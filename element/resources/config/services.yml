@@ -9,7 +9,7 @@ services:
             
         calls:
             - [ before_app_request, ["@element.dispatcher.request#handle"]]
-            # - [ after_app_request, ["@element.dispatcher.response#handle"]]
+            - [ after_app_request, ["@element.dispatcher.response#handle"]]
 
     element.flask.view.index:
         class: [element.views, PathView.as_view]
@@ -58,15 +58,25 @@ services:
                 - name: inline
 
     element.dispatcher.request:
-        class: element.event.FlaskElementDispatcher
+        class: element.event.FlaskRequestElementDispatcher
         arguments:
             - '@ioc.extra.event_dispatcher'
             - 'request'
             - False
 
+        kwargs:
+            logger: '@element.logger'
+            
     element.dispatcher.response:
-        class: element.event.FlaskElementDispatcher
+        class: element.event.FlaskResponseElementDispatcher
         arguments:
             - '@ioc.extra.event_dispatcher'
             - 'response'
             - True
+        kwargs:
+            logger: '@element.logger'
+
+    element.logger:
+        class: logging.getLogger
+        arguments:
+            - 'element'

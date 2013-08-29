@@ -40,20 +40,33 @@ class FirewallMap(object):
         return ([], None)
 
 class Firewall(object):
-    def __init__(self, map):
+    def __init__(self, map, logger=None):
         self.map = map
+        self.logger = logger
 
     def onRequest(self, event):
+        if self.logger:
+            self.logger.info('Firewall - filtering request')
+
         listeners, options = self.map.get_context(event.data['request'])
 
         if len(listeners) == 0:
+            if self.logger:
+                self.logger.info('Firewall - no listeners found for request: %s' % event.data['request'].path)
+
             raise AccessDeniedException()
 
         for listener in listeners:
             listener.handle(event)
 
             if 'response' in event.data:
+                if self.logger:
+                    self.logger.info('Firewall - listener %s generates a response' % listener)
+
                 return
+
+        if self.logger:
+            self.logger.info('Firewall - request valid!')
 
  # Channel Listener: http => https
  # security.context_listener.0 => load token from session and refresh the user

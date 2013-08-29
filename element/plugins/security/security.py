@@ -1,21 +1,34 @@
 from element.plugins.security.exceptions import AuthenticationCredentialsNotFoundException
 
 class Token(object):
-    pass
-
-class AnonymousToken(Token):
     def __init__(self, key, user, roles=None):
         self.key = key
         self.user = user
         self.roles = roles or []
 
+    @property
+    def username(self):
+        if not isinstance(self.user, str):
+            return self.user.username
+
+        return self.user
+
+class AnonymousToken(Token):
+    pass
+    
 class SecurityContext(object):
-    def __init__(self):
+    """
+    This class is responsible to hold the security token. You need to inject this
+    service in your class to check is the user is granted to access to a resource.
+
+    The token must be resetted before each request.
+    """
+    def __init__(self, logger=None):
         self.token = None
+        self.logger = logger
 
     def is_granted(self, attributes, object=None):
         # simple implementation for now
-
         if not self.token: 
             raise AuthenticationCredentialsNotFoundException("No token attached to the security token")
 
