@@ -4,7 +4,6 @@ class ElementDispatcher(object):
     def __init__(self, event_dispatcher, type, implicit_return=True, logger=None):
         self.event_dispatcher = event_dispatcher
         self.type = type
-        self.implicit_return = implicit_return
         self.logger = logger
 
     def handle(self, subject, *args, **kwargs):
@@ -17,8 +16,7 @@ class ElementDispatcher(object):
             'kwargs': kwargs
         })
 
-        if self.implicit_return:
-            return event.data[self.type]
+        return event
 
 class FlaskRequestElementDispatcher(ElementDispatcher):
     """
@@ -26,15 +24,14 @@ class FlaskRequestElementDispatcher(ElementDispatcher):
 
     """
     def handle(self, *args, **kwargs):
-        value = ElementDispatcher.handle(self, request, *args, **kwargs)
+        event = ElementDispatcher.handle(self, request, *args, **kwargs)
 
-        return value
+        if event.has('response'):
+            return event.get('response')
 
 class FlaskResponseElementDispatcher(ElementDispatcher):
     def handle(self, response):
-        value = ElementDispatcher.handle(self, response)
+        event = ElementDispatcher.handle(self, response)
 
-        if value:
-            return value
-
-        return response
+        if event.has('response'):
+            return event.get('response')

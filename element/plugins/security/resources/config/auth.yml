@@ -1,0 +1,32 @@
+services:
+    element.plugins.security.auth.manager:
+        class: element.plugins.security.auth.AuthenticationProviderManager
+        arguments:
+            - '@ioc.extra.event_dispatcher'
+            - '' # auth providers
+
+    element.plugins.security.auth.auth_provider:
+        abstract: True
+        class: element.plugins.security.auth.DaoAuthenticationProvider
+        arguments:
+            - '' # user provider
+            - '' # provider key
+
+    element.plugins.security.auth.basic.entry_point:
+        abstract: True
+        class: element.plugins.security.auth.basic.BasicAuthEntryPoint
+        arguments:
+            - '' # realm name
+
+    element.plugins.security.auth.basic.handler:
+        abstract: True
+        class: element.plugins.security.auth.basic.BasicAuthenticationListener
+        arguments:
+            - '' # provider key
+            - '@element.plugins.security.context'
+            - '' # basic entry point
+            - '@element.plugins.security.auth.manager'
+        kwargs:
+            logger: '@element.logger' 
+
+        

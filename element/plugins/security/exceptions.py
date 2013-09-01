@@ -1,15 +1,29 @@
-class UsernameNotFoundException(Exception):
-    pass
-
-class AuthenticationCredentialsNotFoundException(Exception):
-    pass
-
-class NoRequestFoundException(Exception):
+class AuthenticationException(Exception):
     pass
 
 class AccessDeniedException(Exception):
     pass
-
-class UnsupportedUserException(Exception):
+    
+class UsernameNotFoundException(AuthenticationException):
     pass
 
+class AuthenticationCredentialsNotFoundException(AuthenticationException):
+    pass
+
+class NoRequestFoundException(AuthenticationException):
+    pass
+
+class UnsupportedUserException(AuthenticationException):
+    pass
+
+class AccountStatusException(AuthenticationException):
+    pass
+
+class ProviderNotFoundException(AuthenticationException):
+    pass
+
+class BadCredentialsException(AuthenticationException):
+    pass
+
+class AuthenticationServiceException(AuthenticationException):
+    pass

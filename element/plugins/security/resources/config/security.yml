@@ -16,6 +16,7 @@ services:
         class: element.plugins.security.handler.AccessMapListener
         arguments:
             - '@element.plugins.security.access_map'
+            - '@element.plugins.security.context'
         kwargs:
             logger: '@element.logger'
 

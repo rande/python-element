@@ -5,6 +5,8 @@ class Token(object):
         self.key = key
         self.user = user
         self.roles = roles or []
+        self.authenticated = False
+        self.credential = None
 
     @property
     def username(self):

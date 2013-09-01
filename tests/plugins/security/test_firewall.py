@@ -4,6 +4,8 @@ import re
 from element.plugins.security.firewall import AccessMap, FirewallMap, Firewall
 from element.plugins.security.exceptions import AccessDeniedException
 from element.plugins.security.handler import AnonymousAuthenticationHandler
+from element.plugins.security.security import SecurityContext
+
 from ioc.event import Event
 
 class Request(object):
@@ -70,9 +72,10 @@ class FirewallTest(unittest.TestCase):
             }))
 
     def test_get_context_with_valid_listeners(self):
+        c = SecurityContext()
         f = Firewall(FirewallMap([
             (re.compile("/admin/.*"), ([
-                AnonymousAuthenticationHandler('key'),
+                AnonymousAuthenticationHandler('key', c),
             ], None)),
         ]))
 
@@ -84,5 +87,5 @@ class FirewallTest(unittest.TestCase):
         })
         f.onRequest(e)
 
-        self.assertTrue(e.has('token'))
+        self.assertIsNotNone(c.token)
 

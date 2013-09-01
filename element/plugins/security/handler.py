@@ -7,12 +7,13 @@ class AnonymousAuthenticationHandler(object):
     This class generates an AnonymousToken if no token has been set in 
     the current event object
     """
-    def __init__(self, key, logger=None):
+    def __init__(self, key, security_context, logger=None):
         self.key = key
         self.logger = logger
+        self.security_context = security_context
 
     def handle(self, event):   
-        if event.has('token'): 
+        if self.security_context.token: 
             if self.logger:
                 self.logger.info("AnonymousAuthenticationHandler - token already set, skipping")
 
@@ -21,18 +22,19 @@ class AnonymousAuthenticationHandler(object):
         if self.logger:
             self.logger.info("AnonymousAuthenticationHandler - creating a new AnonymousToken")
 
-        event.data['token'] = AnonymousToken(self.key, 'anon.', ['IS_AUTHENTICATED_ANONYMOUSLY'])
+        self.security_context.token = AnonymousToken(self.key, 'anon.', ['IS_AUTHENTICATED_ANONYMOUSLY'])
 
 class AccessMapListener(object):
     """
     This class check if the current token can access the request
     """
-    def __init__(self, map, logger=None):
+    def __init__(self, map, security_context, logger=None):
         self.map = map
         self.logger = logger
+        self.security_context = security_context
 
     def handle(self, event):
-        if not event.has('token'): 
+        if not self.security_context.token:
             raise AuthenticationCredentialsNotFoundException("No token attached to the security token")
 
         if not event.has('request'):
@@ -44,7 +46,7 @@ class AccessMapListener(object):
             raise AccessDeniedException()
 
         for role in roles:
-            if role not in event.get('token').roles:
+            if role not in self.security_context.token.roles:
                 raise AccessDeniedException()
 
         if self.logger:
@@ -85,7 +87,9 @@ class FlaskContextHandler(ContextHandler):
         token = pickle.loads(flask.session[name])
 
         # always reload the user from the datasource
-        self.user_provider.loadUserByUsername(token.username)
+        user = self.user_provider.loadUserByUsername(token.username)
+
+        token.user = user
 
         # update the token
         self.security_context.token = token
@@ -118,7 +122,7 @@ class FlaskContextHandler(ContextHandler):
             self.logger.info("FlaskContextHandler - Saving context %s" % name)
 
         # save the token into the session
-        if name not in flask.session:
+        if name in flask.session:
             del flask.session[name]
 
         flask.session[name] = pickle.dumps(self.security_context.token)
