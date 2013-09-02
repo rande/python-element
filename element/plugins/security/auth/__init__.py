@@ -3,7 +3,7 @@ from element.plugins.security.exceptions import AuthenticationException, \
     UsernameNotFoundException, AuthenticationServiceException, \
     BadCredentialsException
 
-from element.plugins.security.security import Token
+from element.plugins.security.security import UsernamePasswordToken
 
 class EntryPoint(object):
     def start(self, request):
@@ -18,7 +18,7 @@ class DaoAuthenticationProvider(object):
         self.provider_key = provider_key
 
     def supports(self, token):
-        return token.key == self.provider_key
+        return isinstance(token, UsernamePasswordToken) and token.key == self.provider_key
 
     def authenticate(self, token):
         if not self.supports(token):
@@ -30,7 +30,7 @@ class DaoAuthenticationProvider(object):
             if user.password != token.credentials:
                 raise BadCredentialsException('Invalid credentials, check login or password')
 
-            token = Token(token.key, user, roles=user.roles)
+            token = UsernamePasswordToken(token.key, user, roles=user.roles)
             token.authenticated = True
 
             return token

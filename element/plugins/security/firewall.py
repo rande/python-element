@@ -32,7 +32,7 @@ class FirewallMap(object):
 
         self.map.append((rule, context))
 
-    def get_context(self, request):
+    def get_context(self, request):      
         for rule, context in self.map:
             if rule.match(request.path):
                 return context
@@ -55,6 +55,9 @@ class Firewall(object):
                 self.logger.info('Firewall - no listeners found for request: %s' % event.data['request'].path)
 
             raise AccessDeniedException()
+
+        if self.logger:
+            self.logger.info('Firewall - found listeners %s' % listeners)
 
         for listener in listeners:
             listener.handle(event)

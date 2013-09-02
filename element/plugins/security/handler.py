@@ -1,4 +1,4 @@
-from .security import AnonymousToken
+from .security import AnonymousToken, UsernamePasswordToken
 from .exceptions import AccessDeniedException, NoRequestFoundException, AuthenticationCredentialsNotFoundException
 import pickle
 
@@ -28,10 +28,11 @@ class AccessMapListener(object):
     """
     This class check if the current token can access the request
     """
-    def __init__(self, map, security_context, logger=None):
+    def __init__(self, map, security_context, role_hierarchie, logger=None):
         self.map = map
         self.logger = logger
         self.security_context = security_context
+        self.role_hierarchie = role_hierarchie
 
     def handle(self, event):
         if not self.security_context.token:
@@ -40,13 +41,15 @@ class AccessMapListener(object):
         if not event.has('request'):
             raise NoRequestFoundException()
 
-        roles = self.map.get_pattern(event.get('request'))
+        required_roles = self.map.get_pattern(event.get('request'))
 
-        if not roles:
+        if not required_roles:
             raise AccessDeniedException()
 
-        for role in roles:
-            if role not in self.security_context.token.roles:
+        user_roles = list(set(self.role_hierarchie.get_reachable_roles(self.security_context.token.roles) + self.security_context.token.roles))
+
+        for role in required_roles:
+            if role not in user_roles:
                 raise AccessDeniedException()
 
         if self.logger:
@@ -87,9 +90,9 @@ class FlaskContextHandler(ContextHandler):
         token = pickle.loads(flask.session[name])
 
         # always reload the user from the datasource
-        user = self.user_provider.loadUserByUsername(token.username)
-
-        token.user = user
+        if isinstance(token, UsernamePasswordToken):
+            user = self.user_provider.loadUserByUsername(token.username)
+            token.user = user
 
         # update the token
         self.security_context.token = token
@@ -103,7 +106,6 @@ class FlaskContextHandler(ContextHandler):
         """
         import flask
 
-
         if not self.security_context.token:
             if self.logger:
                 self.logger.info("FlaskContextHandler - Cannot save: no token associated")
@@ -112,7 +114,10 @@ class FlaskContextHandler(ContextHandler):
 
         if self.security_context.token.key != self.context_name:
             if self.logger:
-                self.logger.info("FlaskContextHandler - Cannot save: current active token is not associated to the current context")
+                self.logger.info("FlaskContextHandler - Cannot save: current active token (%s) is not associated to the current context (%s)",
+                    self.security_context.token.key,
+                    self.context_name
+                )
 
             return
 

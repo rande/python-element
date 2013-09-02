@@ -5,6 +5,9 @@ class Token(object):
         self.key = key
         self.user = user
         self.roles = roles or []
+        if isinstance(self.roles, str):
+            self.roles = [self.roles]
+            
         self.authenticated = False
         self.credential = None
 
@@ -14,6 +17,9 @@ class Token(object):
             return self.user.username
 
         return self.user
+
+class UsernamePasswordToken(Token):
+    pass
 
 class AnonymousToken(Token):
     pass

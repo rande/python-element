@@ -5,6 +5,7 @@ from element.plugins.security.security import AnonymousToken, Token, SecurityCon
 from element.plugins.security.exceptions  import AccessDeniedException, \
     AuthenticationCredentialsNotFoundException, NoRequestFoundException
 from element.plugins.security.firewall import AccessMap
+from element.plugins.security.role import RoleHierarchy
 
 from ioc.event import Event
 
@@ -35,7 +36,7 @@ class AnonymousAuthenticationHandlerTest(unittest.TestCase):
 class AccessMapListenerTest(unittest.TestCase):
     def test_no_token(self):
         with self.assertRaises(AuthenticationCredentialsNotFoundException):
-           AccessMapListener(AccessMap()).handle(Event(), SecurityContext())
+           AccessMapListener(AccessMap()).handle(Event(), SecurityContext(), RoleHierarchy())
 
     def test_no_request(self):
 
@@ -43,7 +44,7 @@ class AccessMapListenerTest(unittest.TestCase):
         context.token = Token('key', 'user')
 
         with self.assertRaises(NoRequestFoundException):
-            AccessMapListener(AccessMap(), context).handle(Event())
+            AccessMapListener(AccessMap(), context, RoleHierarchy()).handle(Event())
 
     def test_no_rule_in_access_map(self):
         r = Request()
@@ -53,7 +54,7 @@ class AccessMapListenerTest(unittest.TestCase):
         context.token = Token('key', 'user')
 
         with self.assertRaises(AccessDeniedException):
-           AccessMapListener(AccessMap(), context).handle(Event({
+           AccessMapListener(AccessMap(), context, RoleHierarchy()).handle(Event({
                 'request': r
             }))
 
@@ -64,7 +65,7 @@ class AccessMapListenerTest(unittest.TestCase):
         context = SecurityContext()
         context.token = AnonymousToken('key', 'anon.', 'IS_AUTHENTICATED_ANONYMOUSLY')
         
-        AccessMapListener(AccessMap([(re.compile("/blog.*"), ['IS_AUTHENTICATED_ANONYMOUSLY'])]), context).handle(Event({
+        AccessMapListener(AccessMap([(re.compile("/blog.*"), ['IS_AUTHENTICATED_ANONYMOUSLY'])]), context, RoleHierarchy()).handle(Event({
             'request': r
         }))
 
@@ -78,7 +79,7 @@ class AccessMapListenerTest(unittest.TestCase):
         context = SecurityContext()
         context.token = AnonymousToken('key', 'anon.', 'IS_AUTHENTICATED_ANONYMOUSLY')
 
-        AccessMapListener(AccessMap([(re.compile("/blog.*"), ['IS_AUTHENTICATED_ANONYMOUSLY'])]), context).handle(Event({
+        AccessMapListener(AccessMap([(re.compile("/blog.*"), ['IS_AUTHENTICATED_ANONYMOUSLY'])]), context, RoleHierarchy()).handle(Event({
             'request': r
         }))
 

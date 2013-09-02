@@ -2,7 +2,7 @@ import unittest
 
 from element.plugins.security.auth import DaoAuthenticationProvider, AuthenticationProviderManager
 from element.plugins.security.provider import InMemoryProvider
-from element.plugins.security.security import Token
+from element.plugins.security.security import UsernamePasswordToken
 from element.plugins.security.exceptions import UsernameNotFoundException, BadCredentialsException
 from ioc.event import Dispatcher
 
@@ -11,8 +11,8 @@ class DaoAuthenticationProviderTest(unittest.TestCase):
     def test_support(self):
         auth_provider = DaoAuthenticationProvider(InMemoryProvider(), 'admin')
 
-        self.assertFalse(auth_provider.supports(Token('foo', 'anno.')))
-        self.assertTrue(auth_provider.supports(Token('admin', 'anno.')))
+        self.assertFalse(auth_provider.supports(UsernamePasswordToken('foo', 'anno.')))
+        self.assertTrue(auth_provider.supports(UsernamePasswordToken('admin', 'anno.')))
 
     def test_authenticate_exception(self):
         provider = InMemoryProvider([
@@ -23,10 +23,10 @@ class DaoAuthenticationProviderTest(unittest.TestCase):
         auth_provider = DaoAuthenticationProvider(provider, 'admin')
 
         with self.assertRaises(UsernameNotFoundException):
-            auth_provider.authenticate(Token('admin', 'anno.'))
+            auth_provider.authenticate(UsernamePasswordToken('admin', 'anno.'))
 
         with self.assertRaises(BadCredentialsException):
-            t = Token('admin', 'foo')
+            t = UsernamePasswordToken('admin', 'foo')
             t.credentials = 'fake password'
             auth_provider.authenticate(t)
 
@@ -38,7 +38,7 @@ class DaoAuthenticationProviderTest(unittest.TestCase):
 
         auth_provider = DaoAuthenticationProvider(provider, 'admin')
 
-        t = Token('admin', 'foo')
+        t = UsernamePasswordToken('admin', 'foo')
         t.credentials = 'bar'
         token = auth_provider.authenticate(t)
 
@@ -51,7 +51,7 @@ class AuthenticationProviderManagerTest(unittest.TestCase):
 
         auth_manager = AuthenticationProviderManager(Dispatcher(), [auth_provider])
 
-        t = Token('admin', 'foo')
+        t = UsernamePasswordToken('admin', 'foo')
         t.credentials = 'bar'
 
         with self.assertRaises(UsernameNotFoundException):

@@ -25,9 +25,13 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/security.yml" % path, container_builder)
         loader.load("%s/resources/config/auth.yml" % path, container_builder)
 
+        self.configure_role_hierarchie(config.get_dict('role_hierarchy', {}), container_builder)
         self.configure_providers(config.get_dict('providers'), container_builder)
         self.configure_access_map(config.get('access_control', []), container_builder)
         self.configure_firewalls(config.get_dict('firewalls', {}), container_builder)
+
+    def configure_role_hierarchie(self, config, container_builder):
+        container_builder.get('element.plugins.security.role.hierarchy').arguments[0] = config.all()
 
     def configure_providers(self, config, container_builder):
         self.configure_inmemory_provider(config.get_dict('in_memory'), container_builder)

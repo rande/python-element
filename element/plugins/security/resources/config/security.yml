@@ -17,6 +17,7 @@ services:
         arguments:
             - '@element.plugins.security.access_map'
             - '@element.plugins.security.context'
+            - '@element.plugins.security.role.hierarchy'
         kwargs:
             logger: '@element.logger'
 
@@ -34,3 +35,8 @@ services:
         class: element.plugins.security.security.SecurityContext
         kwargs:
             logger: '@element.logger'
+
+    element.plugins.security.role.hierarchy:
+        class: element.plugins.security.role.RoleHierarchy
+        arguments:
+            - "" # the role hierarchie definition
