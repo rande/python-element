@@ -1,6 +1,6 @@
 from . import EntryPoint, SecurityFactory
 from ioc.component import Reference, Definition
-from element.plugins.security.security import Token
+from element.plugins.security.security import UsernamePasswordToken
 from element.plugins.security.exceptions import AuthenticationException
 
 
@@ -50,7 +50,7 @@ class BasicAuthenticationListener(object):
 
         # no token, create a new one and check credential
         try:
-            token = Token(self.provider_key, request.authorization.username)
+            token = UsernamePasswordToken(self.provider_key, request.authorization.username)
             token.credentials = request.authorization.password
             token = self.authentication_manager.authenticate(token)
             
@@ -64,7 +64,7 @@ class BasicAuthenticationListener(object):
             event.set('response', self.entry_point.start(request))
 
             if self.logger:
-                self.logger.info("BasicAuthenticationListener - AuthenticationException occurs")
+                self.logger.info("BasicAuthenticationListener - AuthenticationException occurs : %s" % e)
 
 
 class HttpBasicSecurityFactory(SecurityFactory):

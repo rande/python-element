@@ -6,16 +6,19 @@ element:
     base_url: '%base_url%'
 
 element.plugins.security:
+    role_hierarchy:
+        ROLE_PUBLIC:      [IS_AUTHENTICATED_ANONYMOUSLY]
+        ROLE_ADMIN:       [ROLE_PUBLIC, ROLE_USER]
+
     providers:
         in_memory:
             users: 
-                - {'username': 'admin', 'password': 'admin'}
+                - {'username': 'admin', 'password': 'admin', roles: ['ROLE_ADMIN']}
 
     firewalls:
-        public:
-            context:            public
-            pattern:            ^/(.*)
-            form_login:
+        private:
+            pattern:            ^/(admin|api)(.*)
+            http_basic:               
                 provider:       element.plugins.security.provider.in_memory
                 # login_path:     /admin/login
                 # use_forward:    false
@@ -23,14 +26,18 @@ element.plugins.security:
                 # failure_path:   null
             # logout:
                 # path:           /admin/logout
-            anonymous:          true  # allow anonymous connection
+            anonymous:          false  # allow anonymous connection
+
+        public:
+            pattern:            "^/.*"
+            anonymous:          true    # allow anonymous connection
 
     access_control:
         - { path: ^/admin/login$,       role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/logout$,      role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/.*,                 role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/,             role: ROLE_ADMIN }
+        - { path: ^/(admin|api),        role: ROLE_ADMIN }
+        - { path: ^/.*,                 role: ['IS_AUTHENTICATED_ANONYMOUSLY'] }
 
 
 element.plugins.action:
