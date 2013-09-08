@@ -3,29 +3,39 @@
     <head>
         <meta charset="utf-8">
 
-        {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
+        {% block element_head_seo %}
+          {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
+        {% endblock %}
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Loading Bootstrap -->
-        <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+        {% block element_head_css %}
+          <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 
-        <link href="{{ url_for('element.static', module='element.plugins.flatui', path='css/bootstrap.css') }}" rel="stylesheet">
-        <link href="{{ url_for('element.static', module='element.plugins.flatui', path='css/flat-ui.css') }}" rel="stylesheet">
+          <link href="{{ url_for('element.static', module='element.plugins.flatui', path='css/bootstrap.css') }}" rel="stylesheet">
+          <link href="{{ url_for('element.static', module='element.plugins.flatui', path='css/flat-ui.css') }}" rel="stylesheet">
+        {% endblock %}
 
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        {% block element_head_favicon %}
+          <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+          <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        {% endblock %}
 
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-        <!--[if lt IE 9]>
-          <script src="{{ url_for('element.static', module='element.plugins.flatui', path='js/html5shiv.js') }}"></script>
-        <![endif]-->
+        {% block element_head_js %}
+          <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+          <!--[if lt IE 9]>
+            <script src="{{ url_for('element.static', module='element.plugins.flatui', path='js/html5shiv.js') }}"></script>
+          <![endif]-->
+        {% endblock %}
 
-        <link href="{{ url_for('element.element_path', path="/feeds/all.rss", _external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate" />
-        <link href="{{ url_for('element.element_path', path="/feeds/python.rss", _external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate" />
+        {% block element_head_feed %}
+          <link href="{{ url_for('element.element_path', path="/feeds/all.rss", _external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path="/feeds/python.rss", _external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate" />
 
-        <link href="{{ url_for('element.element_path', path="/feeds/all.atom", _external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate" />
-        <link href="{{ url_for('element.element_path', path="/feeds/python.atom", _external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path="/feeds/all.atom", _external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path="/feeds/python.atom", _external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate" />
+        {% endblock %}
 
     </head>
 
@@ -90,5 +100,10 @@
             </div>
           </div>
         </footer>
+
+        {% block element_footer_css %}{% endblock %}
+        {% block element_footer_js %}{% endblock %}
     </body>
+
+    <!-- monitoring:3d0cc310765f0e7b37d8aa315b2fe6b8 -->
 </html>

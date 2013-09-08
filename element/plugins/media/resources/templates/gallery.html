@@ -11,11 +11,18 @@
                 {% for line in lines %}
                     <div class="span3">
                         {% for pos in line %}
-                            {{ render_node(medias[pos], defaults={
-                                'format':       context.node.parameters.format,
-                                'mode':         'preview',
-                                'base_template': False
-                            })|safe }}
+                            {% if medias[pos].is_image() %}
+                                <a href="{{ url_for('.element_path', path=medias[pos].id) }}" data-lightbox="gallery">
+                                    <img 
+                                        src="{{ url_for('.element_path', path=medias[pos].id, format=context.node.parameters.format) }}"
+                                        class="img-polaroid" 
+                                        width="200px">
+                                </a>
+                            {% endif %}
+
+                            {% if medias[pos].is_video() %}
+                                TODO: implement a javascript video player ...
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endfor %}

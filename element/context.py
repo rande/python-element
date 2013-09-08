@@ -8,7 +8,9 @@ class ContextCreator(object):
         
     def build(self, node, handler, defaults=None):
         settings = {}
+
         settings.update(self.defaults)
+        settings.update(node.data)
         settings.update(handler.get_defaults(node))
         settings.update(defaults or {})
 
