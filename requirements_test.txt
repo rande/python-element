@@ -1,15 +1,5 @@
-PyYaml
-git+http://github.com/rande/python-simple-ioc.git
-Flask
-Flask-WTF
-Jinja
-WTForms
-mailer
-python-dateutil
-Jinja2==2.6
-markdown
+-r requirements.txt
 mock
 unittest2
-pymongo
 nose
 coverage
