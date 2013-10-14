@@ -43,6 +43,12 @@ class Standardize(object):
         if 'category' not in node.data:
             node.data['category'] = False
 
+        if 'authors' not in node.data:
+            node.data['authors'] = []
+
+        if 'copyright' not in node.data:
+            node.data['copyright'] = False
+
         if 'response' not in node.data:
             node.data['response'] = {}
 
@@ -57,6 +63,8 @@ class Standardize(object):
 
         node.data['response'] = defaults
 
+        if not node.manager and 'manager' in node.data:
+            node.manager = node.data['manager']
 
     def render_response(self, event):
         if event.get('context').node.response['status_code']:

@@ -8,5 +8,8 @@ mailer
 python-dateutil
 Jinja2==2.6
 markdown
+mock
+unittest2
 pymongo
-Sphinx==1.1.3
+nose
+coverage

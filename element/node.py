@@ -53,20 +53,43 @@ class NodeManager(object):
         return None
 
     def delete(self, node):
-        return self.db.delete(node.id)
+        self.event_dispatcher.dispatch('element.node.pre_delete', {
+            'node': node,
+        })
 
+        result = self.db.delete(node.id)
+
+        self.event_dispatcher.dispatch('element.node.post_delete', {
+            'node': node,
+        })
+
+        return result
+        
     def save(self, node):
-        return self.db.save(node.id, node.type, node.data)
+        self.event_dispatcher.dispatch('element.node.pre_save', {
+            'node': node,
+            'data': node.data
+        })
+
+        result = self.db.save(node.id, node.type, event.get('data'))
+
+        self.event_dispatcher.dispatch('element.node.post_save', {
+            'node': node,
+            'data': node.data
+        })
+
+        return result
 
     def get_handler(self, node):
         return self.handlers[node.type]
 
 class Node(object):
-    def __init__(self, id, type, data=None):
+    def __init__(self, id, type, data=None, manager=None):
         self.id = id
         self.type = type
         self.data = data or {}
         self.methods = {}
+        self.manager = manager
 
     def __getattr__(self, name):
         if name in self.methods:

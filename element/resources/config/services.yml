@@ -33,14 +33,35 @@ services:
     element.node.manager:
         class: element.node.NodeManager
         arguments: 
-            - '@element.manager.default'
+            - '@element.manager.chain'
             - '@ioc.extra.event_dispatcher'
 
-    element.manager.default:
+    element.manager.chain:
+        class: element.manager.tools.ChainManager
+        arguments:
+            - '' # managers references
+
+    element.manager.fs:
         class: element.manager.fs.FsManager
         arguments:
-            - '%element.data.dir%'
+            - '' # data dir
             - '@element.loader.chain'
+        kwargs:
+            logger: '@element.logger'
+
+    element.manager.mongodb:
+        class: element.manager.mongo.MongoManager
+        arguments:
+            - '@element.manager.mongodb.client' 
+            - '' # database
+            - '' # data collection
+        kwargs:
+            logger: '@element.logger'
+            
+    element.manager.mongodb.client:
+        class: pymongo.MongoClient
+        arguments:
+            - '' # mongodb URI server
 
     element.loader.chain:
         class: element.loaders.LoaderChain

@@ -71,10 +71,3 @@ class Firewall(object):
         if self.logger:
             self.logger.info('Firewall - request valid!')
 
- # Channel Listener: http => https
- # security.context_listener.0 => load token from session and refresh the user
- # LogoutListener => logout the user if the path exist
- # UsernamePasswordFormAuthenticationListener => authenticated the user
- # AnonymousAuthenticationListener => create anonymous token
- # security.access_listener => check path with associated roles
-

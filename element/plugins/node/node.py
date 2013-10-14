@@ -1,6 +1,7 @@
 import markdown, os
 import element.node
 import datetime
+from element.exceptions import PerformanceException
 
 class IndexHandler(element.node.NodeHandler):
     def __init__(self, node_manager):
@@ -11,12 +12,7 @@ class IndexHandler(element.node.NodeHandler):
 
     def get_defaults(self, node):
         if 'filters' not in node.data:
-            node.data['filters'] = {
-                'types': [],
-                'category': None,
-                'tags': [],
-                'path': None
-            }
+            node.data['filters'] = {}
 
         if 'types' not in node.data['filters']:
             node.data['filters']['types'] = []
@@ -30,44 +26,38 @@ class IndexHandler(element.node.NodeHandler):
         if 'path' not in node.data['filters']:
             node.data['filters']['path'] = None
 
-        defaults = {
-            'template': self.get_base_template(node),
-            'path': node.data['filters']['path'],
-            'types': node.data['filters']['types'],
-            'tags': node.data['filters']['tags'],
-            'category': node.data['filters']['category'],
-            'link': node.link,
-        }
+        if 'limit' not in node.data['filters']:
+            node.data['filters']['limit'] = 64
 
-        return defaults
+        if 'offset' not in node.data['filters']:
+            node.data['filters']['offset'] = 0
+
+        node.data['filters']['limit'] = int(node.data['filters']['limit'])
+        node.data['filters']['offset'] = int(node.data['filters']['offset'])
+
+        return {
+            'template': self.get_base_template(node),
+        }
 
     def get_base_template(self, node):
         return node.template or 'element.plugins.node:index.html'
 
     def execute(self, context, flask):
-        now = datetime.datetime.now()
+        if context.filters['limit'] > 128:
+            raise PerformanceException("The limit cannot be greater than 128 (limit:%s)" % context.filters['limit'])
 
-        nodes = self.node_manager.get_nodes(
-            path=context.path,
-            type=context.type,
-            types=context.types, 
-            category=context.category,
-            tags=context.tags,
-            selector=lambda node: now > node.published_at
-        )
+        nodes = self.node_manager.get_nodes(**{
+            'types':    context.filters['types'], 
+            'limit':    context.filters['limit'], 
+            'offset':   context.filters['offset'], 
+            'category': context.filters['category'], 
+            'tags':     context.filters['tags'], 
+            'path':     context.filters['path'], 
+        })
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)
 
-        params = {
+        return flask.make_response(flask.render_template(context.settings['template'], **{
             'context': context,
             'nodes': nodes
-        }
-
-        response = flask.make_response(flask.render_template(context.settings['template'], **params))
-
-        self.alter_response(response)
-        
-        return response
-
-    def alter_response(self, response):
-        pass
+        }))

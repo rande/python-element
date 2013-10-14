@@ -3,3 +3,5 @@ vendor
 data
 stress-test
 .DS_Store
+cover
+.coverage

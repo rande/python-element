@@ -6,4 +6,4 @@ python:
 install: "pip install -r requirements.txt --use-mirrors"
 
 # command to run tests
-script: unit2 discover
+script: unit2 discover && sphinx-build -nW -b html -d _build/doctrees . _build/html

@@ -2,8 +2,17 @@ parameters:
     base_url: '/'
 
 element:
-    data_dir: '%project.root_folder%/content'
     base_url: '%base_url%'
+
+    managers:
+        fs:
+            content:        '%project.root_folder%/content'
+            
+        mongodb:
+            server:     mongodb://localhost:27017/
+            database:   element
+            collection:
+                data:   elements
 
 element.plugins.security:
     role_hierarchy:

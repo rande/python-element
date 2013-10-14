@@ -5,9 +5,10 @@ class FsManager(object):
     """
     This class handle loading of definition from the Filesystem
     """
-    def __init__(self, path, manager):
+    def __init__(self, path, loader, logger=None):
         self.path = os.path.realpath(path)
-        self.loader = manager
+        self.loader = loader
+        self.logger = None
 
     def retrieve(self, id):
         return self.loader.load(self.get_path(id))
@@ -107,6 +108,12 @@ class FsManager(object):
         lookup_tags = tags or []
         if tag:
             lookup_tags.append(tag)
+
+        if self.logger:
+            self.logger.info("%s find:%s" % (self, {
+                'type': type, 'types': types, 'tag': tag, 'tags': tags,
+                'path': path, 'offset': offset, 'limit': limit
+            }))
 
         nodes = []
         for (path, dirs, files) in os.walk(lookup_path):
