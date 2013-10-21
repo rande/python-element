@@ -52,6 +52,9 @@ class Standardize(object):
         if 'response' not in node.data:
             node.data['response'] = {}
 
+        if 'path' not in node.data:
+            node.data['path'] = node.id
+
         defaults = {
             'status_code': None,
             'Cache-Control': [

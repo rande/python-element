@@ -11,8 +11,8 @@
     <ul>
         {% for node in nodes %}
             <li>
-                <a href="{{ url_for('.element_path', path=node.id) }}">{{ node.title }}</a>
-                - {{ url_for('.element_path', path=node.id, _external=True) }}
+                <a href="{{ url_for('.element_path', path=node.path) }}">{{ node.title }}</a>
+                - {{ url_for('.element_path', path=node.path, _external=True) }}
             </li>
         {% endfor %}
     </ul>

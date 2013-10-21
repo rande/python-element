@@ -22,7 +22,7 @@ class Dispatcher(object):
 
         if not handler:
             event = self.event_dispatcher.dispatch('element.node.internal_error', {
-                'node': path,
+                'node': node,
                 'reason': 'No handler found',
                 'status_code': 500
             })
@@ -95,7 +95,7 @@ class PathView(MethodView, Dispatcher):
                 'status_code': 404
             })
 
-            if not event.has('node'): # no error handler defined for the application
+            if not event.has('node'):  # no error handler defined for the application
                 flask.abort(404)
 
             node = event.get('node')

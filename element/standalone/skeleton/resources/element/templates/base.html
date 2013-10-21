@@ -30,11 +30,10 @@
         {% endblock %}
 
         {% block element_head_feed %}
-          <link href="{{ url_for('element.element_path', path="/feeds/all.rss", _external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate" />
-          <link href="{{ url_for('element.element_path', path="/feeds/python.rss", _external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate" />
-
-          <link href="{{ url_for('element.element_path', path="/feeds/all.atom", _external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate" />
-          <link href="{{ url_for('element.element_path', path="/feeds/python.atom", _external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path='/feeds/all.rss', _external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path='/feeds/python.rss', _external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path='/feeds/all.atom', _external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate" />
+          <link href="{{ url_for('element.element_path', path='/feeds/python.atom', _external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate" />
         {% endblock %}
 
     </head>

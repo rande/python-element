@@ -1,5 +1,6 @@
 from bson.objectid import ObjectId
 from bson.dbref import DBRef
+import pymongo
 
 class InvalidTreeState(Exception):
     pass
@@ -103,12 +104,9 @@ class MongoManager(object):
         self.resolve_parents(data)
         self.fix_paths(data)
 
-        objectId = self.get_collection().save(data)
-
-        data['_id'] = objectId
+        data['_id'] = self.get_collection().save(data)
 
         self.fix_children(data)
-
         self.normalize([data])
 
         return data
@@ -151,10 +149,20 @@ class MongoManager(object):
         if 'offset' in kwargs:
             find_kwargs['omit'] = int(kwargs['offset'])
 
+        if 'path' in kwargs:
+            find_kwargs['spec']['path'] = {'$regex': "^" + kwargs['path']}
+
         if self.logger:
             self.logger.info("%s find:%s" % (self, find_kwargs))
 
-        return self.normalize(self.get_collection().find(**find_kwargs))
+        query = self.get_collection().find(**find_kwargs)
+
+        if 'order_by' in kwargs:
+            query.sort(kwargs['order_by'])
+        else:
+            query.sort([('created_at', pymongo.DESCENDING)])
+
+        return self.normalize(query)
 
     def find_one(self, **kwargs):
         return self.find(**kwargs)[0]

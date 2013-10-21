@@ -35,6 +35,8 @@ services:
         arguments: 
             - '@element.manager.chain'
             - '@ioc.extra.event_dispatcher'
+        kwargs:
+            logger: '@element.logger'
 
     element.manager.chain:
         class: element.manager.tools.ChainManager

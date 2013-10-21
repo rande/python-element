@@ -5,7 +5,7 @@
 
     <ul>
         {% for node in nodes %}
-            <li><a href="{{ url_for('.element_path', path=node.id) }}">{{ node.published_at.strftime('%Y-%m-%d') }} - {{ node.title }}</a></li>
+            <li><a href="{{ url_for('.element_path', path=node.path) }}">{{ node.published_at.strftime('%Y-%m-%d') }} - {{ node.title }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

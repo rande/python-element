@@ -95,8 +95,6 @@ class FsManager(object):
                 - category: retrieve node matching the category
 
         """
-        options = options = {}
-
         lookup_path = self.path
         if path:
             lookup_path = "%s/%s" % (self.path, path)
@@ -162,4 +160,10 @@ class FsManager(object):
         return nodes[offset:limit]
 
     def find_one(self, options=None, selector=None, **kwargs):
-        return find(**kwargs)[0]
+
+        results = self.find(**kwargs)
+
+        if len(results) > 0:
+            return results[0]
+
+        return None

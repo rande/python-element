@@ -7,10 +7,10 @@
         {% for item in nodes %}
            <item>
                 <title>{{ item.title }}</title>
-                <link>{{ url_for('.element_path', path=item.id, _external=True) }}</link>
+                <link>{{ url_for('.element_path', path=item.path, _external=True) }}</link>
                 <description><![CDATA[ {{ item|markup|safe }} ]]></description>
                 <pubDate>{{ item.published_at.strftime('%Y-%m-%d') }}</pubDate>
-                <gui>{{ url_for('.element_path', path=item.id, _external=True) }}</gui>
+                <gui>{{ url_for('.element_path', path=item.path, _external=True) }}</gui>
            </item>
         {% endfor %}
     </channel>

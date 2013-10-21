@@ -5,10 +5,11 @@ class NodeHandler(object):
     pass
 
 class NodeManager(object):
-    def __init__(self, db, event_dispatcher):
+    def __init__(self, db, event_dispatcher, logger=None):
         self.handlers = {}
         self.db = db
         self.event_dispatcher = event_dispatcher
+        self.logger = logger
 
     def add_handler(self, name, handler):
         self.handlers[name] = handler
@@ -27,23 +28,40 @@ class NodeManager(object):
         return event.get('nodes')
 
     def get_node(self, id):
-        node = None
+        if self.logger:
+            self.logger.debug('NodeManager.get_node: %s' % id)
 
         if isinstance(id, Node):
             return id
-        
+
+        # clean up this ... not perfect at all...
         try:
             data = self.db.retrieve(id)
         except:
-            return None
+            data = None
+
+        if self.logger:
+            self.logger.debug('NodeManager.get_node: %s ~ cannot find node, looking for path' % id)
+
+        if not data:
+            data = self.db.find_one(path="/%s" % id)
 
         # always assume a fail
         event_name = 'element.node.load.fail'
         params = {'id': id}
 
         if data:
+            if self.logger:
+                self.logger.debug('NodeManager.get_node: %s ~ Found! ~ %s' % (id, data))
+
             event_name = 'element.node.load.success'
-            params = {'node': Node(id, data['type'] if 'type' in data else None, data)}
+            params = {
+                'node': Node(id, data['type'] if 'type' in data else None, data)
+            }
+
+        else:
+            if self.logger:
+                self.logger.debug('NodeManager.get_node: %s ~ Not Found!' % id)
 
         event = self.event_dispatcher.dispatch(event_name, params)
 
@@ -66,7 +84,7 @@ class NodeManager(object):
         return result
         
     def save(self, node):
-        self.event_dispatcher.dispatch('element.node.pre_save', {
+        event = self.event_dispatcher.dispatch('element.node.pre_save', {
             'node': node,
             'data': node.data
         })
