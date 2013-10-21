@@ -82,3 +82,29 @@ element.response
 
  - ``element.plugins.security.handler.FlaskContextHandler``: this is used to store security information into the user's session
 
+
+Plugins
+-------
+
+Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
+
+Plugin available:
+ - action: provide a way to load actions from yaml file or mongodb
+ - ngadmin: provide an AngularJS Admin to alter contains
+ - angular: add AngularJS lib
+ - api: expose your data throught a json api
+ - blog: add a ``blog.post`` node
+ - bootstrap: add twitter bootstrap css framework
+ - cache
+ - contact: add a contact form as a block
+ - disqus: add a custom block to include disqus comments
+ - errors
+ - feed: add a way to render atom/rss feed from query
+ - flatui: add flatui css framework
+ - jquery: add jQuery javascript framework
+ - media
+ - node
+ - page
+ - security
+ - seo: alter node to include SEO information
+ - static: serve static file from the datasource
