@@ -1,6 +1,4 @@
-import markdown, os
 import element.node
-import datetime
 from element.exceptions import PerformanceException
 
 class IndexHandler(element.node.NodeHandler):
@@ -52,7 +50,8 @@ class IndexHandler(element.node.NodeHandler):
             'offset':   context.filters['offset'], 
             'category': context.filters['category'], 
             'tags':     context.filters['tags'], 
-            'path':     context.filters['path'], 
+            'path':     context.filters['path'],
+
         })
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)

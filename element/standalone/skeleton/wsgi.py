@@ -7,8 +7,11 @@ This script must by the wsgi handler to start the application.
 
 You can customize it for your need.
 """
+import sys
+base = sys.path[0]
+sys.path.insert(0, base + "/../../../")
 
-debug = False
+debug = True
 
 if debug:
     logging.basicConfig(level=logging.DEBUG)
@@ -22,4 +25,4 @@ parameters = {
 app = get_container(parameters).get("ioc.extra.flask.app")
 
 if __name__ == '__main__':
-    app.run(debug=debug)
+    app.run(debug=debug,host="0.0.0.0")

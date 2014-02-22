@@ -28,6 +28,8 @@ class FsManager(object):
             ("%s/%s/_index.yml" % (self.path, id), id),
         ]
 
+        path = False
+
         for path, id in paths:
             if os.path.isfile(path):
                 path = os.path.realpath(path)

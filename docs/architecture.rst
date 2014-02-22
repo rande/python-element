@@ -23,7 +23,7 @@ Components used
 * ``mongodb``: the main datastore for the content.
 
 
-Application boostrapping
+Application bootstrapping
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The project used IoC to handle configuration, the skeleton application demonstrates some of its usage. The configuration files
@@ -82,6 +82,41 @@ element.response
 
  - ``element.plugins.security.handler.FlaskContextHandler``: this is used to store security information into the user's session
 
+element.nodes.load.success
+--------------------------
+
+This event is used when a set of nodes is loaded. While a node is loaded, no ``element.node.load.success`` event is notified.
+
+element.node.load.success
+-------------------------
+
+This event is used when a node is loaded.
+
+element.node.load.fail
+----------------------
+
+This event is used when a node cannot be found
+
+element.node.pre_delete
+-----------------------
+
+This event is used when a node will be deleted.
+
+element.node.post_delete
+------------------------
+
+This event is used when a node has been deleted.
+
+element.node.pre_save
+---------------------
+
+This event is used when a node will be saved.
+
+element.node.post_save
+----------------------
+
+This event is used when a node has been saved.
+
 
 Plugins
 -------
@@ -92,7 +127,7 @@ Plugin available:
  - action: provide a way to load actions from yaml file or mongodb
  - ngadmin: provide an AngularJS Admin to alter contains
  - angular: add AngularJS lib
- - api: expose your data throught a json api
+ - api: expose your data through a json api
  - blog: add a ``blog.post`` node
  - bootstrap: add twitter bootstrap css framework
  - cache

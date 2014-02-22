@@ -46,6 +46,9 @@ class NodeManager(object):
         if not data:
             data = self.db.find_one(path="/%s" % id)
 
+            if data and data['path'] != "/%s" % id:
+                data = None
+
         # always assume a fail
         event_name = 'element.node.load.fail'
         params = {'id': id}

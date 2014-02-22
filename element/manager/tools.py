@@ -81,4 +81,9 @@ class ChainManager(object):
         return datas[offset:limit]
 
     def find_one(self, **kwargs):
-        return self.find(limit=1, **kwargs)[0]
+        results = self.find(limit=1, **kwargs)
+
+        if results:
+            return results[0]
+
+        return None
