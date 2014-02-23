@@ -13,9 +13,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-    install
-    architecture
-    contributing
+   install
+   architecture
+   contributing
 
 Indices and tables
 ==================
