@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 from element.manager.mongo import MongoManager, InvalidDataFormat
+from pymongo.errors import DuplicateKeyError
 
 class MongoManagerTest(unittest.TestCase):
     def setUp(self):
@@ -47,9 +48,6 @@ class MongoManagerTest(unittest.TestCase):
         self.assertTrue("id" in data)
         self.assertEquals("507f1f77bcf86cd799439010", data['id'])
 
-        data = self.manager.save(None, "core.user", {"name": "Thomas Rabaix", "slug": "thomas-rabaix"})
-
-        self.assertTrue("id" in data)
         self.assertIsNotNone(data['id'])
         self.assertIsNone(data['parent'])
         self.assertEquals("/thomas-rabaix", data['path'])
@@ -86,6 +84,18 @@ class MongoManagerTest(unittest.TestCase):
 
         self.assertEquals("/articles/python-element", child['path'])
         self.assertEquals("/articles/python-element/notes", child2['path'])
+
+    def test_unique_node(self):
+        node1 = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
+
+        self.assertEquals('/articles', node1['path'])
+
+        with self.assertRaises(DuplicateKeyError):
+            node2 = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
+
+
+    def test_find_with_invalid_path(self):
+        pass
 
     def tearDown(self):
         self.manager.get_collection().remove()

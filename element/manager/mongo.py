@@ -18,6 +18,13 @@ class MongoManager(object):
         self.collection = collection
         self.logger = logger
 
+        self.get_collection().ensure_index([("path", pymongo.ASCENDING)], 300, **{
+            "name": "path",
+            "unique": True,
+            "background": False,
+            "sparse": False,
+        })
+
     def get_collection(self):
         return self.client[self.database][self.collection]
 
@@ -149,7 +156,7 @@ class MongoManager(object):
         if 'offset' in kwargs:
             find_kwargs['omit'] = int(kwargs['offset'])
 
-        if 'path' in kwargs:
+        if 'path' in kwargs and kwargs['path']:
             find_kwargs['spec']['path'] = {'$regex': "^" + kwargs['path']}
 
         if self.logger:
