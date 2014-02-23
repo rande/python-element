@@ -15,13 +15,13 @@ class Core(object):
         node = self.node_manager.get_node(node)
 
         if not node:
-            return "<!-- unable to found the node -->";
+            return "<!-- unable to found the node -->"
 
         # load the related node's handler
         handler = self.node_manager.get_handler(node)
 
         if not handler:
-            return "<!-- unable to found the node handler -->";
+            return "<!-- unable to found the node handler -->"
         
         # build the execution context
         context = self.context_creator.build(node, handler, defaults)
