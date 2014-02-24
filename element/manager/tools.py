@@ -69,13 +69,13 @@ class ChainManager(object):
                 datas.append(element)
 
         limit = None
-        offset = None
-
-        if 'limit' in kwargs:
-            limit = kwargs['limit']
+        offset = 0
 
         if 'offset' in kwargs:
             offset = kwargs['offset']
+
+        if 'limit' in kwargs:
+            limit = kwargs['limit'] + offset
 
         # this is a bug as this can cut valid results from one manager
         return datas[offset:limit]
