@@ -56,11 +56,16 @@ class ChainManager(object):
                 - types: retrieve types defined
                 - tags: retrieve node matching tags
                 - category: retrieve node matching the category
+                - manager: find only nodes on the provided manager
 
         """
         datas = []
 
         for name, manager in self.managers:
+
+            if "manager" in kwargs and name != kwargs["manager"]:
+                continue
+
             elements = manager.find(**kwargs)
 
             for element in elements:

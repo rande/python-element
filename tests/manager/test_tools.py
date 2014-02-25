@@ -100,3 +100,21 @@ class ChainManagerTest(unittest.TestCase):
         self.assertEquals("fs", result['manager'])
         self.assertEquals("thomas", result['name'])
 
+
+    def test_with_manager_name(self):
+        m_fs = mock.Mock()
+        m_fs.find.return_value = [{"name": "thomas FS"}, {"name": "nicolas FS"}]
+
+        m_mongo = mock.Mock()
+        m_mongo.find.return_value = [{"name": "thomas Mongo"}, {"name": "nicolas Mongo"}]
+
+        manager = ChainManager([("fs", m_fs), ("mongo", m_mongo)])
+        result = manager.find_one(manager="fs")
+
+        self.assertEquals("fs", result['manager'])
+        self.assertEquals("thomas FS", result['name'])
+
+        result = manager.find_one(manager="mongo")
+
+        self.assertEquals("mongo", result['manager'])
+        self.assertEquals("thomas Mongo", result['name'])
