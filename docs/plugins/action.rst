@@ -75,8 +75,8 @@ Once the action is created, you can register it in the IOC like this:
 
     For now, actions are registered once when the application is booted.
 
-Action collection
-~~~~~~~~~~~~~~~~~
+Redirect Action
+~~~~~~~~~~~~~~~
 
 The plugin also provides a redirect handler, to redirect a node to another one, just create a node like this:
 
