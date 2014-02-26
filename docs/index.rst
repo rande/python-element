@@ -17,8 +17,9 @@ References
    install
    architecture
    events
-   contributing
+   managers
    plugins
+   contributing
 
 Indices and tables
 ==================

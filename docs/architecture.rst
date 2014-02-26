@@ -32,7 +32,7 @@ its own configuration:
 
 * ``config.yml``: this file contains the main configuration: module to load and shared parameters.
 * ``parameters_*.yml``: some parameters are only used on some environments, so depends on those parameters the application
-    might behave differently (use different datastore, or webservice's credentials)
+  might behave differently (use different datastore, or webservice's credentials)
 * ``services.yml``: this file can contains your own custom services
 
 .. note::
@@ -79,4 +79,4 @@ Plugins
 
 Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
 
-You can view current internal plugin in the the :doc:`plugins section</plugins>`
+You can view current internal plugin in the :doc:`plugins section</plugins>`
