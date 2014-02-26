@@ -34,7 +34,7 @@ class CrudView(object):
         if hasattr(self, function):
             return getattr(self, function)
 
-        return None;
+        return None
 
     def execute(self, context, *args, **kwargs):
         flask = context.settings['flask']
