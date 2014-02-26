@@ -79,4 +79,4 @@ Plugins
 
 Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
 
-You can view current internal plugin in the the :doc:`plugins section</plugins.rst>`
+You can view current internal plugin in the the :doc:`plugins section</plugins>`
