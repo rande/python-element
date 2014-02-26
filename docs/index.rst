@@ -3,19 +3,48 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Python Element's documentation!
-==========================================
+Python Element's documentation!
+===============================
 
 Element is a python project created to build websites.
 
-Contents:
+References
+~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 2
 
    install
    architecture
+   events
    contributing
+
+Plugins
+~~~~~~~
+
+.. toctree::
+   :maxdepth: 2
+
+   plugins/action
+   plugins/admin
+   plugins/angular
+   plugins/api
+   plugins/blog
+   plugins/bootstrap
+   plugins/cache
+   plugins/contact
+   plugins/disqus
+   plugins/errors
+   plugins/feed
+   plugins/flatui
+   plugins/jquery
+   plugins/media
+   plugins/node
+   plugins/page
+   plugins/security
+   plugins/seo
+   plugins/static
+
 
 Indices and tables
 ==================

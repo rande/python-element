@@ -25,8 +25,7 @@ Install python element code
 
 .. code-block:: bash
 
-    git clone https://github.com/rande/python-simple-ioc.git
-    pip install --requirements_test.txt
+    pip install -r requirements_test.txt
 
 Checking installation
 ~~~~~~~~~~~~~~~~~~~~~
