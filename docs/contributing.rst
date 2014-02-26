@@ -1,7 +1,7 @@
 Contributing
 ============
 
-Thanks for going into this section! This page tries to summaries all informations required to contribute to this project.
+Thanks for going into this section! This page tries to summaries all information required to contribute to this project.
 Any contribution must have its own unit tests to ensure good quality and avoid regressions.
 
 Unit Tests
@@ -23,7 +23,7 @@ run the following commands::
 
     python element/standalone/skeleton/loads.py
 
-Once the fixture are loaded you can start the http webserver with the command::
+Once fixtures are loaded you can start the http webserver with the command::
 
     python element/standalone/skeleton/wsgi.py
 
