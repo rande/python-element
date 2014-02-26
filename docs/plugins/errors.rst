@@ -4,8 +4,8 @@
 
 
 
-Plugin Name
-===========
+Errors
+======
 
 Features
 ~~~~~~~~

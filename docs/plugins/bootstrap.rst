@@ -4,8 +4,8 @@
 
 
 
-Plugin Name
-===========
+Twitter Bootstrap
+=================
 
 Features
 ~~~~~~~~

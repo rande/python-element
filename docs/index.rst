@@ -23,7 +23,7 @@ Plugins
 ~~~~~~~
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    plugins/action
    plugins/admin

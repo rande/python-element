@@ -4,8 +4,8 @@
 
 
 
-Plugin Name
-===========
+Angular
+=======
 
 Features
 ~~~~~~~~
