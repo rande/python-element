@@ -7,6 +7,8 @@
 Angular
 =======
 
+Add AngularJS lib
+
 Features
 ~~~~~~~~
 

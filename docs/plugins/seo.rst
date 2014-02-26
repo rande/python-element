@@ -7,6 +7,8 @@
 Seo
 ===
 
+Alter node to include SEO information
+
 Features
 ~~~~~~~~
 

@@ -37,7 +37,7 @@ its own configuration:
 
 .. note::
 
-    this configuration layout is not mandatory, you can organize those files as you want. Just alter the start.py file
+    This configuration layout is not mandatory, you can organize those files as you want. Just alter the start.py file
     in order to match your wish.
 
 There are 2 ways to use the application:
@@ -47,75 +47,31 @@ There are 2 ways to use the application:
 
 The command line and the web does not use the same application instance. so make sure every thing is stateless.
 
+Events
+~~~~~~
+
+Most of the code is created using event to increase flexibility with how an user can interact with the ``Python Element``.
+Some events are explained in the next section, other events are available on the :doc:`dedicated documentation</events>` .
+
+
 Request / Response workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * The wsgi wrapper (Flask application) retrieves the request information
 * Element registers a custom function to the ``before_app_request`` hook, the ioc reference is ``@element.dispatcher.request#handle``
-    and the related class is ``element.event.FlaskRequestElementDispatcher``. The function generates an ``element.request``
-    event where ``Element`` services can register. (This as been done to limit the usage of the Flask API.)
-    If an event listener returns a response then Flask will return the response, if no response is returned then the standard
-    Flask workflow is used.
+  and the related class is ``element.event.FlaskRequestElementDispatcher``. The function generates an ``element.request``
+  event where ``Element`` services can register. (This as been done to limit the usage of the Flask API.)
+  If an event listener returns a response then Flask will return the response, if no response is returned then the standard
+  Flask workflow is used.
 * Flask's route resolution: this step resolve the current routing and call the matching callback function.
-    Element's register a route named ``element_path``, this route accepts a ``path`` argument. The route is bound to the service
-    ``element.flask.view.index`` (class: element.views.PathView)
+  Element's register a route named ``element_path``, this route accepts a ``path`` argument. The route is bound to the service
+  ``element.flask.view.index`` (class: element.views.PathView)
 * the PathView class retrieve the targeted node and render it by returning a ``Response`` object
 * Element registers a custom function to the ``after_app_request`` hook, the ioc reference is ``@element.dispatcher.response#handle``
-    and the related class is ``element.event.FlaskResponseElementDispatcher``. The function generates an ``element.response``
-    event where ``Element`` services can register.
-    This feature can be used to alter the ``Response`` object (adding custom headers...)
+  and the related class is ``element.event.FlaskResponseElementDispatcher``. The function generates an ``element.response``
+  event where ``Element`` services can register.
+  This feature can be used to alter the ``Response`` object (adding custom headers...)
 * The response is returned to the wsgi wrapper and then to the client
-
-Events
-~~~~~~
-
-element.request
----------------
-
-This event is used when a request is received by Flask. Events registered:
-
-* ``element.plugins.security.firewall`` : this is the security firewall used to control resource access depends on user's
-    credentials and depends role required to access to the resource.
-
-element.response
-----------------
-
-* ``element.plugins.security.handler.FlaskContextHandler``: this is used to store security information into the user's session
-
-element.nodes.load.success
---------------------------
-
-This event is used when a set of nodes is loaded. While a node is loaded, no ``element.node.load.success`` event is notified.
-
-element.node.load.success
--------------------------
-
-This event is used when a node is loaded.
-
-element.node.load.fail
-----------------------
-
-This event is used when a node cannot be found
-
-element.node.pre_delete
------------------------
-
-This event is used when a node will be deleted.
-
-element.node.post_delete
-------------------------
-
-This event is used when a node has been deleted.
-
-element.node.pre_save
----------------------
-
-This event is used when a node will be saved.
-
-element.node.post_save
-----------------------
-
-This event is used when a node has been saved.
 
 
 Plugins
@@ -123,23 +79,4 @@ Plugins
 
 Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
 
-Plugin available:
- - action: provide a way to load actions from yaml file or mongodb
- - ngadmin: provide an AngularJS Admin to alter contains
- - angular: add AngularJS lib
- - api: expose your data through a json api
- - blog: add a ``blog.post`` node
- - bootstrap: add twitter bootstrap css framework
- - cache
- - contact: add a contact form as a block
- - disqus: add a custom block to include disqus comments
- - errors
- - feed: add a way to render atom/rss feed from query
- - flatui: add flatui css framework
- - jquery: add jQuery javascript framework
- - media
- - node
- - page
- - security
- - seo: alter node to include SEO information
- - static: serve static file from the datasource
+You can view current internal plugin in the the :doc:`plugins section</plugins.rst>`

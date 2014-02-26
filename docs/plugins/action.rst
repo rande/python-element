@@ -7,6 +7,8 @@
 Action
 ======
 
+Provide a way to load actions from yaml file or mongodb
+
 Features
 ~~~~~~~~
 

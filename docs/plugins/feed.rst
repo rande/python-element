@@ -7,6 +7,8 @@
 Feed
 ====
 
+Add a way to render atom/rss feed from query
+
 Features
 ~~~~~~~~
 

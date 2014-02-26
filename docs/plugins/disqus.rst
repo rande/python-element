@@ -7,6 +7,8 @@
 Discus
 ======
 
+Add a custom block to include disqus comments
+
 Features
 ~~~~~~~~
 

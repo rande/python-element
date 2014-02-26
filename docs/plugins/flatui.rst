@@ -7,6 +7,8 @@
 FlatUI
 ======
 
+Add flatui css framework
+
 Features
 ~~~~~~~~
 

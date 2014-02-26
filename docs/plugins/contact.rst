@@ -7,6 +7,8 @@
 Contact
 =======
 
+Add a contact form as a block
+
 Features
 ~~~~~~~~
 

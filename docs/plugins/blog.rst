@@ -7,6 +7,8 @@
 Blog
 ====
 
+add a ``blog.post`` node
+
 Features
 ~~~~~~~~
 

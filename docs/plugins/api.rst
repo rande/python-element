@@ -7,6 +7,8 @@
 Api
 ===
 
+expose your data through a json api
+
 Features
 ~~~~~~~~
 

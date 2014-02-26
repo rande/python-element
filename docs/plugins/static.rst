@@ -7,6 +7,8 @@
 Static
 ======
 
+Serve static file from the datasource
+
 Features
 ~~~~~~~~
 

@@ -18,33 +18,7 @@ References
    architecture
    events
    contributing
-
-Plugins
-~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
-
-   plugins/action
-   plugins/admin
-   plugins/angular
-   plugins/api
-   plugins/blog
-   plugins/bootstrap
-   plugins/cache
-   plugins/contact
-   plugins/disqus
-   plugins/errors
-   plugins/feed
-   plugins/flatui
-   plugins/jquery
-   plugins/media
-   plugins/node
-   plugins/page
-   plugins/security
-   plugins/seo
-   plugins/static
-
+   plugins
 
 Indices and tables
 ==================

@@ -7,6 +7,8 @@
 JQuery
 ======
 
+Add jQuery javascript framework
+
 Features
 ~~~~~~~~
 
