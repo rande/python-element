@@ -2,19 +2,24 @@ Action
 ======
 
 Features
-~~~~~~~~
+--------
 
 This plugin provides a way to attach Flask actions from the datasource.
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-There is no configuration option.
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
+
+.. code-block:: yaml
+
+    element.plugins.action:
 
 Usage
-~~~~~
+-----
 
-### Actions collection ###
+Actions collection
+~~~~~~~~~~~~~~~~~~
 
 In order to attach a set of action, you need to create a node of type ``action.collection`` and defines an ``actions`` array.
 
@@ -70,7 +75,8 @@ Once the action is created, you can register it in the IOC like this:
 
     For now, actions are registered once when the application is booted.
 
-### Action collection ###
+Action collection
+~~~~~~~~~~~~~~~~~
 
 The plugin also provides a redirect handler, to redirect a node to another one, just create a node like this:
 
