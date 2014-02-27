@@ -22,8 +22,8 @@ You need to enable the plugin by adding the ``element.plugins.cache`` module and
             - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
 
 A cache entry defines:
- - ``path``: a regular expression that match a pattern on the rule that should be applied.
- - ``Cache-Control``: the header's to append the response
+ - ``path``: a regular expression to find the rule that should be applied.
+ - ``Cache-Control``: the data to append to the response
 
 By default, if no match is found then the Cache-Control value will be ``private, must-revalidate``
 
