@@ -4,7 +4,7 @@ Feed
 Features
 --------
 
-  - Add a handler to render atom/rss feed from query
+  - Add a handler to render static files
 
 Configuration
 -------------
@@ -13,42 +13,16 @@ There is no configuration option. You only need to enable the plugin by adding t
 
 .. code-block:: yaml
 
-    element.plugins.feed:
+    element.plugins.static:
 
 Usage
 -----
 
-To create an atom feed, just define a node ``element.feed.atom``
+Just place a store a file in the datasource and access it with a browser. That's it.
 
-.. code-block:: yaml
+If the url contains the ``?mode=preview`` then the handler return a preview version of the selected media.
 
-    # /feeds/python.atom.yml
-    title: Python Feeds
-    type: element.feed.atom
-    filters:
-        types:      [blog.post]
-        tags:       [python]
+Architecture
+------------
 
-To create a RSS feed, just define a node ``element.feed.rss``
-
-.. code-block:: yaml
-
-    # /feeds/python.rss.yml
-    title: Python Feeds
-    type: element.feed.rss
-    filters:
-        types:      [blog.post]
-        tags:       [python]
-
-
-If you want to create an index of feed, just create a simple index:
-
-.. code-block:: yaml
-
-    # /feeds/_index.yml
-    title: Feeds List
-    type: node.index
-    template: element.plugins.node:index.html
-    filters:
-        types: [element.feed.rss, element.feed.atom]
-        path: /feeds
+The plugin provides a ``StaticNodeLoader`` to create a node object from a path, the created node type is ``element.static``.
