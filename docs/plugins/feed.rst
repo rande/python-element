@@ -1,40 +1,54 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Feed
 ====
 
-Add a way to render atom/rss feed from query
-
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Add a handler to render atom/rss feed from query
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.feed:
 
-Events
-~~~~~~
+Usage
+-----
 
- - List event or entry points for this plugin
+To create an atom feed, just define a node ``element.feed.atom``
 
-Architecture
-~~~~~~~~~~~~
+.. code-block::
 
- - Provide information about how the feature is implemented
+    # /feeds/python.atom.yml
+    title: Python Feeds
+    type: element.feed.atom
+    filters:
+        types:      [blog.post]
+        tags:       [python]
+
+To create a RSS feed, just define a node ``element.feed.rss``
+
+.. code-block::
+
+    # /feeds/python.rss.yml
+    title: Python Feeds
+    type: element.feed.rss
+    filters:
+        types:      [blog.post]
+        tags:       [python]
+
+
+If you want to create an index of feed, just create a simple index:
+
+.. code-block:: yaml
+
+    # /feeds/_index.yml
+    title: Feeds List
+    type: node.index
+    template: element.plugins.node:index.html
+    filters:
+        types: [element.feed.rss, element.feed.atom]
+        path: /feeds
