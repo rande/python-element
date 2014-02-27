@@ -1,21 +1,15 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Cache
 =====
 
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - The plugins add support for altering cache information on the response
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+You need to enable the plugin by adding the ``element.plugins.cache`` module and defines a set of ``cache_control`` entries.
 
 .. code-block:: yaml
 
@@ -27,12 +21,13 @@ Configuration
             - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
             - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
 
-Events
-~~~~~~
+A cache entry defines:
+ - ``path``: a regular expression that match a pattern on the rule that should be applied.
+ - ``Cache-Control``: the header's to append the response
 
- - List event or entry points for this plugin
+By default, if no match is found then the Cache-Control value will be ``private, must-revalidate``
 
 Architecture
-~~~~~~~~~~~~
+------------
 
- - Provide information about how the feature is implemented
+ - The plugin listen to the ``element.node.render_response`` event.
