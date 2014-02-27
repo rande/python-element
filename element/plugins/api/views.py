@@ -86,7 +86,22 @@ class ListView(ApiView, CrudView):
             'results': []
         }
 
-        for node in self.node_manager.get_nodes(path=path):
+        limit = 32
+        offset = 0
+
+        if "limit" in kwargs:
+            limit = int(kwargs["limit"])
+
+        if "offset" in kwargs:
+            offset = int(kwargs["offset"])
+
+        if limit > 32 or limit < 0:
+            limit = 32
+
+        if offset < 0:
+            offset = 0
+
+        for node in self.node_manager.get_nodes(path=path, limit=limit, offset=offset):
             data['results'].append(self.serialize_node(node))
 
         return data, 200
