@@ -1,40 +1,35 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Contact
 =======
 
-Add a contact form as a block
-
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Add a simple contact form as a block
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+You need to enable the module ``ioc.extra.mailer`` and configure the smtp settings.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    ioc.extra.mailer:
+        host:       smtp.localhost
+        port:
+        user:
+        password:
 
-Events
-~~~~~~
+Usage
+-----
 
- - List event or entry points for this plugin
+Create a ``contact.form`` node:
 
-Architecture
-~~~~~~~~~~~~
+.. code-block:: yaml
 
- - Provide information about how the feature is implemented
+    # /contact.yml
+    title: Contact
+    type: contact.form
+    email:
+        to:        an-email@localhost
+        from:      'no-reply@localhost'
+        subject:   'Contact Form localhost'
