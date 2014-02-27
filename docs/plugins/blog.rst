@@ -1,40 +1,65 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Blog
 ====
-
-add a ``blog.post`` node
 
 Features
 ~~~~~~~~
 
-  - Insert here the different feature available for this plugin
+  - Expose a ``blog.post`` node handler
+
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.blog:
+
+Usage
+-----
+
+You can create a blog index by creating a ``node.index`` node  with the following value. The node will list all children of ``/blog`` with types = ``blog.post``.
+
+.. code-block:: yaml
+
+    # /blog/_index.yml
+    title: Posts
+    type: node.index
+    filters:
+        limit: 64
+        path: /blog
+        types: [blog.post]
+
+
+A blog post is defined as:
+
+.. code-block:: yaml
+
+    type: blog.post
+    title: Are my services coool ?
+    format: markdown
+    enabled: 1
+    published_at: Fri, 18 Sep 2009 19:19:16
+    comment_enabled:
+    content: |
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus,
+        at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique
+        tempus ligula blandit sodales. Nunc luctus, orci in interdum porttitor, urna massa scelerisque
+        felis, eget hendrerit sapien eros sed augue. Ut quam mauris, feugiat nec laoreet pellentesque,
+        molestie eget orci. Vivamus leo leo, convallis et sodales vel, fermentum sed leo. Cras sit
+        amet dui vel sapien consectetur adipiscing. Pellentesque lectus massa, aliquet et ultrices
+        sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus
+        aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
+
+The ``format`` option defines how to handle the ``content`` field. You can provide a markdown content or a html content. 
 
 Events
-~~~~~~
+------
 
- - List event or entry points for this plugin
+The default template used is ``element.plugins.blog:post.html`` and declare two nodes events that can be used to extends the template.
 
-Architecture
-~~~~~~~~~~~~
+- ``node.comment.list``: the listener should return the comment list related to the provided node
+- ``node.comment.form``: the listener should return the comment form
 
- - Provide information about how the feature is implemented
+The ::doc::`element.plugins.discus</plugins/discus>` plugin can be used to handle comments.
