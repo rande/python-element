@@ -26,6 +26,7 @@ A node can be anything, here an example:
 
 .. code-block:: yaml
 
+    # /errors/40x.yml
     title: Page Not Found
     type: page.default
     format: markdown
