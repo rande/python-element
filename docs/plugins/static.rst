@@ -20,7 +20,7 @@ Usage
 
 Just place a store a file in the datasource and access it with a browser. That's it.
 
-If the url contains the ``?mode=preview=
+If the url contains the ``?mode=preview`` then the static will be rendered into a preview mode.
 
 Architecture
 ------------
