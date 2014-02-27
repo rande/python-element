@@ -36,6 +36,7 @@ A blog post is defined as:
 
 .. code-block:: yaml
 
+    # /blog/2009/sept/18/are-my-services-coool.yml
     type: blog.post
     title: Are my services coool ?
     format: markdown
@@ -52,7 +53,7 @@ A blog post is defined as:
         sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus
         aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
 
-The ``format`` option defines how to handle the ``content`` field. You can provide a markdown content or a html content. 
+The ``format`` option defines how to handle the ``content`` field. You can provide a markdown content or a html content.
 
 Events
 ------
@@ -62,4 +63,4 @@ The default template used is ``element.plugins.blog:post.html`` and declare two 
 - ``node.comment.list``: the listener should return the comment list related to the provided node
 - ``node.comment.form``: the listener should return the comment form
 
-The ::doc::`element.plugins.discus</plugins/discus>` plugin can be used to handle comments.
+The :doc:`element.plugins.discus</plugins/discus>` plugin can be used to handle comments.
