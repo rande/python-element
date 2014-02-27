@@ -63,4 +63,4 @@ The default template used is ``element.plugins.blog:post.html`` and declare two 
 - ``node.comment.list``: the listener should return the comment list related to the provided node
 - ``node.comment.form``: the listener should return the comment form
 
-The :doc:`element.plugins.discus</plugins/discus>` plugin can be used to handle comments.
+The :doc:`element.plugins.disqus</plugins/disqus>` plugin can be used to handle comments.
