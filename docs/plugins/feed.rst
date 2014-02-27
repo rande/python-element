@@ -20,7 +20,7 @@ Usage
 
 To create an atom feed, just define a node ``element.feed.atom``
 
-.. code-block::
+.. code-block:: yaml
 
     # /feeds/python.atom.yml
     title: Python Feeds
@@ -31,7 +31,7 @@ To create an atom feed, just define a node ``element.feed.atom``
 
 To create a RSS feed, just define a node ``element.feed.rss``
 
-.. code-block::
+.. code-block:: yaml
 
     # /feeds/python.rss.yml
     title: Python Feeds
