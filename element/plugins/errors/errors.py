@@ -13,7 +13,8 @@ class ErrorListener(object):
     def handle(self, path, event):
         node = self.node_manager.get_node(path)
 
-        if not node: return
+        if not node:
+            return
 
         node.response['status_code'] = event.get('status_code')
 

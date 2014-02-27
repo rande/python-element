@@ -1,38 +1,41 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Errors
 ======
 
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Return a valid error node
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.errors:
+
+Usage
+-----
+
+Depends on the error type, the listener will look for
+- ``errors/40x`` node if a node does not exist
+- ``errors/50x`` node if there is an internal error
+
+A node can be anything, here an example:
+
+.. code-block:: yaml
+
+    title: Page Not Found
+    type: page.default
+    format: markdown
+    content: |
+        The requested URL was not found on the server.
+
+        If you entered the URL manually please check your spelling and try again.
 
 Events
-~~~~~~
+------
 
- - List event or entry points for this plugin
+ - The plugin listen to two events: ``element.node.not_found`` and ``element.node.internal_error``
 
-Architecture
-~~~~~~~~~~~~
-
- - Provide information about how the feature is implemented
