@@ -1,40 +1,25 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
-Discus
+Disqus
 ======
 
-Add a custom block to include disqus comments
-
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Add a custom block to include disqus comments
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+You need to enabled the ``element.plugins.disqus`` module.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.disqus:
+        account: account_code
+
+
+The ``account`` value is the name of your account on disqus.
 
 Events
-~~~~~~
+------
 
- - List event or entry points for this plugin
-
-Architecture
-~~~~~~~~~~~~
-
- - Provide information about how the feature is implemented
+ - The plugin uses the ``node.comment.list`` event to add the comment list.
