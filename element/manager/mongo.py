@@ -144,7 +144,7 @@ class MongoManager(object):
         if len(lookup_types) > 0:
             find_kwargs['spec']['type'] = {'$in': lookup_types}
 
-        if 'tags' in kwargs and len(kwargs['tags']) > 0:
+        if 'tags' in kwargs and kwargs['tags'] and len(kwargs['tags']) > 0:
             find_kwargs['spec']['tags'] = {'$in': kwargs['tags']}
 
         if 'category' in kwargs and kwargs['category'] != None:
