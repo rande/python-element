@@ -2,7 +2,7 @@ Blog
 ====
 
 Features
-~~~~~~~~
+--------
 
   - Expose a ``blog.post`` node handler
 
