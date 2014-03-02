@@ -51,7 +51,6 @@ class IndexHandler(element.node.NodeHandler):
             'category': context.filters['category'], 
             'tags':     context.filters['tags'], 
             'path':     context.filters['path'],
-
         })
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)

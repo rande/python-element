@@ -1,38 +1,89 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Node
 ====
 
-Features
-~~~~~~~~
-
-  - Insert here the different feature available for this plugin
+The node plugin is a core plugin as it provides main features to render a node.
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.page:
 
-Events
+Usage
+-----
+
+The plugin provide a node index handler to render a list of node
+
+.. code-block:: yaml
+
+    # /blog/_index.yml
+    title: Feeds List
+    type: node.index
+    template: element.plugins.node:index.html
+    filters:
+        types: [element.feed.rss, element.feed.atom]
+        path: /feeds
+
+The ``filters`` option accept arguments:
+- ``types``: filter nodes by types
+- ``category``: filter by category
+- ``path``: lookup from the specified path
+- ``tags``: filter nodes the provided tags
+- ``limit``: limit the number of result to return
+- ``offset``: set the offset
+
+Jinja Functions
+---------------
+
+render_node_event
+~~~~~~~~~~~~~~~~~
+
+This helper allows to create a place holder inside a template where listeners can generate some contents.
+
+A good example is a blog post where comments are required. However, the comment mechanism might not be implemented as many solutions exist. The solution is to used the ``render_node_event`` helper to raise a specific event with proper option like the ``subject``.
+
+.. code-block:: jinja
+
+    {{ render_node_event('node.comment.list', options={'subject': context.node})|safe }}
+
+render_node
+~~~~~~~~~~~
+
+This helper renders a node instance.
+
+.. code-block:: jinja
+
+    {{ render_node(node)|safe }}
+
+
+Jinja Filters
+-------------
+
+markup
 ~~~~~~
 
- - List event or entry points for this plugin
+This filter take a node and return a formatted string.
 
-Architecture
-~~~~~~~~~~~~
+.. code-block:: yaml
 
- - Provide information about how the feature is implemented
+    type: blog.post
+    title: Test
+    format: markdown
+    content: |
+        ## John Doe
+
+        Put a Resume here!!
+
+
+.. code-block:: jinja
+
+    {{ node|markup }}
+
+Events
+------
+
+The plugin listen to two events: ``element.node.load.success`` and ``element.nodes.load.success`` for normalizing a node. The normalization make sure that all `required fields</architecture>`_ are set.
+

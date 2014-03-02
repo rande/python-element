@@ -9,6 +9,17 @@ Definitions
     * ``path``: the path to reach the node, the path is the external identifier to the node
     * ``data``: a dictionnary of key-value representing the content
     * ``type``: the node type, the node type will be used to handle the node
+    * ``manager``: the manager code which handle this node
+    * ``created_at``
+    * ``published_at``
+    * ``enabled``
+    * ``content``
+    * ``title``
+    * ``tags``
+    * ``category``
+    * ``copyright``
+    * ``authors``
+
 
 * node handler: it is a service used to render a node, there is one service per node type.
 
