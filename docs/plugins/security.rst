@@ -1,38 +1,57 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Security
 ========
 
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Add security and access control to your application
+  - The current implementation is based on the `Security Component`_ from the Symfony2 framework.
+
+.. note::
+
+    For now, there is only one authentication implemented: the http basic.
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.security:
+        role_hierarchy:
+            ROLE_PUBLIC:      [IS_AUTHENTICATED_ANONYMOUSLY]
+            ROLE_ADMIN:       [ROLE_PUBLIC, ROLE_USER]
 
-Events
-~~~~~~
+        providers:
+            in_memory:
+                users:
+                    - {'username': 'admin', 'password': 'admin', roles: ['ROLE_ADMIN']}
 
- - List event or entry points for this plugin
+        firewalls:
+            private:
+                pattern:            ^/(admin|api)(.*)
+                http_basic:
+                    provider:       element.plugins.security.provider.in_memory
+                    # login_path:     /admin/login
+                    # use_forward:    false
+                    # check_path:     /admin/login_check
+                    # failure_path:   null
+                # logout:
+                    # path:           /admin/logout
+                anonymous:          false  # allow anonymous connection
 
-Architecture
-~~~~~~~~~~~~
+            public:
+                pattern:            "^/.*"
+                anonymous:          true    # allow anonymous connection
 
- - Provide information about how the feature is implemented
+        access_control:
+            - { path: ^/admin/login$,       role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/admin/logout$,      role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/(admin|api),        role: ROLE_ADMIN }
+            - { path: ^/.*,                 role: ['IS_AUTHENTICATED_ANONYMOUSLY'] }
+
+
+
+.. _Security Component:: http://symfony.com/doc/current/book/security.html
