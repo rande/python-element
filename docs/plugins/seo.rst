@@ -1,40 +1,23 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Seo
 ===
 
-Alter node to include SEO information
-
 Features
-~~~~~~~~
+--------
 
-  - Insert here the different feature available for this plugin
+  - Alter node to include SEO information
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+You need to enable the module ``element.plugins.seo`` and configure the ``title_pattern`` setting.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.seo:
+        title_pattern: "%seo.title_pattern%"
 
 Events
-~~~~~~
+------
 
- - List event or entry points for this plugin
+ - The plugin is registered to the ``element.node.load.success`` event to add SEO information.
 
-Architecture
-~~~~~~~~~~~~
-
- - Provide information about how the feature is implemented
