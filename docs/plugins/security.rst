@@ -54,4 +54,4 @@ There is no configuration option. You only need to enable the plugin by adding t
 
 
 
-.. _Security Component:: http://symfony.com/doc/current/book/security.html
+.. _Security Component: http://symfony.com/doc/current/book/security.html
