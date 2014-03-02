@@ -73,7 +73,7 @@ element.plugins.jquery:
 
 element.plugins.flatui:
 
-element.plugins.admin:
+element.plugins.ngadmin:
 
 element.plugins.api:
 

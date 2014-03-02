@@ -31,7 +31,7 @@ function NodeEditCtrl($scope, $routeParams, $http, Node) {
     load_node($routeParams.id);
     
     $scope.get_template = function(node) {
-        return "/element/static/element.plugins.admin/partials/node/" + node.type + ".edit.html";
+        return "/element/static/element.plugins.ngadmin/partials/node/" + node.type + ".edit.html";
     };
 
     $scope.save = function() {

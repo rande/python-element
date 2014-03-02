@@ -5,3 +5,5 @@ stress-test
 .DS_Store
 cover
 .coverage
+docs/_build
+.idea
