@@ -1,7 +1,7 @@
 Angular Admin
 =============
 
-The plugin provides an AngularJS Admin to edit contains
+The plugin provides an AngularJS Admin to edit nodes.
 
 Configuration
 -------------
@@ -22,7 +22,6 @@ You can access to the admin using the url ``/element/static/element.plugins.ngad
     # /admin.yml
     type: action.redirect
     redirect: /element/static/element.plugins.ngadmin/index.html
-
 
 .. note::
 
