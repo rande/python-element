@@ -1,38 +1,30 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Media
 =====
 
-Features
-~~~~~~~~
-
-  - Insert here the different feature available for this plugin
+  - Display a gallery of media
 
 Configuration
-~~~~~~~~~~~~~
+-------------
 
-  - Insert the yaml configuration for the DI
+There is no configuration option. You only need to enable the plugin by adding this line into the IoC configuration file.
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    element.plugins.media:
 
-Events
-~~~~~~
+Usage
+-----
 
- - List event or entry points for this plugin
+You can create a gallery with this node:
 
-Architecture
-~~~~~~~~~~~~
+.. code-block:: yaml
 
- - Provide information about how the feature is implemented
+    # /gallery/2010/australia/_index.yml
+    title: Australia
+    type: media.gallery
+    format: markdown
+    base_template: element:base_gallery.html
+    content: |
+        Australia is one country where everything is possible, from dessert to the sea, from
+        the walabee to the shark. This country is incredible.
+
