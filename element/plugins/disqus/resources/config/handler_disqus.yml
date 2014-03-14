@@ -3,6 +3,7 @@ services:
         class: element.plugins.disqus.disqus.DisqusHandler
         arguments:
             - '%element.disqus.account%'
+            - '@ioc.extra.jinja2'
         tags:
             event.listener:
                 - { name: node.comment.list, method: listener }

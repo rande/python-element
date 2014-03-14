@@ -1,6 +1,8 @@
 services:
     element.plugins.seo:
         class: element.plugins.seo.seo.SeoHandler
+        arguments:
+            - '@ioc.extra.jinja2'
         tags:
             event.listener:
                 - { name: element.seo.headers, method: listener }

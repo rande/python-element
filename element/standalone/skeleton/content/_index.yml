@@ -17,7 +17,7 @@ content: |
           <div class="tile">
             <img class="tile-image" alt="" src="images/illustrations/infinity.png" />
             <h3 class="tile-title">Element</h3>
-            <p>A python CMS based on flask with a bit of IOC. </p>
+            <p>A python CMS based on Tornado with a bit of IOC. </p>
             <a class="btn btn-primary btn-large btn-block" href="https://github.com/rande/python-element">Play</a>
           </div>
         </div>

@@ -1,7 +1,6 @@
 PyYaml
 git+http://github.com/rande/python-simple-ioc.git
-Flask
-Flask-WTF
+tornado
 Jinja
 WTForms
 mailer

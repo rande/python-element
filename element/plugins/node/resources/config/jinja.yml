@@ -5,6 +5,7 @@ services:
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
+            - '@ioc.extra.tornado.application'
         tags:
             jinja2.global:
                 - { name: render_node,       method: render_node}

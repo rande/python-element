@@ -1,11 +1,18 @@
 import element.node
 import markdown
+from tornado.web import RequestHandler
+from tornado.httpserver import HTTPRequest
+
+class SubRequestHandler(RequestHandler):
+    def get_buffer(self):
+        return b"".join(self._write_buffer)
 
 class Core(object):
-    def __init__(self, node_manager, context_creator, dispatcher):
+    def __init__(self, node_manager, context_creator, dispatcher, application):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.dispatcher = dispatcher
+        self.application = application
 
     def render_node(self, node, defaults=None):
         defaults = defaults or {}
@@ -25,8 +32,13 @@ class Core(object):
         # build the execution context
         context = self.context_creator.build(node, handler, defaults)
 
+        # create a sub request handler to retrieve the buffer and return it as string
+        request_handler = SubRequestHandler(self.application, HTTPRequest('GET', '/_internal'))
+
         # render the response
-        return handler.execute(context, flask).data
+        handler.execute(request_handler, context)
+
+        return request_handler.get_buffer()
 
     def render_node_event(self, event_name, options=None):
         event = self.dispatcher.dispatch(event_name, options or {})

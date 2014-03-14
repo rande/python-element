@@ -4,7 +4,7 @@
         <meta charset="utf-8">
 
         {% block element_head_seo %}
-            {#{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }#}
+            {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
         {% endblock %}
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -79,7 +79,7 @@
                 <h3 class="footer-title">About</h3>
                 <p>
                   Python Element is a CMS based on python built on standard libraries, such as
-                  flask, jinja, markdown and other tools. 
+                  Tornado, jinja, markdown and other tools.
 
                 </p>
               </div> <!-- /span8 -->
@@ -90,7 +90,7 @@
                   <ul>
                     <li>Yaml Based</li>
                     <li>Node handlers</li>
-                    <li>Flask with a bit of IOC</li>
+                    <li>Tornado with a bit of IOC</li>
                   </ul>
                   
                   <a href="https://github.com/rande/python-element" target="_blank">View on Github</a>

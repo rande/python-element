@@ -1,6 +1,8 @@
 services:
     element.plugins.blog.post:
         class: element.plugins.blog.blog.PostHandler
+        arguments:
+            - '@ioc.extra.jinja2'
         tags:
             element.handler: 
                 - { name: blog.post }
