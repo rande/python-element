@@ -82,13 +82,13 @@ element.plugins.bootstrap:
 element.plugins.seo:
     title_pattern: "%seo.title_pattern%"
 
-#element.plugins.cache:
-#    cache_control:
-#        - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-#        - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-#        - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-#        - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-#        - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+element.plugins.cache:
+    cache_control:
+        - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
+        - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
+        - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
+        - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
+        - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
         
 element.plugins.disqus:
     settings: {}
