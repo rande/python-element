@@ -3,15 +3,15 @@
 {% block element_head_css %}
     {{ super() }}
 
-    <link href="{{ url_for('element.static', module='element.plugins.media', path='lightbox/css/lightbox.css') }}" rel="stylesheet">
-    <!-- <link href="{{ url_for('element.static', module='element.plugins.media', path='lightbox/css/screen.css') }}" rel="stylesheet"> -->
+    <link href="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/css/lightbox.css') }}" rel="stylesheet">
+    <!-- <link href="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/css/screen.css') }}" rel="stylesheet"> -->
 {% endblock %}
 
 {% block element_footer_js %}
     {{ super() }}
 
-    <script src="{{ url_for('element.static', module='element.plugins.jquery', path='jquery.js') }}"></script>
+    <script src="{{ url_for('element.static', module='element.plugins.jquery', filename='jquery.js') }}"></script>
 
-    <script src="{{ url_for('element.static', module='element.plugins.jquery', path='modernizr.custom.js') }}"></script>
-    <script src="{{ url_for('element.static', module='element.plugins.media', path='lightbox/js/lightbox-2.6.min.js') }}"></script>
+    <script src="{{ url_for('element.static', module='element.plugins.jquery', filename='modernizr.custom.js') }}"></script>
+    <script src="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
 {% endblock %}

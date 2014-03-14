@@ -7,8 +7,8 @@
         <entry>
             <title>{{ item.title }}</title>
             <link href="http://example.org/2003/12/13/atom03" />
-            <link rel="alternate" type="text/html" href="{{ url_for('.element_path', path=item.path, _external=True) }}"/>
-            <id>{{ url_for('.element_path', path=item.path, _external=True) }}</id>
+            <link rel="alternate" type="text/html" href="{{ url_for('element.element_path', path=item.path, force_external=True) }}"/>
+            <id>{{ url_for('element.element_path', path=item.path, force_external=True) }}</id>
             <summary><![CDATA[ {{ item|markup|safe }} ]]></summary>
         </entry>
     {% endfor %}

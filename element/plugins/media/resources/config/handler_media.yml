@@ -1,12 +1,16 @@
 services:
     element.plugins.media.gallery:
         class: element.plugins.media.media.GalleryHandler
+        arguments:
+            - '@ioc.extra.jinja2'
         tags:
             element.handler: 
                 - { name: media.gallery }
 
     element.plugins.media.media:
         class: element.plugins.media.media.MediaHandler
+        arguments:
+            - '@ioc.extra.jinja2'
         tags:
             element.handler: 
                 - { name: media.media }

@@ -3,6 +3,8 @@ services:
         class: element.plugins.static.static.StaticHandler
         arguments:
             - '%element.data.dir%'
+            - '@ioc.extra.jinja2'
+
         tags:
             element.handler:
                 - { name: element.static }

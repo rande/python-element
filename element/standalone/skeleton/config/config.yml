@@ -82,19 +82,20 @@ element.plugins.bootstrap:
 element.plugins.seo:
     title_pattern: "%seo.title_pattern%"
 
-element.plugins.cache:
-    cache_control:
-        - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-        - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-        - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-        - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-        - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+#element.plugins.cache:
+#    cache_control:
+#        - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
+#        - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
+#        - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
+#        - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
+#        - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
         
 element.plugins.disqus:
     settings: {}
     account: account name
 
-ioc.extra.flask:
+
+ioc.extra.tornado:
     app:
         port:               8080
         name:               ''
@@ -104,13 +105,25 @@ ioc.extra.flask:
         template_folder:    'templates'
         instance_path:      ''
 
-    config: # use to populate the instance_relative_config kwargs
-        LOGGER_NAME:        ioc
-        SECRET_KEY:         MyKey
 
-    blueprints:
-        element.flask.blueprint: 
-            url_prefix: "%element.web.base_url%"
+
+#ioc.extra.flask:
+#    app:
+#        port:               8080
+#        name:               ''
+#        static_path:        '/static'
+#        static_url_path:    ''
+#        static_folder:      '%project.root_folder%/resources/static'
+#        template_folder:    'templates'
+#        instance_path:      ''
+#
+#    config: # use to populate the instance_relative_config kwargs
+#        LOGGER_NAME:        ioc
+#        SECRET_KEY:         MyKey
+#
+#    blueprints:
+#        element.flask.blueprint:
+#            url_prefix: "%element.web.base_url%"
 
 ioc.extra.event:
 

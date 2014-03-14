@@ -1,6 +1,9 @@
 services:
     element.plugins.page.default:
         class: element.plugins.page.page.PageHandler
+        arguments:
+            - '@ioc.extra.jinja2'
+
         tags:
             element.handler: 
                 - { name: page.default }

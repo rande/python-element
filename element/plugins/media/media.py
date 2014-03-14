@@ -1,6 +1,8 @@
 import element.node
 
 class GalleryHandler(element.node.NodeHandler):
+    def __init__(self, templating):
+        self.templating = templating
 
     def get_defaults(self, node):
         return {
@@ -10,7 +12,7 @@ class GalleryHandler(element.node.NodeHandler):
     def get_name(self):
         return 'Media Gallery'
 
-    def execute(self, context, flask):
+    def execute(self, request_handler, context):
         medias = context.node.medias()
 
         params = {
@@ -24,9 +26,12 @@ class GalleryHandler(element.node.NodeHandler):
             ],
         }
         
-        return flask.make_response(flask.render_template(context.settings['template'], **params))
+        self.render(request_handler, self.templating, context.settings['template'], params)
 
 class MediaHandler(element.node.NodeHandler):
+
+    def __init__(self, templating):
+        self.templating = templating
 
     def get_defaults(self, node):
         return {
@@ -36,10 +41,10 @@ class MediaHandler(element.node.NodeHandler):
     def get_name(self):
         return 'Media'
 
-    def execute(self, context, flask):
+    def execute(self, request_handler, context):
 
         params = {
             'context': context,
         }
 
-        return flask.make_response(flask.render_template(context.settings['template'], **params))
+        self.render(request_handler, self.templating, context.settings['template'], params)
