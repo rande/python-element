@@ -3,9 +3,9 @@
 {% block content %}
     <div class="media">
         {% if context.node.is_image() %}
-            <a href="{{ url_for('.element_path', path=context.node.path) }}">
+            <a href="{{ url_for('element.element_path', path=context.node.path) }}">
                 <img 
-                    src="{{ url_for('.element_path', path=context.node.path, format=context.format) }}"
+                    src="{{ url_for('element.element_path', path=context.node.path, format=context.format) }}"
                     class="img-polaroid" 
                     width="200px">
             </a>

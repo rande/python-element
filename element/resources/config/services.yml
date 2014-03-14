@@ -1,31 +1,19 @@
 services:
-    element.flask.blueprint:
-        class: flask.Blueprint
+    element.tornado.view.index:
+        class: element.views.PathView
         arguments: 
-            - 'element'
-            - 'element'
-        kwargs:
-            template_folder: '%element.template.dir%'
-            
-        calls:
-            - [ before_app_request, ["@element.dispatcher.request#handle"]]
-            - [ after_app_request, ["@element.dispatcher.response#handle"]]
-
-    element.flask.view.index:
-        class: [element.views, PathView.as_view]
-        arguments: 
-            - 'element_path'
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
+            - '@element.logger'
 
-    element.flask.view.action:
+    element.tornado.view.action:
         class: element.views.ActionView
         arguments: 
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
-            - '@service_container'
+            - '@element.logger'
 
     element.context.creator:
         class: element.context.ContextCreator
@@ -79,25 +67,6 @@ services:
         tags:
             element.loader: 
                 - name: inline
-
-    element.dispatcher.request:
-        class: element.event.FlaskRequestElementDispatcher
-        arguments:
-            - '@ioc.extra.event_dispatcher'
-            - 'request'
-            - False
-
-        kwargs:
-            logger: '@element.logger'
-            
-    element.dispatcher.response:
-        class: element.event.FlaskResponseElementDispatcher
-        arguments:
-            - '@ioc.extra.event_dispatcher'
-            - 'response'
-            - True
-        kwargs:
-            logger: '@element.logger'
 
     element.logger:
         class: logging.getLogger

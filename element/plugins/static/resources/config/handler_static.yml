@@ -4,19 +4,18 @@ services:
         arguments:
             - '%element.data.dir%'
         tags:
-            element.handler: 
+            element.handler:
                 - { name: element.static }
 
-    element.loader.static:
+    element.plugins.loader.static:
         class: element.plugins.static.loader.StaticNodeLoader
         arguments:
             - '%element.static.mapping%'
         tags:
-            element.loader: 
+            element.loader:
                 - name: static
 
-    element.flask.plugins.static.view:
-        class: [element.plugins.static.views, StaticView.as_view]
+    element.plugins.static.view:
+        class: element.plugins.static.views.StaticView
         arguments:
-            - 'static'
             - '@ioc.locator'

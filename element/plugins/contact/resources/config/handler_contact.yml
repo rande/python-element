@@ -2,6 +2,7 @@ services:
     element.plugins.contact:
         class: element.plugins.contact.contact.ContactHandler
         arguments:
+            - '@ioc.extra.jinja2'
             - 'thomas.rabaix@gmail.com'
             - '@ioc.extra.mailer'
         tags:

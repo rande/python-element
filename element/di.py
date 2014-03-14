@@ -16,7 +16,6 @@ class Extension(ioc.component.Extension):
         container_builder.parameters.set('element.web.base_url', config.get('base_url', "/node"))
 
         self.configure_managers(config, container_builder)
-        self.configure_flask(config, container_builder)
 
     def configure_managers(self, config, container_builder):
         managers = config.get_dict('managers', {'fs': None, 'mongodb': None})
@@ -43,22 +42,10 @@ class Extension(ioc.component.Extension):
 
         container_builder.get('element.manager.chain').arguments[0] = managersList
 
-    def configure_flask(self, config, container_builder):
-        definition = container_builder.get('element.flask.blueprint')
-
-        definition.add_call(
-            'add_url_rule', 
-            [''],
-            {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index'), 'defaults': {'path': '/'}}
-        )
-
-        definition.add_call(
-            'add_url_rule', 
-            ['<path:path>'],
-            {'methods': ['POST', 'GET'], 'view_func': ioc.component.Reference('element.flask.view.index')}
-        )
-
     def post_build(self, container_builder, container):
+
+        self.configure_tornado(container_builder, container)
+
         manager = container.get('element.node.manager')
 
         # register handlers
@@ -80,3 +67,16 @@ class Extension(ioc.component.Extension):
 
                 loader_chain.add_loader(option['name'], container.get(id))
 
+    def configure_tornado(self, container_builder, container):
+        router = container.get('ioc.extra.tornado.router')
+
+        router.add('element.element_home', '/', **{
+            'methods': ['POST', 'GET'],
+            'view_func': container.get('element.tornado.view.index').execute,
+            'defaults': {'path': '/'}
+        })
+
+        router.add('element.element_path', '/<path:path>', **{
+            'methods': ['POST', 'GET'],
+            'view_func': container.get('element.tornado.view.index').execute,
+        })

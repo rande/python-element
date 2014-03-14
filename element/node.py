@@ -2,7 +2,10 @@ import yaml, os, functools
 import exceptions
 
 class NodeHandler(object):
-    pass
+    def render(self, request_handler, templating, template_name, params):
+        template = templating.get_template(template_name)
+
+        return request_handler.write(template.render(params))
 
 class NodeManager(object):
     def __init__(self, db, event_dispatcher, logger=None):
@@ -41,7 +44,7 @@ class NodeManager(object):
             data = None
 
         if self.logger:
-            self.logger.debug('NodeManager.get_node: %s ~ cannot find node, looking for path' % id)
+            self.logger.debug('NodeManager.get_node: %s ~ cannot find node with id, looking for path' % id)
 
         if not data:
             data = self.db.find_one(path="/%s" % id)

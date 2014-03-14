@@ -12,14 +12,6 @@
             {% else %}
                 <div>
                     <form action="" method="POST" novalidate="novalidate">
-                        {% if form.csrf_token.errors %}
-                            <div class="alert alert-error">
-                                The security token is expired, please repost your message.
-                            </div>
-                        {% endif %}
-
-                        {{ form.csrf_token }}
-
                         <div class="control-group{% if form.name.errors %} error{% endif %}">
                             {{ form.name.label(class='control-label') }} {{ form.name(size=20, class='span6') }}
                             {% if form.name.errors %}

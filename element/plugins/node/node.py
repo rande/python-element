@@ -2,8 +2,9 @@ import element.node
 from element.exceptions import PerformanceException
 
 class IndexHandler(element.node.NodeHandler):
-    def __init__(self, node_manager):
+    def __init__(self, node_manager, templating):
         self.node_manager = node_manager
+        self.templating = templating
 
     def get_name(self):
         return 'Node Index'
@@ -40,7 +41,7 @@ class IndexHandler(element.node.NodeHandler):
     def get_base_template(self, node):
         return node.template or 'element.plugins.node:index.html'
 
-    def execute(self, context, flask):
+    def execute(self, request_handler, context):
         if context.filters['limit'] > 128:
             raise PerformanceException("The limit cannot be greater than 128 (limit:%s)" % context.filters['limit'])
 
@@ -55,7 +56,7 @@ class IndexHandler(element.node.NodeHandler):
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)
 
-        return flask.make_response(flask.render_template(context.settings['template'], **{
+        self.render(request_handler, self.templating, context.settings['template'], {
             'context': context,
             'nodes': nodes
-        }))
+        })

@@ -1,10 +1,9 @@
 import element.node
+from ioc.extra.tornado.router import TornadoMultiDict
 
-from flask.ext.wtf import Form
 import wtforms, wtforms.validators
 
-
-class ContactForm(Form):
+class ContactForm(wtforms.Form):
     name = wtforms.TextField('name', validators=[wtforms.validators.DataRequired()])
     email = wtforms.TextField('email', validators=[wtforms.validators.Email(), wtforms.validators.DataRequired()])
     message = wtforms.TextAreaField('message', validators=[wtforms.validators.DataRequired()])
@@ -17,7 +16,8 @@ class Contact(object):
         self.message = message
 
 class ContactHandler(element.node.NodeHandler):
-    def __init__(self, email, mailer):
+    def __init__(self, templating, email, mailer):
+        self.templating = templating
         self.email = email
         self.mailer = mailer
 
@@ -29,10 +29,10 @@ class ContactHandler(element.node.NodeHandler):
     def get_name(self):
         return 'Contact'
 
-    def execute(self, context, flask):
+    def execute(self, request_handler, context):
 
         contact = Contact()
-        form = ContactForm(obj=contact)
+        form = ContactForm(TornadoMultiDict(request_handler), contact)
 
         params = {
             'sent': False,
@@ -40,7 +40,7 @@ class ContactHandler(element.node.NodeHandler):
             'form': form
         }
 
-        if form.validate_on_submit():
+        if request_handler.request.method == 'POST' and form.validate():
 
             form.populate_obj(contact)
 
@@ -57,9 +57,10 @@ class ContactHandler(element.node.NodeHandler):
 
             self.mailer.send(mail)
 
-            return flask.redirect(flask.request.path + '?confirmation')
+            return request_handler.redirect(request_handler.request.path + '?confirmation')
 
-        if 'confirmation' in flask.request.args:
+        if 'confirmation' in request_handler.request.arguments:
             params['sent'] = True
 
-        return flask.make_response(flask.render_template(context.settings['template'], **params))
+
+        self.render(request_handler, self.templating, context.settings['template'], params)

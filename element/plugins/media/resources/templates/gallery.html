@@ -12,9 +12,9 @@
                     <div class="span3">
                         {% for pos in line %}
                             {% if medias[pos].is_image() %}
-                                <a href="{{ url_for('.element_path', path=medias[pos].path) }}" data-lightbox="gallery">
+                                <a href="{{ url_for('element.element_path', path=medias[pos].path) }}" data-lightbox="gallery">
                                     <img 
-                                        src="{{ url_for('.element_path', path=medias[pos].path, format=context.node.parameters.format) }}"
+                                        src="{{ url_for('element.element_path', path=medias[pos].path, format=context.node.parameters.format) }}"
                                         class="img-polaroid" 
                                         width="200px">
                                 </a>

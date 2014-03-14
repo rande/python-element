@@ -1,8 +1,9 @@
 services:
     element.plugins.action.listener:
-        class: element.plugins.action.action.FlaskActionLoader
+        class: element.plugins.action.action.TornadoActionLoader
         arguments:
             - '%element.web.base_url%'
+            - '@ioc.extra.tornado.router'
         tags:
             event.listener: 
                 - { name: ioc.container.built, method: load_action }

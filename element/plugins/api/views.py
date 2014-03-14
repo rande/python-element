@@ -147,7 +147,8 @@ class NodeView(ApiView, CrudView):
 
         flask = context.settings['flask']
 
-        node = json.loads(flask.request.data)       
+
+        node = json.loads(flask.request.data)
         node['id'] = base64.decodestring(path)
 
         node = element.node.Node(node['id'], node['type'], node['data'])

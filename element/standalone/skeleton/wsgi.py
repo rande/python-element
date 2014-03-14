@@ -1,13 +1,13 @@
 # -*- coding: UTF-8 -*-
-from start import get_container
-import os, logging
-
 """
 This script must by the wsgi handler to start the application. 
 
 You can customize it for your need.
 """
-import sys
+import os, logging, sys, tornado
+from start import get_container
+
+
 base = sys.path[0]
 sys.path.insert(0, base + "/../../../")
 
@@ -22,7 +22,8 @@ parameters = {
     'project.root_folder': os.path.dirname(os.path.realpath(__file__))
 }
 
-app = get_container(parameters).get("ioc.extra.flask.app")
-
 if __name__ == '__main__':
-    app.run(debug=debug,host="0.0.0.0")
+    application = get_container(parameters).get("ioc.extra.tornado.application")
+    application.listen(8888)
+
+    tornado.ioloop.IOLoop.instance().start()

@@ -1,4 +1,3 @@
-import flask
 import element.node
 import markdown
 

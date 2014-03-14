@@ -1,12 +1,18 @@
-import flask
-from flask.views import MethodView
+import mimetypes
 
-class StaticView(MethodView):
+class StaticView(object):
     def __init__(self, locator):
         self.locator = locator
 
-    def get(self, module, path):
+    def execute(self, request_handler, module, filename):
+        file = self.locator.locate("%s:static/%s" % (module, filename))
 
-        file = self.locator.locate("%s:static/%s" % (module, path))
+        mime_type, encoding = mimetypes.guess_type(file)
 
-        return flask.send_file(file)
+        if mime_type:
+            request_handler.set_header('Content-Type', mime_type)
+
+        fp = open(file, 'r')
+        request_handler.write(fp.read())
+
+        fp.close()

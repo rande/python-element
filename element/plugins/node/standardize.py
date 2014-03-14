@@ -70,7 +70,4 @@ class Standardize(object):
             node.manager = node.data['manager']
 
     def render_response(self, event):
-        if event.get('context').node.response['status_code']:
-            event.get('response').status_code = event.get('context').node.response['status_code']
-
-        event.get('response').headers['X-Content-Generator'] = 'Python Element - Thomas Rabaix - http://github.com/rande/python-element'
+        event.get('request_handler').set_header('X-Content-Generator', 'Python Element - Thomas Rabaix - http://github.com/rande/python-element')

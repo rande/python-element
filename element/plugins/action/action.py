@@ -1,10 +1,10 @@
-class FlaskActionLoader(object):
-    def __init__(self, base_url):
+class TornadoActionLoader(object):
+    def __init__(self, base_url, router):
         self.base_url = base_url
+        self.router = router
 
     def load_action(self, event):
         container = event.get('container')
-        flask = container.get('ioc.extra.flask.app')
         node_manager = container.get('element.node.manager')
 
         nodes = node_manager.get_nodes(
@@ -20,13 +20,18 @@ class FlaskActionLoader(object):
                 if 'defaults' not in settings:
                     settings['defaults'] = {}
 
-                flask.add_url_rule(
-                    "%s%s%s" % (self.base_url, node.id, settings['path']), 
-                    endpoint=name,
-                    view_func=container.get('element.flask.view.action').dispatch,
+                if '_controller' not in settings['defaults']:
+                    raise Exception('_controller key is missing for route %s' % name)
+
+                service, method = settings['defaults']['_controller'].split(":")
+
+                self.router.add(
+                    name,
+                    "%s%s%s" % (self.base_url, node.id, settings['path']),
+                    view_func=getattr(container.get(service), method),
                     methods=settings['methods'],
                     defaults=settings['defaults']
-                )        
+                )
 
 
 class ActionHandler(object):

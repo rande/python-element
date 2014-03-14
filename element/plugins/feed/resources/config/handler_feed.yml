@@ -3,6 +3,7 @@ services:
         class: element.plugins.feed.feed.RssHandler
         arguments: 
             - '@element.node.manager'
+            - '@ioc.extra.jinja2'
         tags:
             element.handler: 
                 - { name: element.feed.rss }
@@ -11,6 +12,7 @@ services:
         class: element.plugins.feed.feed.AtomHandler
         arguments: 
             - '@element.node.manager'
+            - '@ioc.extra.jinja2'
         tags:
             element.handler: 
                 - { name: element.feed.atom }

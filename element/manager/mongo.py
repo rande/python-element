@@ -70,7 +70,6 @@ class MongoManager(object):
                 raise InvalidTreeState("The parent %s defined in %s does not exist" % (data['id'], data['parent']))
 
             if 'path' not in parent:
-                print parent
                 raise InvalidTreeState("The parent %s does not contains a `path`" % (parent['id']))
 
             path = parent['path']

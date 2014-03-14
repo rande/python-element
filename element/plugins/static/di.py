@@ -24,14 +24,11 @@ class Extension(ioc.component.Extension):
             'ico': 'image/x-icon'
         })
 
-    def post_load(self, container_builder):
-        definition = container_builder.get('element.flask.blueprint')
+    def post_build(self, container_builder, container):
 
-        definition.add_call(
-            'add_url_rule', 
-            ['element/static/<string:module>/<path:path>'],
-            {
-                'methods': ['GET'], 
-                'view_func': ioc.component.Reference('element.flask.plugins.static.view')
-            }
-        )
+        router = container.get('ioc.extra.tornado.router')
+
+        router.add('element.static', '/element/static/<string:module>/<path:filename>', **{
+            'methods': ['GET'],
+            'view_func': container.get('element.plugins.static.view').execute
+        })
