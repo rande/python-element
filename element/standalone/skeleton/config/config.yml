@@ -116,14 +116,7 @@ ioc.extra.tornado:
 #        static_folder:      '%project.root_folder%/resources/static'
 #        template_folder:    'templates'
 #        instance_path:      ''
-#
-#    config: # use to populate the instance_relative_config kwargs
-#        LOGGER_NAME:        ioc
-#        SECRET_KEY:         MyKey
-#
-#    blueprints:
-#        element.flask.blueprint:
-#            url_prefix: "%element.web.base_url%"
+
 
 ioc.extra.event:
 

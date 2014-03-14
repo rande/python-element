@@ -1,27 +1,17 @@
 import json, base64
-import datetime
 import element
-import flask
 
 def date_handler(obj):
     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 class CrudView(object):
-    def build_js_response(self, data, context):
-        flask = context.settings['flask']
+    def build_js_response(self, request_handler, data):
+        request_handler.write(data)
+        request_handler.set_header('Content-Type', 'application/script')
 
-        response = flask.make_response(data)
-        response.headers['Content-Type'] = 'application/script'        
-
-        return response
-
-    def build_json_response(self, data, context):
-        flask = context.settings['flask']
-
-        response = flask.make_response(json.dumps(data, default=date_handler))
-        response.headers['Content-Type'] = 'application/json'        
-
-        return response
+    def build_json_response(self, request_handler, data):
+        request_handler.write(json.dumps(data, default=date_handler))
+        request_handler.set_header('Content-Type', 'application/json')
 
     def get_method(self, method, format):
         function = ("%s_%s" % (method, format)).lower()
@@ -36,27 +26,25 @@ class CrudView(object):
 
         return None
 
-    def execute(self, context, *args, **kwargs):
-        flask = context.settings['flask']
-
+    def execute(self, request_handler, **kwargs):
         # @todo : deal with content negociation
         if kwargs['_format'] not in ['json', 'js']:
-            flask.abort(500)
+            request_handler.set_status(500)
 
-        f = self.get_method(flask.request.method, kwargs['_format'])
+        f = self.get_method(request_handler.request.method, kwargs['_format'])
+
         if not f:
-            flask.abort(500)
+            request_handler.set_status(500)
+            return
 
-        data, status_code = f(context, *args, **kwargs)
-        
+        data, status_code = f(request_handler, **kwargs)
+
+        request_handler.set_status(status_code)
+
         if kwargs['_format'] == 'js':
-            response = self.build_js_response(data, context)
+            self.build_js_response(request_handler, data)
         else:
-            response = self.build_json_response(data, context)
-
-        response.status_code = status_code
-
-        return response
+            self.build_json_response(request_handler, data)
 
 class ApiView(object):
     def serialize_node(self, node):
@@ -77,12 +65,12 @@ class ListView(ApiView, CrudView):
     def __init__(self, node_manager):
         self.node_manager = node_manager
 
-    def get(self, context, path, **kwargs):
+    def get(self, request_handler, **kwargs):
         data = {
             'next': '',
             'previous': '',
             'self': '',
-            'path': path,
+            'path': kwargs['path'],
             'results': []
         }
 
@@ -101,7 +89,7 @@ class ListView(ApiView, CrudView):
         if offset < 0:
             offset = 0
 
-        for node in self.node_manager.get_nodes(path=path, limit=limit, offset=offset):
+        for node in self.node_manager.get_nodes(path=kwargs['path'], limit=limit, offset=offset):
             data['results'].append(self.serialize_node(node))
 
         return data, 200
@@ -113,25 +101,23 @@ class NodeView(ApiView, CrudView):
     def get_node(self, path):
         return self.node_manager.get_node(base64.decodestring(path))
         
-    def get(self, context, path, **kwargs):
-        node = self.get_node(path)
+    def get(self, request_handler, **kwargs):
+        node = self.get_node(kwargs['path'])
 
         if not node:
             return {}, 404
 
-        return self.serialize_node(self.get_node(path)), 200
+        return self.serialize_node(self.get_node(kwargs['path'])), 200
 
-    def post(self, context, path, **kwargs):
-        node = self.get_node(path)
+    def post(self, request_handler, **kwargs):
+        node = self.get_node(kwargs['path'])
 
         if node:
             return {}, 202
 
-        flask = context.settings['flask']
+        data = json.loads(request_handler.request.data)
 
-        data = json.loads(flask.request.data)
-
-        id = base64.decodestring(path)
+        id = base64.decodestring(kwargs['path'])
 
         node = element.node.Node(id, data['type'], data['data'])
 
@@ -139,17 +125,14 @@ class NodeView(ApiView, CrudView):
 
         return self.serialize_node(node), 200
 
-    def put(self, context, path, **kwargs):
-        node = self.get_node(path)
+    def put(self, request_handler, **kwargs):
+        node = self.get_node(kwargs['path'])
 
         if not node:
             return {}, 404
 
-        flask = context.settings['flask']
-
-
-        node = json.loads(flask.request.data)
-        node['id'] = base64.decodestring(path)
+        node = json.loads(request_handler.request.data)
+        node['id'] = base64.decodestring(kwargs['path'])
 
         node = element.node.Node(node['id'], node['type'], node['data'])
 
@@ -157,8 +140,8 @@ class NodeView(ApiView, CrudView):
 
         return self.serialize_node(node), 200
 
-    def delete(self, context, path, **kwargs):
-        node = self.get_node(path)
+    def delete(self, request_handler, **kwargs):
+        node = self.get_node(kwargs['path'])
 
         if not node:
             return {}, 404
@@ -173,17 +156,18 @@ class HandlerView(CrudView, ApiView):
         self.node_manager = node_manager
         self.locator = locator
 
-    def get(self, context, code, **kwargs):
-        return self.serialize_handler(self.node_manager.handlers[code])
+    def get(self, request_handler, **kwargs):
+        return self.serialize_handler(self.node_manager.handlers[kwargs['code']])
 
-    def get_js(self, context, code, **kwargs):
+    def get_js(self, request_handler, **kwargs):
 
-        handler = self.node_manager.handlers[code]
+        handler = self.node_manager.handlers[kwargs['code']]
 
-        filecode = "element:%s/static/js/handler.js" % code
+        filecode = "element:%s/static/js/handler.js" % kwargs['code']
 
         try:
             filename = self.locator.locate(filecode)
+
             f = file(filename, 'r')
             content = f.read()
             f.close()
@@ -206,7 +190,7 @@ class HandlerListView(CrudView, ApiView):
     def __init__(self, node_manager):
         self.node_manager = node_manager
 
-    def get(self, context, **kwargs):
+    def get(self, request_handler, **kwargs):
         data = {
             'next': '',
             'previous': '',

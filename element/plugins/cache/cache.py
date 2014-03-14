@@ -8,20 +8,19 @@ class CacheControl(object):
 
     def cache_control(self, event):
         request_handler = event.get('request_handler')
-        context = event.get('context')
 
         if request_handler.request.method in ["GET", "HEAD"]:
-            rule = self.find_rule(request_handler.request.path)
+            values = self.find_values(request_handler.request.path)
         else:
-            rule = self.get_default()
+            values = self.get_default()
 
-        for name, value in rule.iteritems():
+        for name, value in values.iteritems():
             request_handler.set_header(name, ", ".join(value))
 
-    def find_rule(self, path):
-        for rule in self.rules:
-            if rule['path'].match(path):
-                return rule
+    def find_values(self, path):
+        for rule, values in self.rules:
+            if rule.match(path):
+                return values
 
         return self.get_default()
 

@@ -10,9 +10,11 @@ class Extension(ioc.component.Extension):
 
         rules = []
 
-        for rule in config.get('cache_control', {}):
-            rule['path'] = re.compile(rule['path'])
+        for rule in config.get('cache_control', []):
+            path = rule['path']
 
-            rules.append(rule)
+            del(rule['path'])
+
+            rules.append((re.compile(path), rule))
 
         container_builder.parameters.set('element.cache.rules', rules)
