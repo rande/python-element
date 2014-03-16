@@ -79,11 +79,11 @@ class ActionView(Dispatcher):
 class PathView(Dispatcher):
     def execute(self, request_handler, path):
         # load the node
-        node = self.get_node(path)
+        node, status_code = self.get_node(path)
+
+        request_handler.set_status(status_code)
 
         if not node:
-            request_handler.set_status(404)
-
             return
 
         return self._execute(request_handler, node)
@@ -91,15 +91,19 @@ class PathView(Dispatcher):
     def get_node(self, id):
         node = self.node_manager.get_node(id)
 
+        status_code = 200
+
         if not node:
+            status_code = 404
+
             event = self.event_dispatcher.dispatch('element.node.not_found', {
                 'path': id,
-                'status_code': 404
+                'status_code': status_code
             })
 
             if not event.has('node'):  # no error handler defined for the application
-                return None
+                return None, status_code
 
             node = event.get('node')
 
-        return node
+        return node, status_code

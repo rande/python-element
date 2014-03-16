@@ -48,7 +48,9 @@ class Firewall(object):
         if self.logger:
             self.logger.info('Firewall - filtering request')
 
-        listeners, options = self.map.get_context(event.data['request'])
+        request_handler = event.get('request_handler')
+
+        listeners, options = self.map.get_context(request_handler.request)
 
         if len(listeners) == 0:
             if self.logger:
@@ -62,7 +64,7 @@ class Firewall(object):
         for listener in listeners:
             listener.handle(event)
 
-            if 'response' in event.data:
+            if request_handler.is_finish():
                 if self.logger:
                     self.logger.info('Firewall - listener %s generates a response' % listener)
 

@@ -12,7 +12,7 @@ class AnonymousAuthenticationHandler(object):
         self.logger = logger
         self.security_context = security_context
 
-    def handle(self, event):   
+    def handle(self, event):
         if self.security_context.token: 
             if self.logger:
                 self.logger.info("AnonymousAuthenticationHandler - token already set, skipping")
@@ -36,7 +36,7 @@ class AccessMapListener(object):
 
     def handle(self, event):
         if not self.security_context.token:
-            raise AuthenticationCredentialsNotFoundException("No token attached to the security token")
+            raise AuthenticationCredentialsNotFoundException("No token attached to the security token (AccessMapListener)")
 
         if not event.has('request'):
             raise NoRequestFoundException()
@@ -61,33 +61,34 @@ class ContextHandler(object):
         self.security_context = security_context
         self.user_provider = user_provider
         self.context_name = context_name
-        self.logger=logger
+        self.logger = logger
 
     def handle(self, event):
         pass
 
-class FlaskContextHandler(ContextHandler):
+class TornadoContextHandler(ContextHandler):
     def handle(self, event):
         """
         Load the token from the user token
         """
-        import flask
 
         name = "_security_%s" % self.context_name
 
+        data = event.get('request_handler').get_secure_cookie(name)
+
         if self.logger:
-            self.logger.info("FlaskContextHandler - Trying to load %s from session" % name)
+            self.logger.info("TornadoContextHandler - Trying to load %s from session" % name)
 
         # retrieve the token from the session
-        if name not in flask.session:
+        if not data:
             self.security_context.token = None
 
             if self.logger:
-                self.logger.info("FlaskContextHandler - No data in session for key %s" % name)
+                self.logger.info("TornadoContextHandler - No data in session for key %s" % name)
 
             return
 
-        token = pickle.loads(flask.session[name])
+        token = pickle.loads(data)
 
         # always reload the user from the datasource
         if isinstance(token, UsernamePasswordToken):
@@ -98,23 +99,22 @@ class FlaskContextHandler(ContextHandler):
         self.security_context.token = token
 
         if self.logger:
-            self.logger.info("FlaskContextHandler - token has been set to the SecurityContext")
+            self.logger.info("TornadoContextHandler - token has been set to the SecurityContext")
 
     def handleResponse(self, event):
         """
         Save the token into the current user session
         """
-        import flask
 
         if not self.security_context.token:
             if self.logger:
-                self.logger.info("FlaskContextHandler - Cannot save: no token associated")
+                self.logger.info("TornadoContextHandler - Cannot save: no token associated")
 
             return
 
         if self.security_context.token.key != self.context_name:
             if self.logger:
-                self.logger.info("FlaskContextHandler - Cannot save: current active token (%s) is not associated to the current context (%s)",
+                self.logger.info("TornadoContextHandler - Cannot save: current active token (%s) is not associated to the current context (%s)",
                     self.security_context.token.key,
                     self.context_name
                 )
@@ -124,11 +124,7 @@ class FlaskContextHandler(ContextHandler):
         name = "_security_%s" % self.context_name
 
         if self.logger:
-            self.logger.info("FlaskContextHandler - Saving context %s" % name)
+            self.logger.info("TornadoContextHandler - Saving context %s" % name)
 
-        # save the token into the session
-        if name in flask.session:
-            del flask.session[name]
-
-        flask.session[name] = pickle.dumps(self.security_context.token)
+        event.get('request_handler').set_secure_cookie(name, pickle.dumps(self.security_context.token))
 

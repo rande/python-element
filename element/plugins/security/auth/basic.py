@@ -2,6 +2,7 @@ from . import EntryPoint, SecurityFactory
 from ioc.component import Reference, Definition
 from element.plugins.security.security import UsernamePasswordToken
 from element.plugins.security.exceptions import AuthenticationException
+import base64
 
 
 class BasicAuthEntryPoint(EntryPoint):
@@ -9,13 +10,11 @@ class BasicAuthEntryPoint(EntryPoint):
         self.realmName = realmName
         self.logger = logger
 
-    def start(self, request):
-        import flask
+    def start(self, request_handler):
+        request_handler.set_status(401)
+        request_handler.set_header('WWW-Authenticate', 'Basic realm="%s"' % self.realmName)
 
-        response = flask.make_response('', 401)
-        response.headers['WWW-Authenticate'] = 'Basic realm="%s"' % self.realmName
-
-        return response
+        request_handler.finish()
 
 class BasicAuthenticationListener(object):
     AUTHORIZATION_HEADERS = [
@@ -30,28 +29,49 @@ class BasicAuthenticationListener(object):
         self.authentication_manager = authentication_manager
         self.logger = logger
 
+    def get_credentials(self, request):
+
+        if 'Authorization' not in request.headers:
+            return None, None
+
+        if len(request.headers['Authorization']) < 6:
+            return None, None
+
+        print request.headers['Authorization'][6:]
+
+        credentials = base64.decodestring(request.headers['Authorization'][6:]).split(":")
+
+        if len(credentials) != 2:
+            return None, None
+
+        return credentials[0], credentials[1]
+
     def handle(self, event):
-        request = event.get('request')
+        request_handler = event.get('request_handler')
 
         # check the current token
         token = self.security_context.token
 
-        if token and token.authenticated and token.username == request.authorization.username:
+        username, password = self.get_credentials(request_handler.request)
+
+        if token and token.authenticated and token.username == username:
             self.logger.info("BasicAuthenticationListener - token is valid")
             return
 
-        if not request.authorization:
+        print request_handler.request.headers
+
+        if 'Authorization' not in request_handler.request.headers:
             self.logger.info("BasicAuthenticationListener - no authorization headers, sending default one")
 
             self.security_context.token = None
-            event.set('response', self.entry_point.start(request))
+            self.entry_point.start(request_handler)
 
             return
 
         # no token, create a new one and check credential
         try:
-            token = UsernamePasswordToken(self.provider_key, request.authorization.username)
-            token.credentials = request.authorization.password
+            token = UsernamePasswordToken(self.provider_key, username)
+            token.credentials = password
             token = self.authentication_manager.authenticate(token)
             
             self.security_context.token = token
@@ -61,7 +81,7 @@ class BasicAuthenticationListener(object):
 
         except AuthenticationException, e:
             self.security_context.token = None
-            event.set('response', self.entry_point.start(request))
+            self.entry_point.start(request_handler)
 
             if self.logger:
                 self.logger.info("BasicAuthenticationListener - AuthenticationException occurs : %s" % e)

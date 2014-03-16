@@ -9,17 +9,23 @@
 
         <!-- Loading Bootstrap -->
         {% block element_css %}
-            <link href="{{ url_for('element.static', filename='css/custom.css') }}" rel="stylesheet">
-            <link href="{{ url_for('element.static', filename='flat-ui/css/bootstrap.css') }}" rel="stylesheet">
-            <link href="{{ url_for('element.static', filename='flat-ui/css/flat-ui.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+            <link href="{{ asset('css/bootstrap.css', module='element.plugins.flatui') }}" rel="stylesheet">
+            <link href="{{ asset('css/flat-ui.css', module='element.plugins.flatui') }}" rel="stylesheet">
         {% block element_css %}
 
-        <!-- <link rel="shortcut icon" href="images/favicon.ico"> -->
+        {% block element_head_favicon %}
+            <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}" type="image/x-icon">
+            <link rel="icon" href="{{ asset('/favicon.ico') }}" type="image/x-icon">
+        {% endblock %}
 
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-        <!--[if lt IE 9]>
-            <script src="{{ url_for('element.static', filename='flat-ui/js/html5shiv.js') }}"></script>
-        <![endif]-->
+        {% block element_head_js %}
+          <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+          <!--[if lt IE 9]>
+            <script src="{{ asset('js/html5shiv.js', module='element.plugins.flatui') }}"></script>
+          <![endif]-->
+        {% endblock %}
+
     </head>
 
     <body>

@@ -38,7 +38,7 @@ class SecurityContext(object):
     def is_granted(self, attributes, object=None):
         # simple implementation for now
         if not self.token: 
-            raise AuthenticationCredentialsNotFoundException("No token attached to the security token")
+            raise AuthenticationCredentialsNotFoundException("No token attached to the security token (SecurityContext)")
 
         if not isinstance(attributes, list):
             attributes = [attributes]

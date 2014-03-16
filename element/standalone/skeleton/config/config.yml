@@ -21,13 +21,13 @@ element.plugins.security:
 
     providers:
         in_memory:
-            users: 
+            users:
                 - {'username': 'admin', 'password': 'admin', roles: ['ROLE_ADMIN']}
 
     firewalls:
         private:
             pattern:            ^/(admin|api)(.*)
-            http_basic:               
+            http_basic:
                 provider:       element.plugins.security.provider.in_memory
                 # login_path:     /admin/login
                 # use_forward:    false
@@ -96,27 +96,12 @@ element.plugins.disqus:
 
 
 ioc.extra.tornado:
-    app:
-        port:               8080
-        name:               ''
-        static_path:        '/static'
-        static_url_path:    ''
-        static_folder:      '%project.root_folder%/resources/static'
-        template_folder:    'templates'
-        instance_path:      ''
-
-
-
-#ioc.extra.flask:
-#    app:
-#        port:               8080
-#        name:               ''
-#        static_path:        '/static'
-#        static_url_path:    ''
-#        static_folder:      '%project.root_folder%/resources/static'
-#        template_folder:    'templates'
-#        instance_path:      ''
-
+    port:               8080
+    name:               ''
+    static_public_path: '/static'
+    static_url_path:    ''
+    static_folder:      '%project.root_folder%/resources/static'
+    template_folder:    'templates'
 
 ioc.extra.event:
 

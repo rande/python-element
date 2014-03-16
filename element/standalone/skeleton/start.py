@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     parameters = {
         'ioc.debug': options.debug,
-        'ioc.env': options.env,
+        'ioc.env':   options.env,
         'project.root_folder': os.path.dirname(os.path.realpath(__file__))
     }
     

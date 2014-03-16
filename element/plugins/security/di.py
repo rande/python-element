@@ -63,14 +63,14 @@ class Extension(ioc.component.Extension):
         handlers = []
 
         # create the FlaskContextHandler, this service load token from flask session handling
-        context_handler = Definition('element.plugins.security.handler.FlaskContextHandler', [
+        context_handler = Definition('element.plugins.security.handler.TornadoContextHandler', [
             Reference('element.plugins.security.context'),
             Reference('element.plugins.security.provider.in_memory'), # this need to be configurable
             settings.get('context', name)
         ], {'logger': Reference('element.logger')})
 
         context_handler.add_tag('event.listener', { 
-            'name': 'element.response',
+            'name': 'handler.response',
             'method': 'handleResponse', 
             'priority': 32 
         })
@@ -87,7 +87,7 @@ class Extension(ioc.component.Extension):
                 handlers.append(Reference(handler_id))
                 auth_providers.append(auth_provider_id)
 
-        container_builder.add('element.plugins.security.handlers.flask_context.%s' % name, context_handler)
+        container_builder.add('element.plugins.security.handlers.tornado_context.%s' % name, context_handler)
 
         if settings.get("anonymous", False):
             id_anonymous = 'element.plugins.security.listener.anonymous.%s' % name
