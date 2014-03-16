@@ -6,10 +6,14 @@ from element.plugins.security.exceptions import AccessDeniedException
 from element.plugins.security.handler import AnonymousAuthenticationHandler
 from element.plugins.security.security import SecurityContext
 
+from tornado.httpserver import HTTPRequest
+from tornado.web import Application
+
+from ioc.extra.tornado.handler import BaseHandler
+
+
 from ioc.event import Event
 
-class Request(object):
-    pass
 
 class AccesMapTest(unittest.TestCase):
     def test_match(self):
@@ -24,11 +28,8 @@ class AccesMapTest(unittest.TestCase):
             ('/blog/2012', ['anonymous'])
         ]
 
-        request = Request()
-
         for path, expected in paths:
-            request.path = path
-            self.assertEquals(expected, map.get_pattern(request))
+            self.assertEquals(expected, map.get_pattern(HTTPRequest("GET", path)))
 
 class FirewallMapTest(unittest.TestCase):
     def test_map(self):
@@ -43,19 +44,19 @@ class FirewallMapTest(unittest.TestCase):
             ('/blog/2012', ([], None))
         ]
 
-        request = Request()
-
         for path, expected in paths:
-            request.path = path
-            self.assertEquals(expected, map.get_context(request))
+            self.assertEquals(expected, map.get_context(HTTPRequest("GET", path)))
 
 class FirewallTest(unittest.TestCase):
     def test_get_context_with_no_valid_context(self):
         f = Firewall(FirewallMap())
 
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/"))
+
         with self.assertRaises(AccessDeniedException):
             f.onRequest(Event({
-                'request': Request()
+                'request': rq.request,
+                'request_handler': rq
             }))
 
     def test_get_context_with_empty_listeners(self):
@@ -63,12 +64,12 @@ class FirewallTest(unittest.TestCase):
             (re.compile("/admin/.*"), ([], None)),
         ]))
 
-        r = Request()
-        r.path = "/admin/dashboard"
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard"))
 
         with self.assertRaises(AccessDeniedException):
             f.onRequest(Event({
-                'request': r
+                'request': rq.request,
+                'request_handler': rq
             }))
 
     def test_get_context_with_valid_listeners(self):
@@ -79,11 +80,11 @@ class FirewallTest(unittest.TestCase):
             ], None)),
         ]))
 
-        r = Request()
-        r.path = "/admin/dashboard"
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard"))
 
         e = Event({
-            'request': r
+            'request': rq.request,
+            'request_handler': rq
         })
         f.onRequest(e)
 

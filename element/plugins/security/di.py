@@ -62,7 +62,7 @@ class Extension(ioc.component.Extension):
     def get_firewall_context(self, name, settings, container_builder, auth_providers):
         handlers = []
 
-        # create the FlaskContextHandler, this service load token from flask session handling
+        # create the TornadoContextHandler, this service load token from tornado RequestHandler
         context_handler = Definition('element.plugins.security.handler.TornadoContextHandler', [
             Reference('element.plugins.security.context'),
             Reference('element.plugins.security.provider.in_memory'), # this need to be configurable
