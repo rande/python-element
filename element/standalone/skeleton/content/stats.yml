@@ -1,6 +1,13 @@
 title: Stats
 type: action.collection
 actions:
+    stats_index:
+        type: action.node
+        path: /
+        methods: ['GET']
+        defaults:
+            _controller: ioc.extra.stats.views.index:execute
+
     stats_parameters:
         type: action.node
         path: /parameters

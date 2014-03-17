@@ -71,6 +71,10 @@ class ActionHandler(NodeHandler):
 
         if isinstance(result, tuple):
             status_code, template, params = result
+
+            if 'context' not in params:
+                params['context'] = context
+
             self.render(request_handler, self.container.get('ioc.extra.jinja2'), template, params)
             request_handler.set_status(status_code)
 
