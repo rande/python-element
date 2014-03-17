@@ -7,14 +7,6 @@ services:
             - '@ioc.extra.event_dispatcher'
             - '@element.logger'
 
-    element.tornado.view.action:
-        class: element.views.ActionView
-        arguments: 
-            - '@element.node.manager'
-            - '@element.context.creator'
-            - '@ioc.extra.event_dispatcher'
-            - '@element.logger'
-
     element.context.creator:
         class: element.context.ContextCreator
 

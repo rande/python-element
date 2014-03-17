@@ -51,31 +51,6 @@ class Dispatcher(object):
 
         return self.render_node(node, request_handler, node_handler)
 
-class ActionView(Dispatcher):
-    def dispatch(self, request_handler, *args, **kwargs):
-        if '_controller' not in kwargs:
-            return
-
-        serviceId, method = kwargs['_controller'].split(":")
-
-        del kwargs['_controller']
-
-        parameters = flask.request.args.to_dict()
-        parameters.update(kwargs)
-
-        node = element.node.Node('action://%s' % serviceId, 'node.action', {
-            'serviceId': serviceId,
-            'method': method,
-            'kwargs': parameters,
-            'request': flask.request
-        })
-
-        event = self.event_dispatcher.dispatch('element.node.load.success', {
-            'node': node
-        })
-
-        return self._execute(event.get('node'))
-
 class PathView(Dispatcher):
     def execute(self, request_handler, path):
         # load the node

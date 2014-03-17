@@ -2,6 +2,7 @@ title: Stats
 type: action.collection
 actions:
     stats_parameters:
+        type: action.node
         path: /parameters
         methods: ['GET']
         defaults:
@@ -9,6 +10,7 @@ actions:
             type: all
 
     stats_services:
+        type: action.node
         path: /services
         methods: ['GET']
         defaults:

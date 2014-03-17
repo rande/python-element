@@ -2,12 +2,14 @@ title: API
 type: action.collection
 actions:
     element_api_node:
+        type: action.raw
         path: /element/node/<path:path>.<_format>
         methods: ['GET', 'PUT', 'POST', 'DELETE']
         defaults:
             _controller: element.api.view.node:execute
 
     element_api_list_index:
+        type: action.raw
         path: /element/node.<_format>
         methods: ['GET']
         defaults:
@@ -15,18 +17,21 @@ actions:
             path: /
 
     element_api_list:
+        type: action.raw
         path: /element/path/<path:path>.<_format>
         methods: ['GET']
         defaults:
             _controller: element.api.view.node.list:execute
 
     element_api_handler_list:
+        type: action.raw
         path: /element/handlers.<_format>
         methods: ['GET']
         defaults:
             _controller: element.api.view.handler.list:execute
 
     element_api_handler:
+        type: action.raw
         path: /element/handler/<code>.<_format>
         methods: ['GET']
         defaults:

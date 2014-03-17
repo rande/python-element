@@ -5,4 +5,12 @@ services:
             - '@service_container'
         tags:
             element.handler: 
-                - { name: node.action }
+                - { name: action.node }
+
+    element.plugins.node.view.action:
+        class: element.plugins.action.views.ActionView
+        arguments:
+            - '@element.node.manager'
+            - '@element.context.creator'
+            - '@ioc.extra.event_dispatcher'
+            - '@element.logger'

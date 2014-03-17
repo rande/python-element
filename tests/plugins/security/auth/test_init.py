@@ -56,6 +56,3 @@ class AuthenticationProviderManagerTest(unittest.TestCase):
 
         with self.assertRaises(UsernameNotFoundException):
             auth_manager.authenticate(t)
-
-        
-

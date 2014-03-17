@@ -1,3 +1,7 @@
+from element.node import NodeHandler
+from element.plugins.node.jinja import SubRequestHandler
+from tornado.httpserver import HTTPRequest
+
 class TornadoActionLoader(object):
     def __init__(self, base_url, router):
         self.base_url = base_url
@@ -14,6 +18,9 @@ class TornadoActionLoader(object):
 
         for node in nodes:
             for name, settings in node.actions.iteritems():
+                if 'type' not in settings:
+                    settings['type'] = 'action.node'
+
                 if 'methods' not in settings:
                     settings['methods'] = ['GET']
 
@@ -25,16 +32,25 @@ class TornadoActionLoader(object):
 
                 service, method = settings['defaults']['_controller'].split(":")
 
-                self.router.add(
-                    name,
-                    "%s%s%s" % (self.base_url, node.id, settings['path']),
-                    view_func=getattr(container.get(service), method),
-                    methods=settings['methods'],
-                    defaults=settings['defaults']
-                )
+                if settings['type'] == 'action.raw':
+                    self.router.add(
+                        name,
+                        "%s%s%s" % (self.base_url, node.id, settings['path']),
+                        view_func=getattr(container.get(service), method),
+                        methods=settings['methods'],
+                        defaults=settings['defaults']
+                    )
+                elif settings['type'] == 'action.node':
+                    self.router.add(
+                        name,
+                        "%s%s%s" % (self.base_url, node.id, settings['path']),
+                        view_func=getattr(container.get('element.plugins.node.view.action'), 'dispatch'),
+                        methods=settings['methods'],
+                        defaults=settings['defaults']
+                    )
 
 
-class ActionHandler(object):
+class ActionHandler(NodeHandler):
     def __init__(self, container):
         self.container = container
         
@@ -46,25 +62,23 @@ class ActionHandler(object):
     def get_name(self):
         return 'Action'
 
-    def execute(self, context, flask):
+    def execute(self, request_handler, context):
         service = self.container.get(context.node.serviceId)
 
-        context.settings['flask'] = flask
+        sub_request_handler = SubRequestHandler(self.container.get('ioc.extra.tornado.application'), HTTPRequest(request_handler.request.method, request_handler.request.path))
 
-        result = getattr(service, context.node.method)(context, **(context.node.kwargs or {}))
-
-        # the service return a response nothing to do ...
-        if isinstance(result, flask.Response): 
-            return result
+        result = getattr(service, context.node.method)(sub_request_handler, context, **(context.node.kwargs or {}))
 
         if isinstance(result, tuple):
-            template, params = result
-            return flask.make_response(flask.render_template(template, **params))
+            status_code, template, params = result
+            self.render(request_handler, self.container.get('ioc.extra.jinja2'), template, params)
+            request_handler.set_status(status_code)
 
-        return flask.make_response(flask.render_template(context.settings['template'], **{
-            'context': context,
-            'content': result
-        }))
+            return
+
+        request_handler.set_status(sub_request_handler.get_status())
+        request_handler.write(sub_request_handler.get_buffer())
+
 
 class DefaultIndex(object):
     def __init__(self, node_manager):
