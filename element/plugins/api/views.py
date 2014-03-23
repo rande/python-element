@@ -37,7 +37,7 @@ class CrudView(object):
             request_handler.set_status(500)
             return
 
-        data, status_code = f(request_handler, **kwargs)
+        status_code, data = f(request_handler, **kwargs)
 
         request_handler.set_status(status_code)
 
@@ -92,7 +92,7 @@ class ListView(ApiView, CrudView):
         for node in self.node_manager.get_nodes(path=kwargs['path'], limit=limit, offset=offset):
             data['results'].append(self.serialize_node(node))
 
-        return data, 200
+        return 200, data
 
 class NodeView(ApiView, CrudView):
     def __init__(self, node_manager):
@@ -105,17 +105,17 @@ class NodeView(ApiView, CrudView):
         node = self.get_node(kwargs['path'])
 
         if not node:
-            return {}, 404
+            return 404, {}
 
-        return self.serialize_node(self.get_node(kwargs['path'])), 200
+        return 200, self.serialize_node(self.get_node(kwargs['path']))
 
     def post(self, request_handler, **kwargs):
         node = self.get_node(kwargs['path'])
 
         if node:
-            return {}, 202
+            return 202, {}
 
-        data = json.loads(request_handler.request.data)
+        data = json.loads(request_handler.request.body)
 
         id = base64.decodestring(kwargs['path'])
 
@@ -123,33 +123,34 @@ class NodeView(ApiView, CrudView):
 
         self.node_manager.save(node)
 
-        return self.serialize_node(node), 200
+        return 200, self.serialize_node(node)
 
     def put(self, request_handler, **kwargs):
         node = self.get_node(kwargs['path'])
 
         if not node:
-            return {}, 404
+            return 404, {}
 
-        node = json.loads(request_handler.request.data)
+        node = json.loads(request_handler.request.body)
+
         node['id'] = base64.decodestring(kwargs['path'])
 
         node = element.node.Node(node['id'], node['type'], node['data'])
 
         self.node_manager.save(node)
 
-        return self.serialize_node(node), 200
+        return 200, self.serialize_node(node)
 
     def delete(self, request_handler, **kwargs):
         node = self.get_node(kwargs['path'])
 
         if not node:
-            return {}, 404
+            return 404, {}
 
-        if self.node_manager.delete_node(node):
-            return {}, 200
+        if self.node_manager.delete(node):
+            return 200, {}
         else:
-            return {}, 500
+            return 500, {}
 
 class HandlerView(CrudView, ApiView):
     def __init__(self, node_manager, locator):
@@ -174,7 +175,7 @@ class HandlerView(CrudView, ApiView):
         except:
             content = "// the ressource: %s does not exist" % filecode;
 
-        return """
+        return 200, """
 /**
  * This javascript is rendered dynamically by the node handler.
  * To change this code, you need to create a proper js file in the ressource 
@@ -184,7 +185,7 @@ class HandlerView(CrudView, ApiView):
  **/
  %s
  ;
- """ % (handler.code, handler.get_name(), content), 200
+ """ % (handler.code, handler.get_name(), content)
 
 class HandlerListView(CrudView, ApiView):
     def __init__(self, node_manager):
@@ -201,4 +202,4 @@ class HandlerListView(CrudView, ApiView):
         for name, handler in self.node_manager.handlers.iteritems():
             data['results'].append(self.serialize_handler(handler))
 
-        return data, 200
+        return 200, data
