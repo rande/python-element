@@ -37,8 +37,6 @@ class BasicAuthenticationListener(object):
         if len(request.headers['Authorization']) < 6:
             return None, None
 
-        print request.headers['Authorization'][6:]
-
         credentials = base64.decodestring(request.headers['Authorization'][6:]).split(":")
 
         if len(credentials) != 2:
@@ -57,8 +55,6 @@ class BasicAuthenticationListener(object):
         if token and token.authenticated and token.username == username:
             self.logger.info("BasicAuthenticationListener - token is valid")
             return
-
-        print request_handler.request.headers
 
         if 'Authorization' not in request_handler.request.headers:
             self.logger.info("BasicAuthenticationListener - no authorization headers, sending default one")
