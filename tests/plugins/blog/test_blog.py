@@ -2,9 +2,9 @@
 import unittest
 import element.plugins.blog.blog
 
-from tests import Templating
+from tests import TemplateEngine
 
 class PostHandlerTest(unittest.TestCase):     
     def test_init(self):
-        handler = element.plugins.blog.blog.PostHandler(Templating())
+        handler = element.plugins.blog.blog.PostHandler(TemplateEngine())
         

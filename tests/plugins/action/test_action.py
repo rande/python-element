@@ -4,7 +4,7 @@ import unittest
 import ioc.component
 import element.node, element.plugins.action.action
 import ioc.exceptions
-import werkzeug.wrappers
+from tornado.web import Application
 import tests
 
 class RedirectHandlerTest(unittest.TestCase):
@@ -20,7 +20,7 @@ class RedirectHandlerTest(unittest.TestCase):
             element.node.Node('myid', 'mytype', {'redirect': 'to'})
         )
 
-        handler = tests.get_default_handler();
+        handler = tests.get_default_handler()
 
         self.handler.execute(handler, context)
 
@@ -34,7 +34,7 @@ class RedirectHandlerTest(unittest.TestCase):
             element.node.Node('myid', 'mytype', {'redirect': '/to'})
         )
 
-        handler = tests.get_default_handler();
+        handler = tests.get_default_handler()
 
         self.handler.execute(handler, context)
 
@@ -47,44 +47,44 @@ class RedirectHandlerTest(unittest.TestCase):
             element.node.Node('myid', 'mytype', {'redirect': 'http://github.com'})
         )
 
-        handler = tests.get_default_handler();
+        handler = tests.get_default_handler()
 
         self.handler.execute(handler, context)
 
         self.assertEquals(handler.get_status(), 302)
         self.assertEquals(handler.get_header('Location'), 'http://github.com')
 
-# class ActionHandlerTest(unittest.TestCase):
-#     def setUp(self):
-#         self.container = ioc.component.Container()
-#         self.handler = element.plugins.action.action.ActionHandler(self.container)
-#
-#         app = flask.Flask('AAA')
-#         self.ctx = app.test_request_context()
-#         self.ctx.push()
-#
-#     def tearDown(self):
-#         self.ctx.pop()
-#
-#     def test_non_existant_service(self):
-#         context = element.node.NodeContext(
-#             element.node.Node("id", "mytype")
-#         )
-#
-#         self.assertRaises(ioc.exceptions.UnknownService, self.handler.execute, context, flask)
-#
-#
-#     def test_return_response(self):
-#         context = element.node.NodeContext(
-#             element.node.Node("id", "mytype", {'serviceId': 'fake', 'method': 'foo'})
-#         )
-#
-#         class Fake(object):
-#             def foo(self, context, **kwargs):
-#                 return context.flask.make_response("a response")
-#
-#         self.container.add('fake', Fake())
-#         response = self.handler.execute(context, flask)
-#
-#         self.assertIsInstance(response, werkzeug.wrappers.BaseResponse)
-#         self.assertEquals(response.status_code, 200)
+class ActionHandlerTest(unittest.TestCase):
+    def setUp(self):
+        self.handler = element.plugins.action.action.ActionHandler(
+            ioc.component.Container(),
+            Application(),
+            tests.TemplateEngine()
+        )
+
+    def test_non_existant_service(self):
+        context = element.node.NodeContext(
+            element.node.Node("id", "mytype")
+        )
+
+        handler = tests.get_default_handler()
+
+        self.assertRaises(ioc.exceptions.UnknownService, self.handler.execute, handler, context)
+
+
+    def test_return_tuple(self):
+        context = element.node.NodeContext(
+            element.node.Node("id", "mytype", {'serviceId': 'fake', 'method': 'foo'})
+        )
+
+        class Fake(object):
+            def foo(self, request_context, context, **kwargs):
+                return 200, "hello", {}
+
+        handler = tests.get_default_handler()
+
+        self.handler.container.add('fake', Fake())
+
+        self.handler.execute(handler, context)
+
+        self.assertEquals(handler.get_status(), 200)

@@ -3,6 +3,9 @@ services:
         class: element.plugins.action.action.ActionHandler
         arguments:
             - '@service_container'
+            - '@ioc.extra.tornado.application'
+            - '@ioc.extra.jinja2'
+
         tags:
             element.handler: 
                 - { name: action.node }

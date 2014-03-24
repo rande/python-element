@@ -14,6 +14,17 @@ def get_default_handler():
     return TestHandler(Application(), HTTPRequest("GET", "/"))
 
 
-class Templating(object):
-    def render(self, template, **kwargs):
-        return template
+class TemplateEngine(object):
+    """
+    Mock jinja engine ...
+    """
+    def get_template(self, name):
+        return Template(name)
+
+class Template(object):
+    def __init__(self, name):
+        self.name = name
+
+    def render(self, params):
+        return self.name
+

@@ -4,7 +4,7 @@ Action
 Features
 --------
 
-This plugin provides a way to attach Flask actions from the datasource.
+This plugin provides a way to attach Tornado actions from the datasource.
 
 Configuration
 -------------

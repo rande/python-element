@@ -51,8 +51,10 @@ class TornadoActionLoader(object):
 
 
 class ActionHandler(NodeHandler):
-    def __init__(self, container):
+    def __init__(self, container, application, templating):
         self.container = container
+        self.application = application
+        self.templating = templating
         
     def get_defaults(self, node):
         return {
@@ -65,7 +67,7 @@ class ActionHandler(NodeHandler):
     def execute(self, request_handler, context):
         service = self.container.get(context.node.serviceId)
 
-        sub_request_handler = SubRequestHandler(self.container.get('ioc.extra.tornado.application'), HTTPRequest(request_handler.request.method, request_handler.request.path))
+        sub_request_handler = SubRequestHandler(self.application, HTTPRequest(request_handler.request.method, request_handler.request.path))
 
         result = getattr(service, context.node.method)(sub_request_handler, context, **(context.node.kwargs or {}))
 
@@ -75,13 +77,13 @@ class ActionHandler(NodeHandler):
             if 'context' not in params:
                 params['context'] = context
 
-            self.render(request_handler, self.container.get('ioc.extra.jinja2'), template, params)
+            self.render(request_handler, self.templating, template, params)
+
             request_handler.set_status(status_code)
 
-            return
-
-        request_handler.set_status(sub_request_handler.get_status())
-        request_handler.write(sub_request_handler.get_buffer())
+        else:
+            request_handler.set_status(sub_request_handler.get_status())
+            request_handler.write(sub_request_handler.get_buffer())
 
 
 class DefaultIndex(object):
