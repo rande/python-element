@@ -11,7 +11,7 @@ class ContextCreatorTest(unittest.TestCase):
         handler = mock.Mock()
         handler.get_defaults.return_value = {}
 
-        node = element.node.Node(None, "test")
+        node = element.node.Node('id', {'type': 'test'})
 
         context = creator.build(node, handler)
 

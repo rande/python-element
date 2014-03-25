@@ -24,6 +24,8 @@ class DisqusHandler(element.node.NodeHandler):
         self.render(request_handler, self.templating, context.settings['template'], params)
 
     def listener(self, event):
-        node = element.node.Node('disqus://%s' % event.get('subject').id, 'disqus.comments')
+        node = element.node.Node('disqus://%s' % event.get('subject').id, {
+            'type': 'disqus.comments',
+        })
 
         event.set('node', node)

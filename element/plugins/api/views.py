@@ -119,7 +119,7 @@ class NodeView(ApiView, CrudView):
 
         id = base64.decodestring(kwargs['path'])
 
-        node = element.node.Node(id, data['type'], data['data'])
+        node = element.node.Node(id, data)
 
         self.node_manager.save(node)
 
@@ -135,7 +135,7 @@ class NodeView(ApiView, CrudView):
 
         node['id'] = base64.decodestring(kwargs['path'])
 
-        node = element.node.Node(node['id'], node['type'], node['data'])
+        node = element.node.Node(node)
 
         self.node_manager.save(node)
 

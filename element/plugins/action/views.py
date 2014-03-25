@@ -14,7 +14,8 @@ class ActionView(Dispatcher):
         parameters = request_handler.request.query_arguments.copy()
         parameters.update(kwargs)
 
-        node = element.node.Node('action://%s' % serviceId, 'action.node', {
+        node = element.node.Node('action://%s' % serviceId, {
+            'type': 'action.node',
             'serviceId': serviceId,
             'method': method,
             'kwargs': parameters,

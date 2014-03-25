@@ -24,7 +24,8 @@ class SeoHandler(element.node.NodeHandler):
         if 'seo' not in event.get('subject').data:
             return
 
-        node = element.node.Node('seo://%s' % event.get('subject').id, 'seo.headers', {
+        node = element.node.Node('seo://%s' % event.get('subject').id, {
+            'type': 'seo.headers',
             'seo': event.get('subject').data['seo'],
         })
 

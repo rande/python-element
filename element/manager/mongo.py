@@ -28,25 +28,25 @@ class MongoManager(object):
     def get_collection(self):
         return self.client[self.database][self.collection]
 
-    def get_id(self, id):
-        if isinstance(id, ObjectId):
-            return id
+    def get_id(self, mid):
+        if isinstance(mid, ObjectId):
+            return mid
 
-        return ObjectId(id)
+        return ObjectId(mid)
 
-    def retrieve(self, id):
-        data = self.get_collection().find_one({"_id": self.get_id(id)})
+    def retrieve(self, mid):
+        data = self.get_collection().find_one({"_id": self.get_id(mid)})
 
         if not data:
             return None
 
         return self.normalize([data])[0]
 
-    def exists(self, id):
-        return self.get_collection().find({"_id": self.get_id(id)}).count() > 0
+    def exists(self, mid):
+        return self.get_collection().find({"_id": self.get_id(mid)}).count() > 0
 
-    def delete(self, id):
-        result = self.get_collection().remove(self.get_id(id), j=True)
+    def delete(self, mid):
+        result = self.get_collection().remove(self.get_id(mid), j=True)
 
         return result[u'n']
 
@@ -95,17 +95,16 @@ class MongoManager(object):
             self.get_collection().save(child)
             self.fix_children(child)
 
-    def save(self, id, type, data):
+    def save(self, mid, data):
         """
         Save data and resolve the path for the children
         """
-        data['type'] = type
 
         if 'slug' not in data:
             raise InvalidDataFormat("The data must contain a `slug` key: %s" % (data))
 
-        if id:
-            data['_id'] = ObjectId(id)
+        if mid:
+            data['_id'] = ObjectId(mid)
 
         self.resolve_parents(data)
         self.fix_paths(data)

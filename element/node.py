@@ -1,5 +1,6 @@
 import yaml, os, functools
-import exceptions
+import uuid, datetime
+from element.exceptions import InvalidDataException
 
 class NodeHandler(object):
     def render(self, request_handler, templating, template_name, params):
@@ -22,7 +23,7 @@ class NodeManager(object):
         nodes = []
 
         for data in self.db.find(**kwargs):
-            nodes.append(Node(data['id'], data['type'] if 'type' in data else None, data))
+            nodes.append(Node(data['id'], data))
 
         event = self.event_dispatcher.dispatch('element.nodes.load.success', {
             'nodes': nodes
@@ -62,7 +63,7 @@ class NodeManager(object):
 
             event_name = 'element.node.load.success'
             params = {
-                'node': Node(id, data['type'] if 'type' in data else None, data)
+                'node': Node(id, data)
             }
 
         else:
@@ -108,12 +109,40 @@ class NodeManager(object):
         return self.handlers[node.type]
 
 class Node(object):
-    def __init__(self, id, type, data=None, manager=None):
-        self.id = id
-        self.type = type
-        self.data = data or {}
+    def __init__(self, nid, data=None):
+
         self.methods = {}
-        self.manager = manager
+        self.id = nid
+
+        self.manager = None
+        # set default values
+
+        self.uuid = uuid.uuid4()
+        self.data = {}
+        self.type = None
+        self.enabled = True
+        self.status = 0
+        self.created_at = datetime.datetime.now()
+        self.updated_at = datetime.datetime.now()
+        self.version = 1
+        self.revision = 1
+        self.deleted = False
+        self.current = True
+        self.set_uuid = None
+        self.weight = 0
+        self.set = None
+
+        if not data:
+            return
+
+        for name, value in data.iteritems():
+            if name == 'id':
+                continue
+
+            if name in self.__dict__:
+                self.__setattr__(name, value)
+            else:
+                self.data[name] = value
 
     def __getattr__(self, name):
         if name in self.methods:
@@ -123,6 +152,22 @@ class Node(object):
             return self.data[name]
 
         return None
+
+    def all(self):
+        """
+        return a dict with all values from the done
+        """
+        data = self.__dict__.copy()
+        del(data['methods'])
+        del(data['id'])
+
+        for name, value in data['data'].iteritems():
+            if name in data:
+                raise InvalidDataException("duplicate key %s: node.%s and node.data['%s']" % (name, name, name))
+
+            data[name] = value
+
+        return data
 
 class NodeContext(object):
     def __init__(self, node, settings=None):

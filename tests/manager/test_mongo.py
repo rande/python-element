@@ -41,9 +41,9 @@ class MongoManagerTest(unittest.TestCase):
 
     def test_save_no_parent(self):
         with self.assertRaises(InvalidDataFormat):
-            self.manager.save("507f1f77bcf86cd799439010", "core.user", {"name": "Thomas Rabaix"})
+            self.manager.save("507f1f77bcf86cd799439010", {"type":"core.user", "name": "Thomas Rabaix"})
 
-        data = self.manager.save("507f1f77bcf86cd799439010", "core.user", {"name": "Thomas Rabaix", "slug": "thomas-rabaix"})
+        data = self.manager.save("507f1f77bcf86cd799439010", {"type": "core.user", "name": "Thomas Rabaix", "slug": "thomas-rabaix"})
 
         self.assertTrue("id" in data)
         self.assertEquals("507f1f77bcf86cd799439010", data['id'])
@@ -53,31 +53,31 @@ class MongoManagerTest(unittest.TestCase):
         self.assertEquals("/thomas-rabaix", data['path'])
 
     def test_save_with_parent_no_child(self):
-        parent = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
+        parent = self.manager.save(None, {"type": "core.node", "name": "articles", 'slug': 'articles'})
 
         self.assertEquals('/articles', parent['path'])
 
-        child = self.manager.save(None, "core.post", {"name": "Python Element", 'slug': 'python-element', 'parent': parent['id']})
+        child = self.manager.save(None, {"type": "core.post", "name": "Python Element", 'slug': 'python-element', 'parent': parent['id']})
 
         self.assertEquals('/articles/python-element', child['path'])
 
     def test_save_with_children(self):
-        parent = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
-        child = self.manager.save(None, "core.post", {"name": "Python Element", 'slug': 'python-element', 'parent': parent['id']})
+        parent = self.manager.save(None, {"name": "articles", 'slug': 'articles', 'type': "core.node"})
+        child = self.manager.save(None, {"name": "Python Element", 'slug': 'python-element', 'parent': parent['id'], 'type':  "core.post"})
 
         parent['slug'] = 'new-articles'
-        self.manager.save(parent['id'], parent['type'], parent)
+        self.manager.save(parent['id'], parent)
         child = self.manager.retrieve(child['id'])
 
         self.assertEquals("/new-articles/python-element", child['path'])
 
-        child2 = self.manager.save(None, "core.post", {"name": "Notes", 'slug': 'notes', 'parent': child['id']})
+        child2 = self.manager.save(None, {"name": "Notes", 'slug': 'notes', 'parent': child['id'], 'type':  "core.post"})
 
         self.assertEquals("/new-articles/python-element/notes", child2['path'])
 
         parent['slug'] = "articles"
 
-        self.manager.save(parent['id'], parent['type'], parent)
+        self.manager.save(parent['id'], parent)
 
         child = self.manager.retrieve(child['id'])
         child2 = self.manager.retrieve(child2['id'])
@@ -86,12 +86,12 @@ class MongoManagerTest(unittest.TestCase):
         self.assertEquals("/articles/python-element/notes", child2['path'])
 
     def test_unique_node(self):
-        node1 = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
+        node1 = self.manager.save(None, {"name": "articles", 'slug': 'articles', 'type':  "core.node"})
 
         self.assertEquals('/articles', node1['path'])
 
         with self.assertRaises(DuplicateKeyError):
-            node2 = self.manager.save(None, "core.node", {"name": "articles", 'slug': 'articles'})
+            node2 = self.manager.save(None, {"name": "articles", 'slug': 'articles', 'type':  "core.node"})
 
 
     def test_find_with_invalid_path(self):

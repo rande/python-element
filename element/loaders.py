@@ -48,7 +48,7 @@ class YamlNodeLoader(NodeLoader):
             canonical=False,
             encoding='utf-8',
             allow_unicode=True
-        ) 
+        )
 
         return True
 

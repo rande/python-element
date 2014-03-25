@@ -10,3 +10,6 @@ class InternalError(Exception):
     This error should be catch only once by the error handle to avoid cyclic error
     """
     pass
+
+class InvalidDataException(Exception):
+    pass

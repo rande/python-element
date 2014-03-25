@@ -17,7 +17,7 @@ class RedirectHandlerTest(unittest.TestCase):
     def test_execute_relative(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', 'mytype', {'redirect': 'to'})
+            element.node.Node('myid', {'type': 'mytype', 'redirect': 'to'})
         )
 
         handler = tests.get_default_handler()
@@ -31,7 +31,7 @@ class RedirectHandlerTest(unittest.TestCase):
     def test_execute_absolute(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', 'mytype', {'redirect': '/to'})
+            element.node.Node('myid', {'type': 'mytype', 'redirect': '/to'})
         )
 
         handler = tests.get_default_handler()
@@ -44,7 +44,7 @@ class RedirectHandlerTest(unittest.TestCase):
     def test_execute_absolute_scheme(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', 'mytype', {'redirect': 'http://github.com'})
+            element.node.Node('myid', {'type': 'mytype', 'redirect': 'http://github.com'})
         )
 
         handler = tests.get_default_handler()
@@ -64,7 +64,7 @@ class ActionHandlerTest(unittest.TestCase):
 
     def test_non_existant_service(self):
         context = element.node.NodeContext(
-            element.node.Node("id", "mytype")
+            element.node.Node('myid', {'type': 'mytype'})
         )
 
         handler = tests.get_default_handler()
@@ -74,7 +74,7 @@ class ActionHandlerTest(unittest.TestCase):
 
     def test_return_tuple(self):
         context = element.node.NodeContext(
-            element.node.Node("id", "mytype", {'serviceId': 'fake', 'method': 'foo'})
+            element.node.Node('myid', {'type': 'mytype', 'serviceId': 'fake', 'method': 'foo'})
         )
 
         class Fake(object):

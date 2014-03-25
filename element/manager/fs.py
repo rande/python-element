@@ -1,5 +1,6 @@
 import os
 from element.exceptions import SecurityAccessException
+from element.manager import is_uuid, get_uuid
 
 class FsManager(object):
     """
@@ -9,28 +10,59 @@ class FsManager(object):
         self.path = os.path.realpath(path)
         self.loader = loader
         self.logger = None
+        self.files  = {}
+        self.ignore_files = [
+            '.DS_Store'
+        ]
 
-    def retrieve(self, id):
-        return self.loader.load(self.get_path(id))
+    def retrieve(self, fid):
+        if is_uuid(fid):
+            fid = self.files[fid]
 
-    def exists(self, id):
-        path = self.get_path(id)
+        node = self.loader.load(self.get_path(fid))
+
+        node['id'] = fid
+        node['uuid'] = get_uuid(node['id'])
+
+        return node
+
+    def exists(self, fid):
+        if is_uuid(fid):
+            fid = self.files[fid]
+
+        path = self.get_path(fid)
 
         if not path:
             return False
 
         return os.path.isfile(path)
 
-    def get_path(self, id):
+    def add_reference(self, path):
+        fid = self.get_id_from_path(path)
+
+        self.files[get_uuid(fid)] = fid
+
+    def build_references(self):
+        """
+        This function build an array with all
+        """
+        for (path, dirs, files) in os.walk(self.path):
+            for file in files:
+                if file in self.ignore_files:
+                    continue
+
+                self.add_reference("%s/%s" % (path, file))
+
+    def get_path(self, fid):
         paths = [
-            ("%s/%s" % (self.path, id), id),
-            ("%s/%s.yml" % (self.path, id), id),
-            ("%s/%s/_index.yml" % (self.path, id), id),
+            ("%s/%s" % (self.path, fid), fid),
+            ("%s/%s.yml" % (self.path, fid), fid),
+            ("%s/%s/_index.yml" % (self.path, fid), fid),
         ]
 
         path = False
 
-        for path, id in paths:
+        for path, _ in paths:
             if os.path.isfile(path):
                 path = os.path.realpath(path)
                 break
@@ -40,9 +72,9 @@ class FsManager(object):
 
         return path
 
-    def get_new_path(self, id):
+    def get_new_path(self, fid):
         # the file exists, return the path
-        path = "%s/%s" % (self.path, id)
+        path = "%s/%s" % (self.path, fid)
         if os.path.isfile(path):
             return path
 
@@ -52,30 +84,28 @@ class FsManager(object):
             return path
 
         # check is the yml def exist
-        path = "%s/%s.yml" % (self.path, id)
+        path = "%s/%s.yml" % (self.path, fid)
         if os.path.isfile(path):
             return path
 
         # ok, check is a path exist, if so we try to save an index
-        path = "%s/%s" % (self.path, id)
+        path = "%s/%s" % (self.path, fid)
         if os.path.isdir(path):
             return "%s/_index.yml" % path
 
         # the path does not exist create it ...
-        return "%s/%s.yml" % (self.path, id)
+        return "%s/%s.yml" % (self.path, fid)
 
-    def delete(self, id):
-        if not self.exists(id):
+    def delete(self, fid):
+        if not self.exists(fid):
             return False
 
-        os.remove(self.get_path(id))
+        os.remove(self.get_path(fid))
 
         return True
 
-    def save(self, id, type, data):        
-        path = self.get_new_path(id)
-
-        data['type'] = type
+    def save(self, fid, data):
+        path = self.get_new_path(fid)
 
         basepath, filename = os.path.split(path)
         basename, extension = os.path.splitext(filename)
@@ -84,6 +114,17 @@ class FsManager(object):
             os.makedirs(basepath)
 
         return self.loader.save(path, data)
+
+    def get_id_from_path(self, path):
+        fid = path[(len(self.path)+1):]  # no starting slash
+
+        if fid[-4:] == '.yml':
+            fid = fid[:-4]
+
+            if fid[-6:] == '_index':
+                fid = fid[:-7]
+
+        return fid
 
     def find(self, type=None, types=None, tag=None, tags=None, category=None, path=None, offset=None, limit=None):
         """
@@ -131,13 +172,8 @@ class FsManager(object):
                 if not node:
                     continue
 
-                node['id'] = filename[(len(self.path)+1):] # no starting slash
-
-                if node['id'][-4:] == '.yml':
-                    node['id'] = node['id'][:-4]
-
-                    if node['id'][-6:] == '_index':
-                        node['id'] = node['id'][:-7]
+                node['id'] = self.get_id_from_path(filename)
+                node['uuid'] = get_uuid(node['id'])
 
                 if 'type' not in node or (len(lookup_types) > 0 and node['type'] not in lookup_types):
                     continue
