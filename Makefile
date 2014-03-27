@@ -10,6 +10,7 @@ upload:
 
 test:
 	nosetests
+	cd element/standalone/skeleton && nosetests
 
 doc:
 	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html

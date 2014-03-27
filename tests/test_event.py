@@ -7,7 +7,7 @@ import datetime
 
 class EventTest(unittest.TestCase):     
     def test_normalize(self):
-        normalize = element.plugins.node.standardize.Standardize()
+        normalize = element.plugins.node.standardize.Standardizer()
 
         event = ioc.event.Event({
             'node': element.node.Node('id', {'type': 'my type', "published_at": "Wed, 16 Nov 2005 19:26:18"})

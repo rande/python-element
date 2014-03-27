@@ -87,9 +87,9 @@ class NodeManagerTest(unittest.TestCase):
             'created_at': datetime.datetime(2014, 3, 25, 6, 12, 34, 615072),
             'updated_at': datetime.datetime(2014, 3, 25, 6, 12, 34, 615072),
             'current': True,
-            'data': {'extra': 'salut'},
             'enabled': True,
             'type': None,
+            'uuid': '2cf24dba-5fb0-a30e-26e83b2a',
             'version': 1,
             'weight': 0
         }

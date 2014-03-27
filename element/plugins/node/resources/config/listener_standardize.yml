@@ -1,6 +1,6 @@
 services:
-    element.plugins.node.standardize:
-        class: element.plugins.node.standardize.Standardize
+    element.plugins.node.standardizer:
+        class: element.plugins.node.standardize.Standardizer
 
         tags:
             event.listener: 

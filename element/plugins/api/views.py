@@ -1,4 +1,4 @@
-import json, base64
+import json
 import element
 
 def date_handler(obj):
@@ -48,12 +48,7 @@ class CrudView(object):
 
 class ApiView(object):
     def serialize_node(self, node):
-        return {
-            'id': base64.encodestring(node.id).strip(),
-            'path': node.id,
-            'type': node.type,
-            'data': node.data,
-        }
+        return node.all()
 
     def serialize_handler(self, handler):
         return {
@@ -98,51 +93,47 @@ class NodeView(ApiView, CrudView):
     def __init__(self, node_manager):
         self.node_manager = node_manager
 
-    def get_node(self, path):
-        return self.node_manager.get_node(base64.decodestring(path))
+    def get_node(self, uuid):
+        return self.node_manager.get_node(uuid)
         
     def get(self, request_handler, **kwargs):
-        node = self.get_node(kwargs['path'])
+        node = self.get_node(kwargs['uuid'])
 
         if not node:
             return 404, {}
 
-        return 200, self.serialize_node(self.get_node(kwargs['path']))
+        return 200, self.serialize_node(node)
 
     def post(self, request_handler, **kwargs):
-        node = self.get_node(kwargs['path'])
+        node = self.get_node(kwargs['uuid'])
 
         if node:
             return 202, {}
 
         data = json.loads(request_handler.request.body)
 
-        id = base64.decodestring(kwargs['path'])
-
-        node = element.node.Node(id, data)
+        node = element.node.Node(node, data)
 
         self.node_manager.save(node)
 
         return 200, self.serialize_node(node)
 
     def put(self, request_handler, **kwargs):
-        node = self.get_node(kwargs['path'])
+        node = self.get_node(kwargs['uuid'])
 
         if not node:
             return 404, {}
 
-        node = json.loads(request_handler.request.body)
+        data = json.loads(request_handler.request.body)
 
-        node['id'] = base64.decodestring(kwargs['path'])
-
-        node = element.node.Node(node)
+        node.define(data)
 
         self.node_manager.save(node)
 
         return 200, self.serialize_node(node)
 
     def delete(self, request_handler, **kwargs):
-        node = self.get_node(kwargs['path'])
+        node = self.get_node(kwargs['uuid'])
 
         if not node:
             return 404, {}

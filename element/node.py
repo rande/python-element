@@ -1,5 +1,5 @@
 import yaml, os, functools
-from uuid import uuid4
+from element.manager import generate_uuid
 import datetime
 from element.exceptions import InvalidDataException
 
@@ -24,7 +24,7 @@ class NodeManager(object):
         nodes = []
 
         for data in self.db.find(**kwargs):
-            nodes.append(Node(data['id'], data))
+            nodes.append(Node(data['uuid'], data))
 
         event = self.event_dispatcher.dispatch('element.nodes.load.success', {
             'nodes': nodes
@@ -85,7 +85,7 @@ class NodeManager(object):
             'node': node,
         })
 
-        result = self.db.delete(node.id)
+        result = self.db.delete(node.uuid)
 
         self.event_dispatcher.dispatch('element.node.post_delete', {
             'node': node,
@@ -99,7 +99,7 @@ class NodeManager(object):
             'data': node.data
         })
 
-        result = self.db.save(node.id, node.type, event.get('data'))
+        result = self.db.save(node.uuid, event.get('node').all())
 
         self.event_dispatcher.dispatch('element.node.post_save', {
             'node': node,
@@ -115,7 +115,7 @@ class Node(object):
     def __init__(self, uuid=None, data=None):
 
         self.methods = {}
-        self.uuid = uuid or uuid4()
+        self.uuid = uuid or generate_uuid()
 
         self.manager = None
         # set default values
@@ -139,14 +139,7 @@ class Node(object):
         if not data:
             return
 
-        for name, value in data.iteritems():
-            if name == 'uuid':
-                continue
-
-            if name in self.__dict__:
-                self.__setattr__(name, value)
-            else:
-                self.data[name] = value
+        self.define(data)
 
     def __getattr__(self, name):
         if name in self.methods:
@@ -163,7 +156,6 @@ class Node(object):
         """
         data = self.__dict__.copy()
         del(data['methods'])
-        del(data['uuid'])
 
         for name, value in data['data'].iteritems():
             if name in data:
@@ -171,7 +163,22 @@ class Node(object):
 
             data[name] = value
 
+        del(data['data'])
+
         return data
+
+    def define(self, data):
+        self.data = {}
+
+        for name, value in data.iteritems():
+            if name == 'uuid':
+                continue
+
+            if name in self.__dict__:
+                self.__setattr__(name, value)
+            else:
+                self.data[name] = value
+
 
 class NodeContext(object):
     def __init__(self, node, settings=None):

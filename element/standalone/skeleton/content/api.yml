@@ -3,7 +3,7 @@ type: action.collection
 actions:
     element_api_node:
         type: action.raw
-        path: /element/node/<path:path>.<_format>
+        path: /element/node/<uuid>.<_format>
         methods: ['GET', 'PUT', 'POST', 'DELETE']
         defaults:
             _controller: element.api.view.node:execute
@@ -18,7 +18,7 @@ actions:
 
     element_api_list:
         type: action.raw
-        path: /element/path/<path:path>.<_format>
+        path: /element/path/<uuid>.<_format>
         methods: ['GET']
         defaults:
             _controller: element.api.view.node.list:execute
