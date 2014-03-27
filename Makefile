@@ -19,3 +19,6 @@ dev:
 
 prod:
 	cd element/standalone/skeleton && python start.py tornado:start -np 8
+
+fixtures:
+	cd element/standalone/skeleton && python start.py element:demo:fixtures

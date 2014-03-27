@@ -6,3 +6,11 @@ services:
         tags:
             command:
                 - { name: 'element:list' }
+
+    element.command.load_demo_fixtures:
+        class: element.command.LoadDemoFixtureCommand
+        arguments:
+            - '@element.manager.mongodb'
+        tags:
+            command:
+                - { name: 'element:demo:fixtures' }
