@@ -2,6 +2,7 @@
 
 import re
 import hashlib
+from uuid import uuid4
 
 uuid_pattern = re.compile('^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{8}$')
 
@@ -16,3 +17,6 @@ def get_uuid(nid):
     hash = hashlib.sha256(nid).hexdigest()
 
     return "%s-%s-%s-%s" % (hash[0:8], hash[8:12], hash[12:16], hash[16:24])
+
+def generate_uuid():
+    return str(uuid4())

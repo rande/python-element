@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from bson.errors import InvalidId
 from element.manager.mongo import MongoManager, InvalidDataFormat
 from pymongo.errors import DuplicateKeyError
+from element.manager import get_uuid
 
 class MongoManagerTest(unittest.TestCase):
     def setUp(self):
@@ -12,8 +13,10 @@ class MongoManagerTest(unittest.TestCase):
         self.manager = MongoManager(self.client, '_ci_python_element_test', '_ci_python_collection')
         self.manager.get_collection().remove()
 
+        print(get_uuid('my-first-blog-post'))
         self.manager.get_collection().insert({
             "_id": ObjectId("507f1f77bcf86cd799439012"),
+            "uuid": get_uuid('my-first-blog-post'),
             "author": "Mike",
             "text": "My first blog post!",
             "slug": "my-first-blog-post",
@@ -24,28 +27,28 @@ class MongoManagerTest(unittest.TestCase):
 
     def test_retrieve(self):
         self.assertIsNone(self.manager.retrieve("ad"))
-        self.assertIsNone(self.manager.retrieve("507f1f77bcf86cd799439011"))
-        data = self.manager.retrieve("507f1f77bcf86cd799439012")
+        self.assertIsNone(self.manager.retrieve("c875b4ea-9682-aeaf-2dec4c5e"))
+        data = self.manager.retrieve("b875b4ea-9682-aeaf-2dec4c5e")
         self.assertIsNotNone(data)
         self.assertTrue("id" in data)
 
     def test_exists(self):
-        self.assertFalse(self.manager.exists("507f1f77bcf86cd799439011"))
-        self.assertTrue(self.manager.exists("507f1f77bcf86cd799439012"))
+        self.assertFalse(self.manager.exists("c875b4ea-9682-aeaf-2dec4c5e"))
+        self.assertTrue(self.manager.exists("b875b4ea-9682-aeaf-2dec4c5e"))
 
     def test_delete(self):
-        self.assertEquals(1, self.manager.delete("507f1f77bcf86cd799439012"))
-        self.assertEquals(0, self.manager.delete("507f1f77bcf86cd799439011"))
+        self.assertEquals(1, self.manager.delete("b875b4ea-9682-aeaf-2dec4c5e"))
+        self.assertEquals(0, self.manager.delete("b875b4ea-9682-aeaf-2dec4c5e"))
 
     def test_save_no_parent(self):
         with self.assertRaises(InvalidDataFormat):
-            self.manager.save("507f1f77bcf86cd799439010", {"type":"core.user", "name": "Thomas Rabaix"})
+            self.manager.save(None, {"type": "core.user", "name": "Thomas Rabaix"})
 
-        data = self.manager.save("507f1f77bcf86cd799439010", {"type": "core.user", "name": "Thomas Rabaix", "slug": "thomas-rabaix"})
+        data = self.manager.save(None, {"type": "core.user", "name": "Thomas Rabaix", "slug": "thomas-rabaix"})
 
         self.assertTrue("id" in data)
-        self.assertEquals("507f1f77bcf86cd799439010", data['id'])
-
+        self.assertTrue("uuid" in data)
+        self.assertIsNotNone(data['uuid'])
         self.assertIsNotNone(data['id'])
         self.assertIsNone(data['parent'])
         self.assertEquals("/thomas-rabaix", data['path'])
@@ -55,30 +58,34 @@ class MongoManagerTest(unittest.TestCase):
 
         self.assertEquals('/articles', parent['path'])
 
-        child = self.manager.save(None, {"type": "core.post", "name": "Python Element", 'slug': 'python-element', 'parent': parent['id']})
+        child = self.manager.save(None, {"type": "core.post", "name": "Python Element", 'slug': 'python-element', 'parent': parent['uuid']})
 
         self.assertEquals('/articles/python-element', child['path'])
 
     def test_save_with_children(self):
         parent = self.manager.save(None, {"name": "articles", 'slug': 'articles', 'type': "core.node"})
-        child = self.manager.save(None, {"name": "Python Element", 'slug': 'python-element', 'parent': parent['id'], 'type':  "core.post"})
+        child = self.manager.save(None, {"name": "Python Element", 'slug': 'python-element', 'parent': parent['uuid'], 'type':  "core.post"})
 
         parent['slug'] = 'new-articles'
-        self.manager.save(parent['id'], parent)
-        child = self.manager.retrieve(child['id'])
+
+        parent = self.manager.save(parent['uuid'], parent)
+
+        child = self.manager.retrieve(child['uuid'])
+
+        self.assertIsNotNone(child)
 
         self.assertEquals("/new-articles/python-element", child['path'])
 
-        child2 = self.manager.save(None, {"name": "Notes", 'slug': 'notes', 'parent': child['id'], 'type':  "core.post"})
+        child2 = self.manager.save(None, {"name": "Notes", 'slug': 'notes', 'parent': child['uuid'], 'type':  "core.post"})
 
         self.assertEquals("/new-articles/python-element/notes", child2['path'])
 
         parent['slug'] = "articles"
 
-        self.manager.save(parent['id'], parent)
+        self.manager.save(parent['uuid'], parent)
 
-        child = self.manager.retrieve(child['id'])
-        child2 = self.manager.retrieve(child2['id'])
+        child = self.manager.retrieve(child['uuid'])
+        child2 = self.manager.retrieve(child2['uuid'])
 
         self.assertEquals("/articles/python-element", child['path'])
         self.assertEquals("/articles/python-element/notes", child2['path'])
