@@ -2,6 +2,8 @@
 
 <div>
     <dl class="dl-horizontal">
+        <dt>UUID</dt>
+        <dd>{{ node.uuid }}</dd>
         <dt>ID</dt>
         <dd>{{ node.id }}</dd>
         <dt>Path</dt>
@@ -9,16 +11,13 @@
         <dt>Path</dt>
         <dd>{{ node.path }}</dd>
         <dt>Title</dt>
-        <dd>{{ node.data.title }}</dd>
+        <dd>{{ node.title }}</dd>
         <dt>Created At</dt>
-        <dd>{{ node.data.created_at }}</dd>
+        <dd>{{ node.created_at }}</dd>
         <dt>Published At</dt>
-        <dd>{{ node.data.published_at }}</dd>
+        <dd>{{ node.published_at }}</dd>
         <dt>Category</dt>
-        <dd>{{ node.data.category }}</dd>
-
-        <dt>Data</dt>
-        <dd>{{ node.data }}</dd>
+        <dd>{{ node.category }}</dd>
 
     </dl>
 </div>
