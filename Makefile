@@ -1,4 +1,6 @@
-all: register upload
+all: test doc dev
+
+package: register upload
 
 register:
 	python setup.py register
@@ -8,6 +10,8 @@ upload:
 
 test:
 	nosetests
+
+doc:
 	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 
 dev:
