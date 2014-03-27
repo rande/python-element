@@ -1,5 +1,6 @@
 import yaml, os, functools
-import uuid, datetime
+from uuid import uuid4
+import datetime
 from element.exceptions import InvalidDataException
 
 class NodeHandler(object):
@@ -31,44 +32,46 @@ class NodeManager(object):
 
         return event.get('nodes')
 
-    def get_node(self, id):
+    def get_node(self, uuid):
         if self.logger:
-            self.logger.debug('NodeManager.get_node: %s' % id)
+            self.logger.debug('NodeManager.get_node: %s' % uuid)
 
-        if isinstance(id, Node):
-            return id
+        if isinstance(uuid, Node):
+            return uuid
 
         # clean up this ... not perfect at all...
         try:
-            data = self.db.retrieve(id)
-        except:
+            data = self.db.retrieve(uuid)
+        except Exception, e:
+            if self.logger:
+                self.logger.debug('NodeManager.get_node: %s ~ exception: %s' % (uuid, e.message))
+
             data = None
 
-        if self.logger:
-            self.logger.debug('NodeManager.get_node: %s ~ cannot find node with id, looking for path' % id)
+            # raise e
 
         if not data:
-            data = self.db.find_one(path="/%s" % id)
+            if self.logger:
+                self.logger.debug('NodeManager.get_node: %s ~ cannot find node with uuid, looking for alias' % uuid)
 
-            if data and data['path'] != "/%s" % id:
-                data = None
+            data = self.db.find_one(alias="/%s" % uuid)
 
         # always assume a fail
         event_name = 'element.node.load.fail'
-        params = {'id': id}
+        params = {'uuid': uuid}
 
         if data:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ Found! ~ %s' % (id, data))
+                self.logger.debug('NodeManager.get_node: %s ~ Found! ~ %s' % (uuid, data))
 
             event_name = 'element.node.load.success'
             params = {
-                'node': Node(id, data)
+                'node': Node(uuid, data)
             }
 
         else:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ Not Found!' % id)
+                self.logger.debug('NodeManager.get_node: %s ~ Not Found!' % uuid)
 
         event = self.event_dispatcher.dispatch(event_name, params)
 
@@ -109,15 +112,16 @@ class NodeManager(object):
         return self.handlers[node.type]
 
 class Node(object):
-    def __init__(self, nid, data=None):
+    def __init__(self, uuid=None, data=None):
 
         self.methods = {}
-        self.id = nid
+        self.uuid = uuid or uuid4()
 
         self.manager = None
         # set default values
 
-        self.uuid = uuid.uuid4()
+        self.id = None
+        self.path = None
         self.data = {}
         self.type = None
         self.enabled = True
@@ -136,7 +140,7 @@ class Node(object):
             return
 
         for name, value in data.iteritems():
-            if name == 'id':
+            if name == 'uuid':
                 continue
 
             if name in self.__dict__:
@@ -159,7 +163,7 @@ class Node(object):
         """
         data = self.__dict__.copy()
         del(data['methods'])
-        del(data['id'])
+        del(data['uuid'])
 
         for name, value in data['data'].iteritems():
             if name in data:

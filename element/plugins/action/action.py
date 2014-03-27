@@ -126,4 +126,4 @@ class RedirectHandler(object):
         if context.node.redirect[0] == '/': # absolute uri
             return request_handler.redirect("%s%s" % (self.base_url, context.node.redirect))
 
-        return request_handler.redirect("%s/%s/%s" % (self.base_url, context.node.id, context.node.redirect))
+        return request_handler.redirect("%s/%s/%s" % (self.base_url, context.node.path, context.node.redirect))

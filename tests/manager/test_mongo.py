@@ -23,9 +23,7 @@ class MongoManagerTest(unittest.TestCase):
         })
 
     def test_retrieve(self):
-        with self.assertRaises(InvalidId):
-            self.manager.retrieve("ad")
-
+        self.assertIsNone(self.manager.retrieve("ad"))
         self.assertIsNone(self.manager.retrieve("507f1f77bcf86cd799439011"))
         data = self.manager.retrieve("507f1f77bcf86cd799439012")
         self.assertIsNotNone(data)

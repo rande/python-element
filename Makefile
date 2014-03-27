@@ -7,5 +7,11 @@ upload:
 	python setup.py sdist bdist upload
 
 test:
-	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 	nosetests
+	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
+
+dev:
+	cd element/standalone/skeleton && python start.py tornado:start --verbose
+
+prod:
+	cd element/standalone/skeleton && python start.py tornado:start -np 8

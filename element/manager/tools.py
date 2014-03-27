@@ -2,47 +2,46 @@ class ChainManager(object):
     """
     This class handle loading of definition from a MongoDB Server
     """
-    def __init__(self, managers):
+    def __init__(self, managers, logger=None):
         self.managers = managers or []
+        self.logger = logger
 
-    def retrieve(self, reference):
+    def retrieve(self, uuid):
+        if self.logger:
+            self.logger.debug("element.manager.chain: retrieve uuid:%s" % uuid)
+
         for name, manager in self.managers:
-            try:
-                data = manager.retrieve(reference)
+            data = manager.retrieve(uuid)
+
+            if data:
                 data['manager'] = name
+                return data
 
-                if data:
-                    return data
+        raise Exception("unable to retrieve the data with uuid: %s" % uuid)
 
-            except Exception, e:
-                # silently fail error
-                pass
-        
-        raise Exception("unable to retrieve the data with reference: %s" % reference)
-
-    def exists(self, reference):
+    def exists(self, uuid):
         for name, manager in self.managers:
-            if manager.exists(reference):
+            if manager.exists(uuid):
                 return True
 
         return False
 
-    def delete(self, reference):
+    def delete(self, uuid):
         for name, manager in self.managers:
-            deleted = manager.delete(reference)
+            deleted = manager.delete(uuid)
             
             if deleted:
                 return True
 
         return False
 
-    def save(self, reference, type, data):
+    def save(self, uuid, data):
         if 'manager' not in data:
             raise Exception('no manager defined, cannot save data with reference: %s' % data)
 
         for name, manager in self.managers:
             if data['manager'] == name:
-                return manager.save(reference, type, data)
+                return manager.save(uuid, data)
 
         return False
 
@@ -60,6 +59,9 @@ class ChainManager(object):
 
         """
         datas = []
+
+        if self.logger:
+            self.logger.debug("element.manager.chain: find %s" % kwargs)
 
         for name, manager in self.managers:
 

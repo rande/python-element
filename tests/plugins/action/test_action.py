@@ -17,7 +17,7 @@ class RedirectHandlerTest(unittest.TestCase):
     def test_execute_relative(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', {'type': 'mytype', 'redirect': 'to'})
+            element.node.Node(None, {'type': 'mytype', 'redirect': 'to', 'path': 'node-path'})
         )
 
         handler = tests.get_default_handler()
@@ -25,13 +25,13 @@ class RedirectHandlerTest(unittest.TestCase):
         self.handler.execute(handler, context)
 
         self.assertEquals(handler.get_status(), 302)
-        self.assertEquals(handler.get_header('Location'), '/baseurl/myid/to')
+        self.assertEquals(handler.get_header('Location'), '/baseurl/node-path/to')
 
 
     def test_execute_absolute(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', {'type': 'mytype', 'redirect': '/to'})
+            element.node.Node(None, {'type': 'mytype', 'redirect': '/to', 'path': '/'})
         )
 
         handler = tests.get_default_handler()
@@ -44,7 +44,7 @@ class RedirectHandlerTest(unittest.TestCase):
     def test_execute_absolute_scheme(self):
 
         context = element.node.NodeContext(
-            element.node.Node('myid', {'type': 'mytype', 'redirect': 'http://github.com'})
+            element.node.Node(None, {'type': 'mytype', 'redirect': 'http://github.com'})
         )
 
         handler = tests.get_default_handler()

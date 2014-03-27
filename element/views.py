@@ -11,7 +11,7 @@ class Dispatcher(object):
         # build the execution context
         context = self.context_creator.build(node, node_handler)
 
-        self.logger.debug("[element.node.Dispatcher] render node: %s with handler: %s" % (node.id, node_handler))
+        self.logger.debug("element.node.Dispatcher: render node: %s with handler: %s" % (node.id, node_handler))
 
         # render the node
         node_handler.execute(request_handler, context)

@@ -22,6 +22,8 @@ services:
         class: element.manager.tools.ChainManager
         arguments:
             - '' # managers references
+        kwargs:
+            logger: '@element.logger'
 
     element.manager.fs:
         class: element.manager.fs.FsManager

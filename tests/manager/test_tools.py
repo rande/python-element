@@ -24,7 +24,7 @@ class ChainManagerTest(unittest.TestCase):
 
         manager = ChainManager(None)
 
-        self.assertFalse(manager.save("reference", "blog.text", {'manager': 'foobar'}))
+        self.assertFalse(manager.save("reference", {'manager': 'foobar', "type": "blog.text"}))
 
     def test_with_no_manager_and_find(self):
         manager = ChainManager(None)
@@ -63,8 +63,8 @@ class ChainManagerTest(unittest.TestCase):
 
         manager = ChainManager([("fs", m)])
 
-        self.assertTrue(manager.save("id", "blog.post", {"manager": "fs", "hello": "les gens!"}))
-        self.assertFalse(manager.save("id", "blog.post", {"manager": "mongo", "hello": "les gens!"}))
+        self.assertTrue(manager.save("id", {"manager": "fs", "hello": "les gens!", "type": "blog.post"}))
+        self.assertFalse(manager.save("id", {"manager": "mongo", "hello": "les gens!", "type": "blog.post"}))
 
     def test_with_managers_find(self):
         m = mock.Mock()

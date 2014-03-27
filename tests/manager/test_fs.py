@@ -1,6 +1,7 @@
 # vim: set fileencoding=utf-8 :
 import unittest
 import element.manager.fs
+from element.manager import get_uuid
 import element.loaders
 import element.plugins.static.loader
 import os
@@ -10,6 +11,10 @@ import element.exceptions
 class FsManagerTest(unittest.TestCase):     
     def setUp(self):
         self.fixture = "%s/../fixtures/data/" % os.path.dirname(os.path.abspath(__file__))
+
+        if os.path.isdir('%s/tmp' % self.fixture):
+            shutil.rmtree('%s/tmp' % self.fixture)
+
         self.fs = element.manager.fs.FsManager(
             self.fixture, 
             element.loaders.LoaderChain([
@@ -21,22 +26,17 @@ class FsManagerTest(unittest.TestCase):
             ])
         )
 
-        if os.path.isdir('%s/tmp' % self.fixture):
-            shutil.rmtree('%s/tmp' % self.fixture)
-
-        self.fs.build_references()
-
     def tearDown(self):
         if os.path.isdir('%s/tmp' % self.fixture):
             shutil.rmtree('%s/tmp' % self.fixture)
 
 
     def test_build_references(self):
-        self.fs.build_references()
-
-        self.assertEquals(2, len(self.fs.files))
+        self.assertEquals(4, len(self.fs.files))
 
         expected = {
+            'eacacfab-74cf-6c8d-5e393165': 'feeds',
+            '50093cac-fdc1-5ba6-6f12d44e': 'feeds/all.rss',
             'fca0ea55-c21b-186e-fe6924a5': 'sonata_small.png',
             'c3e6be59-3448-0daa-be2dd043': '2013/my-post-content'
         }
@@ -44,7 +44,7 @@ class FsManagerTest(unittest.TestCase):
         self.assertEquals(expected, self.fs.files)
 
     def test_contains_uuid(self):
-        node = self.fs.retrieve("sonata_small.png")
+        node = self.fs.retrieve("fca0ea55-c21b-186e-fe6924a5")
 
         self.assertEquals(node['id'], "sonata_small.png")
         self.assertEquals(node['uuid'], "fca0ea55-c21b-186e-fe6924a5")
@@ -55,25 +55,29 @@ class FsManagerTest(unittest.TestCase):
         self.assertEquals(node['id'], "sonata_small.png")
         self.assertEquals(node['uuid'], "fca0ea55-c21b-186e-fe6924a5")
 
-        node = self.fs.retrieve("sonata_small.png")
+    def test_index(self):
+        data = self.fs.find_one(alias="/feeds")
+        self.assertIsNotNone(data)
+        self.assertEquals(data['path'], 'feeds')
 
-        self.assertEquals(node['id'], "sonata_small.png")
-        self.assertEquals(node['uuid'], "fca0ea55-c21b-186e-fe6924a5")
+        data = self.fs.find_one(alias="/feeds/_index")
+        self.assertIsNotNone(data)
+        self.assertEquals(data['path'], 'feeds')
+
 
     def test_exists(self):
         self.assertTrue(self.fs.exists('fca0ea55-c21b-186e-fe6924a5'))
-        self.assertTrue(self.fs.exists('sonata_small.png'))
 
     def test_find(self):
         cases = [
-            ({}, 2),
+            ({}, 4),
             ({'type': 'blog.post'}, 1),
             ({'type': 'fake'}, 0),
             ({'type': 'fake', 'types': ['blog.post']}, 1),
             ({'types': ['blog.post', 'fake']}, 1),
             ({'types': [], 'tags': ['red', 'yellow']}, 1),
             ({'types': [], 'tags': ['red', 'yellow', 'brown']}, 0),
-            ({'types': [], 'tags': []}, 2)
+            ({'types': [], 'tags': []}, 4)
         ]
 
         for kwarg, expected in cases:
@@ -90,15 +94,18 @@ class FsManagerTest(unittest.TestCase):
                 self.fs.find(**kwarg)
 
     def test_save_and_delete(self):
-        self.assertFalse(self.fs.delete('tmp/simple_save'))
-        self.assertTrue(self.fs.save('tmp/simple_save', {'hello': 'world', 'type': 'mytype'}))
-        self.assertTrue(self.fs.delete('tmp/simple_save'))
+        uuid = get_uuid('tmp/simple_save')
+
+        self.assertFalse(self.fs.delete(uuid))
+        self.assertTrue(self.fs.save(uuid, {'hello': 'world', 'type': 'mytype', 'path': 'tmp/simple_save'}))
+        self.assertTrue(self.fs.delete(uuid))
 
     def test_save_nested_folder(self):
-        self.assertTrue(self.fs.save('tmp/nested/fake', {'hello': 'world', 'type': 'mytype'}))
-        
+        self.assertTrue(self.fs.save(None, {'hello': 'world', 'type': 'mytype', 'path': 'tmp/nested/fake'}))
+
     def test_save_binary_file(self):
-        self.assertTrue(self.fs.save('tmp/foo/image.png', {
+        self.assertTrue(self.fs.save(None, {
+            'path': 'tmp/foo/image.png',
             'type': 'element.static',
             'content': file("%s/sonata_small.png" % self.fixture, 'r').read()
         }))

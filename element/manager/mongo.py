@@ -1,4 +1,4 @@
-from bson.objectid import ObjectId
+from bson.objectid import ObjectId, InvalidId
 from bson.dbref import DBRef
 import pymongo
 
@@ -32,7 +32,10 @@ class MongoManager(object):
         if isinstance(mid, ObjectId):
             return mid
 
-        return ObjectId(mid)
+        try:
+            return ObjectId(mid)
+        except InvalidId, e:
+            return None
 
     def retrieve(self, mid):
         data = self.get_collection().find_one({"_id": self.get_id(mid)})
@@ -154,11 +157,14 @@ class MongoManager(object):
         if 'offset' in kwargs:
             find_kwargs['omit'] = int(kwargs['offset'])
 
+        if 'alias' in kwargs and kwargs['alias']:
+            find_kwargs['spec']['path'] = kwargs['alias']
+
         if 'path' in kwargs and kwargs['path']:
             find_kwargs['spec']['path'] = {'$regex': "^" + kwargs['path']}
 
         if self.logger:
-            self.logger.info("%s find:%s" % (self, find_kwargs))
+            self.logger.info("element.manager.mongo: find:%s" % (find_kwargs))
 
         query = self.get_collection().find(**find_kwargs)
 

@@ -16,12 +16,14 @@ class NodeManagerTest(unittest.TestCase):
             element.loaders.YamlNodeLoader()
         )
 
+        fs.build_references()
+
         self.manager = element.node.NodeManager(fs, ioc.event.Dispatcher())
 
     def test_get_node(self):
         self.assertIsNone(self.manager.get_node('fake'))
 
-        node = self.manager.get_node('data/2013/my-post-content')
+        node = self.manager.get_node('29742dd8-e12c-2f49-961dfdda')
 
         self.assertIsInstance(node, element.node.Node)
         self.assertEquals("My Post Content", node.title)
@@ -31,12 +33,12 @@ class NodeManagerTest(unittest.TestCase):
     def test_event(self):
         dispatch = mock.Mock()
         dispatch.return_value = ioc.event.Event({
-            'node': element.node.Node('id', {"type": "mytype"})
+            'node': element.node.Node(get_uuid('id'), {"type": "mytype"})
         })
 
         self.manager.event_dispatcher.dispatch = dispatch
 
-        node = self.manager.get_node('data/2013/my-post-content')
+        node = self.manager.get_node('29742dd8-e12c-2f49-961dfdda')
 
         self.assertIsInstance(node, element.node.Node)
 
@@ -45,16 +47,14 @@ class NodeManagerTest(unittest.TestCase):
     def test_create_node(self):
         node = element.node.Node('test')
 
-        self.assertEquals('test', node.id)
+        self.assertEquals('test', node.uuid)
         self.assertIsNotNone(node.uuid)
 
-        node = element.node.Node('hello', {
-            'uuid': get_uuid('hello'),
+        node = element.node.Node(get_uuid('hello'), {
             'extra': 'salut',
         })
 
-        self.assertEquals('hello', node.id)
-        self.assertEquals(node.uuid, get_uuid('hello'))
+        self.assertEquals('2cf24dba-5fb0-a30e-26e83b2a', node.uuid)
         self.assertEquals(1, node.revision)
         self.assertEquals(1, node.version)
         self.assertEquals(0, node.weight)
@@ -67,18 +67,20 @@ class NodeManagerTest(unittest.TestCase):
         self.assertEquals({'extra': 'salut'}, node.data)
 
     def test_node_all(self):
-        node = element.node.Node('hello', {
-            'uuid': get_uuid('hello'),
+        node = element.node.Node(get_uuid('hello'), {
+            'id': 'hello',
             'extra': 'salut',
             'created_at': datetime.datetime(2014, 3, 25, 6, 12, 34, 615072),
             'updated_at': datetime.datetime(2014, 3, 25, 6, 12, 34, 615072),
         })
 
         expected = {
+            'id': 'hello',
             'manager': None,
             'revision': 1,
             'status': 0,
             'set': None,
+            'path': None,
             'set_uuid': None,
             'extra': 'salut',
             'deleted': False,
@@ -88,7 +90,6 @@ class NodeManagerTest(unittest.TestCase):
             'data': {'extra': 'salut'},
             'enabled': True,
             'type': None,
-            'uuid': '2cf24dba-5fb0-a30e-26e83b2a',
             'version': 1,
             'weight': 0
         }
