@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="element",
-    version="0.0.1",
+    version="0.0.2",
     description="Element: a node based cms",
     author="Thomas Rabaix",
     author_email="thomas.rabaix@gmail.com",
