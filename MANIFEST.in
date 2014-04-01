@@ -5,8 +5,11 @@ include MANIFEST.in
 include tests.py
 recursive-include element/resources *
 recursive-include element/standalone *
+recursive-include element/plugins *
 recursive-include tests *
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 recursive-exclude * .DS_Store
 recursive-exclude * *~
+
+
