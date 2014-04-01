@@ -95,3 +95,4 @@ class NodeManagerTest(unittest.TestCase):
         }
 
         self.assertEquals(expected, node.all())
+

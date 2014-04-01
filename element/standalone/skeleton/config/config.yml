@@ -98,9 +98,9 @@ element.plugins.disqus:
 ioc.extra.tornado:
     port:               8080
     name:               ''
-    static_public_path: '/static'
+    #static_public_path: '/static'
     static_url_path:    ''
-    static_folder:      '%project.root_folder%/resources/static'
+    #static_folder:      '%project.root_folder%/resources/static'
     template_folder:    'templates'
 
 ioc.extra.event:

@@ -16,7 +16,7 @@ doc:
 	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 
 dev:
-	cd element/standalone/skeleton && python start.py tornado:start --verbose
+	cd element/standalone/skeleton && python start.py tornado:start --verbose -d --bind element.vagrant:5000
 
 prod:
 	cd element/standalone/skeleton && python start.py tornado:start -np 8

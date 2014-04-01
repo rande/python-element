@@ -17,8 +17,8 @@
         {% endblock %}
 
         {% block element_head_favicon %}
-            <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}" type="image/x-icon">
-            <link rel="icon" href="{{ asset('/favicon.ico') }}" type="image/x-icon">
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+            <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
         {% endblock %}
 
         {% block element_head_js %}
@@ -59,7 +59,6 @@
                         <li><a href="{{ url_for('element.element_path', path='resume') }}">Resume</a></li>
                         <li><a href="{{ url_for('element.element_path', path='feeds') }}">Feeds</a></li>
                         <li><a href="{{ url_for('element.element_path', path='stats/parameters') }}">Stats</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='admin') }}">Admin</a></li>
                       </ul>
                     </div><!--/.nav-collapse -->
                   </div>
@@ -92,7 +91,7 @@
                     <li>Node handlers</li>
                     <li>Tornado with a bit of IOC</li>
                   </ul>
-                  
+
                   <a href="https://github.com/rande/python-element" target="_blank">View on Github</a>
                 </div>
               </div>

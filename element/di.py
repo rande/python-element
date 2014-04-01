@@ -25,6 +25,7 @@ class Extension(ioc.component.Extension):
         if not managers.get('mongodb', None):
             del container_builder.services['element.manager.mongodb']
             del container_builder.services['element.manager.mongodb.client']
+            del container_builder.services['element.command.load_demo_fixtures']
         else:
             managersList.append(('mongodb', Reference('element.manager.mongodb')))
 

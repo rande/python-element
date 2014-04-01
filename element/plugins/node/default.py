@@ -14,6 +14,6 @@ class DefaultIndex(object):
 
         event.stop_propagation()
 
-        node.id = event.get('path') # restore a valid id, as this one is virtual
+        node.id = event.get('path')  # restore a valid id, as this one is virtual
 
         event.set('node', node)
