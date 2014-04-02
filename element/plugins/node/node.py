@@ -60,3 +60,4 @@ class IndexHandler(element.node.NodeHandler):
             'context': context,
             'nodes': nodes
         })
+

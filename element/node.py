@@ -4,10 +4,15 @@ import datetime
 from element.exceptions import InvalidDataException
 
 class NodeHandler(object):
+    def finalize(self, request_handler):
+        pass
+
     def render(self, request_handler, templating, template_name, params):
         template = templating.get_template(template_name)
 
-        return request_handler.write(template.render(params))
+        request_handler.write(template.render(params))
+
+        self.finalize(request_handler)
 
 class NodeManager(object):
     def __init__(self, db, event_dispatcher, logger=None):
