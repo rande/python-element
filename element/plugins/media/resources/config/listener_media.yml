@@ -25,8 +25,7 @@ services:
             - '@element.plugins.proxy.media.static'
         tags:
             event.listener: 
-                - { name: element.node.load.success, method: add_methods }
-                - { name: element.nodes.load.success, method: add_methods }
-
-
-        
+                - { name: node.mapper.pre_initialize, method: register }
+                - { name: node.mapper.post_initialize, method: define }
+                - { name: element.node.load.success, method:  normalize }
+                - { name: element.nodes.load.success, method: normalize }

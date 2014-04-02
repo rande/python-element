@@ -1,0 +1,44 @@
+services:
+    element.plugins.node.index:
+        class: element.plugins.node.node.IndexHandler
+        arguments: 
+            - '@element.node.manager'
+            - '@ioc.extra.jinja2'
+        tags:
+            element.handler: 
+                - { name: node.index }
+
+    element.plugins.node.standardizer:
+        class: element.plugins.node.standardize.Standardizer
+
+        tags:
+            event.listener:
+                - { name: element.node.load.success, method: normalize_node }
+                - { name: element.nodes.load.success, method: normalize_nodes }
+                - { name: element.node.render_response, method: render_response }
+
+    element.plugins.node.jinja2.master:
+        class: element.plugins.node.jinja.Core
+        arguments:
+            - '@element.node.manager'
+            - '@element.context.creator'
+            - '@ioc.extra.event_dispatcher'
+            - '@ioc.extra.tornado.application'
+        tags:
+            jinja2.global:
+                - { name: render_node,       method: render_node}
+                - { name: render_node_event, method: render_node_event}
+            jinja2.filter:
+                - { name: markup,            method: markup}
+
+    element.plugins.node.mapper.meta_collection:
+        class: element.plugins.node.mapper.MetaCollection
+
+    element.plugins.node.mapper.meta_listener:
+        class: element.plugins.node.mapper.MetaListener
+        arguments:
+            - '@element.plugins.node.mapper.meta_collection'
+        tags:
+            event.listener:
+                - { name: element.node.load.success, method: on_node_load }
+                - { name: element.nodes.load.success, method: on_nodes_load }

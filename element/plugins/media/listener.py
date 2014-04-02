@@ -1,3 +1,11 @@
+from element.node import Node
+from element.plugins.node.mapper import Meta
+
+class MediaNode(Node):
+    pass
+
+class MediaGalleryNode(Node):
+    pass
 
 class ProxyStaticMethod(object):
     def __init__(self, types):
@@ -22,7 +30,7 @@ class ProxyMediasMethod(object):
         """
         return self.node_manager.get_nodes(**{
             'type': 'element.static',
-            'path': node.id
+            'path': node.path
         })
 
 class MediaListener(object):
@@ -30,34 +38,37 @@ class MediaListener(object):
         self.proxy_media_method = proxy_media_method
         self.proxy_static_method = proxy_static_method
 
-    def add_methods(self, event):
+    def register(self, event):
+
+        collection = event.get('meta_collection')
+
+        collection.add(Meta(MediaGalleryNode, 'media.gallery'))
+        collection.add(Meta(MediaNode, 'element.static'))
+
+    def define(self, event):
+
+        collection = event.get('meta_collection')
+
+        collection.metas['media.gallery'].methods['medias'] = self.proxy_media_method
+
+        collection.metas['element.static'].methods['is_image'] = self.proxy_static_method.is_image
+        collection.metas['element.static'].methods['is_video'] = self.proxy_static_method.is_video
+        collection.metas['element.static'].methods['is_document'] = self.proxy_static_method.is_document
+
+
+    def normalize(self, event):
         if event.has('node'):
             nodes = [event.get('node')]
         else:
             nodes = event.get('nodes')
 
         for node in nodes:
-            if node.type == "media.gallery":
-                self.add_methods_to_gallery(node)
+            # normalize required parameters
+            if not node.parameters:
+                node.parameters = {}
 
-            if node.type == "element.static":
-                self.add_methods_to_static(node)
+            if 'types' not in node.parameters:
+                node.parameters['types'] = ['png', 'jpg', 'gif']
 
-    def add_methods_to_static(self, node):
-        node.methods['is_image'] = self.proxy_static_method.is_image
-        node.methods['is_video'] = self.proxy_static_method.is_video
-        node.methods['is_document'] = self.proxy_static_method.is_document
-
-    def add_methods_to_gallery(self, node):
-        # append functions
-        node.methods['medias'] = self.proxy_media_method
-
-        # normalize required parameters
-        if not node.parameters:
-            node.parameters = {}
-
-        if 'types' not in node.parameters:
-            node.parameters['types'] = ['png', 'jpg', 'gif']
-
-        if 'format' not in node.parameters:
-            node.parameters['format'] = 'small'
+            if 'format' not in node.parameters:
+                node.parameters['format'] = 'small'

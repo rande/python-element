@@ -1,9 +1,0 @@
-services:
-    element.plugins.node.standardizer:
-        class: element.plugins.node.standardize.Standardizer
-
-        tags:
-            event.listener: 
-                - { name: element.node.load.success, method: normalize_node }
-                - { name: element.nodes.load.success, method: normalize_nodes }
-                - { name: element.node.render_response, method: render_response }
