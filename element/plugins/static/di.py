@@ -21,7 +21,8 @@ class Extension(ioc.component.Extension):
             'txt': 'text/plain; charset=utf-8',
             'xml': 'text/xml; charset=utf-8',
             'rss': 'application/rss+xml; charset=utf-8',
-            'ico': 'image/x-icon'
+            'ico': 'image/x-icon',
+            'html': 'text/html'
         })
 
     def post_build(self, container_builder, container):
