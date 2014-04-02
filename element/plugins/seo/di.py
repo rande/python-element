@@ -9,9 +9,4 @@ class Extension(ioc.component.Extension):
         loader.load("%s/resources/config/handler_seo.yml" % path, container_builder)
         loader.load("%s/resources/config/listener_seo.yml" % path, container_builder)
 
-
-        seo = config.get('seo', {
-            'title_pattern': 'Python Element : %s'
-        })
-        
-        container_builder.parameters.set('element.seo.page.title_pattern', seo.get('title_pattern'))
+        container_builder.parameters.set('element.seo.page.title_pattern', config.get('title_pattern', 'Python Element : %s'))
