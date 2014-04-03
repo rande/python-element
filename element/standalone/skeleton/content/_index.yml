@@ -4,7 +4,7 @@ format: html
 content: |
 
     <div class="row demo-tiles">
-        <div class="span3">
+        <div class="col-xs-3">
           <div class="tile">
             <img class="tile-image big-illustration" alt="" src="images/illustrations/colors.png" />
             <h3 class="tile-title">Blog</h3>
@@ -13,7 +13,7 @@ content: |
           </div>
         </div>
 
-        <div class="span3">
+        <div class="col-xs-3">
           <div class="tile">
             <img class="tile-image" alt="" src="images/illustrations/infinity.png" />
             <h3 class="tile-title">Element</h3>
@@ -22,7 +22,7 @@ content: |
           </div>
         </div>
 
-        <div class="span3">
+        <div class="col-xs-3">
           <div class="tile">
             <img class="tile-image" alt="" src="images/illustrations/bag.png" />
             <h3 class="tile-title">Stats</h3>
@@ -31,7 +31,7 @@ content: |
           </div>
         </div>
 
-        <div class="span3">
+        <div class="col-xs-3">
           <div class="tile">
             <img class="tile-image" alt="" src="images/illustrations/compass.png" />
             <h3 class="tile-title">Resume</h3>

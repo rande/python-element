@@ -1,9 +1,8 @@
+element/standalone/skeleton/resources/static/vendor
+docs/_build
 *.pyc
-vendor
 data
 stress-test
 .DS_Store
-cover
 .coverage
-docs/_build
 .idea

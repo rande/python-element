@@ -10,8 +10,8 @@
         <!-- Loading Bootstrap -->
         {% block element_css %}
             <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-            <link href="{{ asset('css/bootstrap.css', module='element.plugins.flatui') }}" rel="stylesheet">
-            <link href="{{ asset('css/flat-ui.css', module='element.plugins.flatui') }}" rel="stylesheet">
+            <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+            <link href="{{ asset('vendor/flatui/css/flat-ui.css') }}" rel="stylesheet">
         {% endblock %}
 
         {% block element_head_favicon %}
@@ -22,7 +22,7 @@
         {% block element_head_js %}
           <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
           <!--[if lt IE 9]>
-            <script src="{{ asset('js/html5shiv.js', module='element.plugins.flatui') }}"></script>
+            <script src="{{ asset('vendor/html5shiv/dist/html5shiv.js') }}"></script>
           <![endif]-->
         {% endblock %}
 

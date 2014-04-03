@@ -67,17 +67,9 @@ element.plugins.page:
 
 element.plugins.static:
 
-element.plugins.angular:
-
-element.plugins.jquery:
-
-element.plugins.flatui:
-
 element.plugins.ngadmin:
 
 element.plugins.api:
-
-element.plugins.bootstrap:
 
 element.plugins.seo:
     title_pattern: "%seo.title_pattern%"
@@ -93,7 +85,6 @@ element.plugins.cache:
 element.plugins.disqus:
     settings: {}
     account: account name
-
 
 ioc.extra.tornado:
     port:               8080

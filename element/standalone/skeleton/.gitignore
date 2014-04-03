@@ -1,2 +1,3 @@
 *.pyc
 config/parameters_*.yml
+resources/vendor

@@ -3,15 +3,15 @@
 {% block element_head_css %}
     {{ super() }}
 
-    <link href="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/css/lightbox.css') }}" rel="stylesheet">
-    <!-- <link href="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/css/screen.css') }}" rel="stylesheet"> -->
+    <link href="{{ asset('vendor/lightbox/css/lightbox.css') }}" rel="stylesheet">
+
+    <!--<link href="{{ asset('vendor/lightbox/css/screen.css') }}" rel="stylesheet">-->
 {% endblock %}
 
 {% block element_footer_js %}
     {{ super() }}
 
-    <script src="{{ url_for('element.static', module='element.plugins.jquery', filename='jquery.js') }}"></script>
-
-    <script src="{{ url_for('element.static', module='element.plugins.jquery', filename='modernizr.custom.js') }}"></script>
-    <script src="{{ url_for('element.static', module='element.plugins.media', filename='lightbox/js/lightbox-2.6.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/modernizr/modernizr.js') }}"></script>
+    <script src="{{ asset('vendor/lightbox/js/lightbox.min.js') }}"></script>
 {% endblock %}
