@@ -1,0 +1,2 @@
+parameters:
+    seo.title_pattern: '[dev] Python element - %s'
