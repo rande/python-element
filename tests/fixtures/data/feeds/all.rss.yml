@@ -1,0 +1,6 @@
+title: All items
+type: element.feed.rss
+filters:
+    types:      [blog.post]
+    tags:       
+    category:   

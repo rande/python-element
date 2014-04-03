@@ -1,0 +1,6 @@
+title: Feeds List
+type: node.index
+template: element.plugins.node:index.html
+filters:
+    types: [element.feed.rss, element.feed.atom]
+    path: /feeds
