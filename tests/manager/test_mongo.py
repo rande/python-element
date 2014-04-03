@@ -13,7 +13,6 @@ class MongoManagerTest(unittest.TestCase):
         self.manager = MongoManager(self.client, '_ci_python_element_test', '_ci_python_collection')
         self.manager.get_collection().remove()
 
-        print(get_uuid('my-first-blog-post'))
         self.manager.get_collection().insert({
             "_id": ObjectId("507f1f77bcf86cd799439012"),
             "uuid": get_uuid('my-first-blog-post'),
