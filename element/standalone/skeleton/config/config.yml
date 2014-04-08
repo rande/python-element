@@ -48,29 +48,6 @@ element.plugins.security:
         - { path: ^/(admin|api),        role: ROLE_ADMIN }
         - { path: ^/.*,                 role: ['IS_AUTHENTICATED_ANONYMOUSLY'] }
 
-
-element.plugins.action:
-
-element.plugins.blog:
-
-element.plugins.contact:
-
-element.plugins.errors:
-
-element.plugins.feed:
-
-element.plugins.media:
-
-element.plugins.node:
-
-element.plugins.page:
-
-element.plugins.static:
-
-element.plugins.ngadmin:
-
-element.plugins.api:
-
 element.plugins.seo:
     title_pattern: "%seo.title_pattern%"
 
@@ -94,14 +71,23 @@ ioc.extra.tornado:
     #static_folder:      '%project.root_folder%/resources/static'
     template_folder:    'templates'
 
+element.plugins.action:
+element.plugins.blog:
+element.plugins.contact:
+element.plugins.errors:
+element.plugins.feed:
+element.plugins.media:
+element.plugins.node:
+element.plugins.page:
+element.plugins.static:
+element.plugins.ngadmin:
+element.plugins.api:
+element.plugins.websocket:
+
 ioc.extra.event:
-
 ioc.extra.stats:
-
 ioc.extra.command:
-
 ioc.extra.jinja2:
-
 ioc.extra.mailer:
     host:       smtp.localhost
     port:       
