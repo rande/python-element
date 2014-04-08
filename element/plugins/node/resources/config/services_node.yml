@@ -8,6 +8,15 @@ services:
             element.handler: 
                 - { name: node.index }
 
+    element.plugins.node.template:
+        class: element.plugins.node.node.TemplateHandler
+        arguments:
+            - '@element.node.manager'
+            - '@ioc.extra.jinja2'
+        tags:
+            element.handler:
+                - { name: node.template }
+
     element.plugins.node.standardizer:
         class: element.plugins.node.standardize.Standardizer
 

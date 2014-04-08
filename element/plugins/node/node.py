@@ -1,6 +1,27 @@
 import element.node
 from element.exceptions import PerformanceException
 
+
+class TemplateHandler(element.node.NodeHandler):
+    def __init__(self, node_manager, templating):
+        self.node_manager = node_manager
+        self.templating = templating
+
+    def get_name(self):
+        return 'Node Template'
+
+
+    def get_defaults(self, node):
+        return {
+            'template': node.template,
+        }
+
+    def execute(self, request_handler, context):
+        self.render(request_handler, self.templating, context.settings['template'], {
+            'context': context,
+        })
+
+
 class IndexHandler(element.node.NodeHandler):
     def __init__(self, node_manager, templating):
         self.node_manager = node_manager
