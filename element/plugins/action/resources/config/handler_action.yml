@@ -16,4 +16,4 @@ services:
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
-            - '@element.logger'
+            - '@logger'

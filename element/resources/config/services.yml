@@ -5,7 +5,7 @@ services:
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
-            - '@element.logger'
+            - '@logger'
 
     element.context.creator:
         class: element.context.ContextCreator
@@ -16,14 +16,14 @@ services:
             - '@element.manager.chain'
             - '@ioc.extra.event_dispatcher'
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.manager.chain:
         class: element.manager.tools.ChainManager
         arguments:
             - '' # managers references
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.manager.fs:
         class: element.manager.fs.FsManager
@@ -31,7 +31,7 @@ services:
             - '' # data dir
             - '@element.loader.chain'
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.manager.mongodb:
         class: element.manager.mongo.MongoManager
@@ -40,7 +40,7 @@ services:
             - '' # database
             - '' # data collection
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
             
     element.manager.mongodb.client:
         class: pymongo.MongoClient
@@ -61,8 +61,3 @@ services:
         tags:
             element.loader: 
                 - name: inline
-
-    element.logger:
-        class: logging.getLogger
-        arguments:
-            - 'element'

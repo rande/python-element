@@ -27,6 +27,6 @@ services:
             - '' # basic entry point
             - '@element.plugins.security.auth.manager'
         kwargs:
-            logger: '@element.logger' 
+            logger: '@logger'
 
         

@@ -23,7 +23,7 @@ class Extension(Extension):
             'meta_collection': collection
         })
 
-        logger = container.get('element.logger')
+        logger = container.get('logger')
 
         def wrapper(function):
             return lambda node, *args, **kwargs: function(node, *args, **kwargs)

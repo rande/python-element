@@ -4,7 +4,7 @@ services:
         arguments:
             - "%element.plugins.security.in_memory_users%"
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
             
     element.plugins.security.access_map:
         class: element.plugins.security.firewall.AccessMap
@@ -19,7 +19,7 @@ services:
             - '@element.plugins.security.context'
             - '@element.plugins.security.role.hierarchy'
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.plugins.security.firewall:
         class: element.plugins.security.firewall.Firewall
@@ -29,12 +29,12 @@ services:
             event.listener: 
                 - { name: handler.request, method: onRequest, priority: 32 }
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.plugins.security.context:
         class: element.plugins.security.security.SecurityContext
         kwargs:
-            logger: '@element.logger'
+            logger: '@logger'
 
     element.plugins.security.role.hierarchy:
         class: element.plugins.security.role.RoleHierarchy

@@ -1,34 +1,13 @@
 # -*- coding: UTF-8 -*-
 import sys, logging, os, argparse, ioc
 
-container = None
-
-def get_container(parameters=None):
-    global container
-
-    if container:
-        return container
-
-    files = [
-        '%s/config/config.yml' % (parameters['project.root_folder']),
-        '%s/config/services.yml' % (parameters['project.root_folder']),
-        '%s/config/parameters_%s.yml' % (parameters['project.root_folder'], parameters['ioc.env']),
-    ]
-    
-    container = ioc.build(files, parameters=parameters)
-
-    return container
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(add_help=False) 
+    parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('--verbose', '-v', action='count', help="verbose level", default=False)
     parser.add_argument('--debug', '-d', help="debug mode", action='store_true')
     parser.add_argument('--env', '-e', help="Define the environement", default='dev')
     
     options, argv = parser.parse_known_args(sys.argv)
-
-    if options.verbose:
-        logging.basicConfig(level=logging.DEBUG)
 
     parameters = {
         'ioc.debug': options.debug,
@@ -36,7 +15,20 @@ if __name__ == "__main__":
         'project.root_folder': os.path.dirname(os.path.realpath(__file__))
     }
     
-    container = get_container(parameters)
+    files = [
+        '%s/config/config.yml' % (parameters['project.root_folder']),
+        '%s/config/services.yml' % (parameters['project.root_folder']),
+        '%s/config/parameters_%s.yml' % (parameters['project.root_folder'], parameters['ioc.env']),
+    ]
+
+    logger = logging.getLogger('app')
+
+    if options.verbose:
+        logger.level = logging.DEBUG
+        logging.basicConfig(level=logging.DEBUG)
+
+
+    container = ioc.build(files, logger=logger, parameters=parameters)
 
     if not container.has('ioc.extra.command.manager'):
         sys.stdout.write(

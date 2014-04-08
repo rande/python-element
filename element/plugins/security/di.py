@@ -67,7 +67,7 @@ class Extension(ioc.component.Extension):
             Reference('element.plugins.security.context'),
             Reference('element.plugins.security.provider.in_memory'), # this need to be configurable
             settings.get('context', name)
-        ], {'logger': Reference('element.logger')})
+        ], {'logger': Reference('logger')})
 
         context_handler.add_tag('event.listener', { 
             'name': 'handler.response',
@@ -93,7 +93,7 @@ class Extension(ioc.component.Extension):
             id_anonymous = 'element.plugins.security.listener.anonymous.%s' % name
             container_builder.add(id_anonymous, Definition('element.plugins.security.handler.AnonymousAuthenticationHandler', 
                 [name, Reference('element.plugins.security.context')],
-                {'logger': Reference('element.logger')}
+                {'logger': Reference('logger')}
             ))
 
             handlers.append(Reference(id_anonymous))
