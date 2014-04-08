@@ -16,7 +16,7 @@ class FunctionTest(AuthAsyncHTTPTestCase):
 
         body = json.loads(response.body)
 
-        self.assertEquals(13, len(body['results']))
+        self.assertEquals(14, len(body['results']))
 
     def test_node_list(self):
         response = self.get('/api/element/node.json')

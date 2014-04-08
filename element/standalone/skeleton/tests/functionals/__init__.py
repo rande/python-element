@@ -1,24 +1,36 @@
 # vim: set fileencoding=utf-8 :
 
-import sys, os, json
+import sys, os, json, ioc, logging
 from tornado.testing import AsyncHTTPTestCase
 
 base = sys.path[0]
 sys.path.insert(0, base + "/../../../")
 sys.path.insert(0, base + "/../../../../../")
 
-from start import get_container
 
 import element
 from element.manager import get_uuid
 
 parameters = {
     'ioc.debug': True,
-    'ioc.env': 'prod',
+    'ioc.env':   'test',
     'project.root_folder': os.path.realpath(os.path.dirname(os.path.realpath(__file__)) + '/../..')
 }
 
-application = get_container(parameters).get("ioc.extra.tornado.application")
+files = [
+    '%s/config/config.yml' % (parameters['project.root_folder']),
+    '%s/config/services.yml' % (parameters['project.root_folder']),
+    '%s/config/parameters_%s.yml' % (parameters['project.root_folder'], parameters['ioc.env']),
+]
+
+container = ioc.build(files, logger=logging.getLogger('test'), parameters=parameters)
+
+application = container.get("ioc.extra.tornado.application")
+
+# dispatch the tornado events ..
+container.get('ioc.extra.event_dispatcher').dispatch('ioc.extra.tornado.start', {
+    'application': application
+})
 
 class AuthAsyncHTTPTestCase(AsyncHTTPTestCase):
     def get_app(self):

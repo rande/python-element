@@ -3,3 +3,4 @@ type: node.index
 filters:
     types: [blog.post]
     path: /blog
+    limit: 25
