@@ -26,9 +26,34 @@ class MongoManager(object):
             "sparse": False,
         })
 
+        self.get_collection().ensure_index([("type", pymongo.ASCENDING)], 300, **{
+            "name": "type",
+            "unique": False,
+            "background": False,
+            "sparse": False,
+        })
+
         self.get_collection().ensure_index([("uuid", pymongo.ASCENDING)], 300, **{
             "name": "uuid",
             "unique": True,
+            "background": False,
+            "sparse": False,
+        })
+
+        self.get_collection().ensure_index([("alias", pymongo.ASCENDING)], 300, **{
+            "name": "uuid",
+            "unique": False,
+            "background": False,
+            "sparse": False,
+        })
+
+        self.get_collection().ensure_index([
+            ("type", pymongo.ASCENDING),
+            ("tag", pymongo.ASCENDING),
+            ("path", pymongo.ASCENDING),
+        ], 300, **{
+            "name": "type",
+            "unique": False,
             "background": False,
             "sparse": False,
         })
