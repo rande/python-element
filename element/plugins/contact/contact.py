@@ -32,7 +32,7 @@ class ContactHandler(element.node.NodeHandler):
     def execute(self, request_handler, context):
 
         contact = Contact()
-        form = ContactForm(TornadoMultiDict(request_handler), contact)
+        form = ContactForm(TornadoMultiDict(request_handler.request), contact)
 
         params = {
             'sent': False,
@@ -61,6 +61,5 @@ class ContactHandler(element.node.NodeHandler):
 
         if 'confirmation' in request_handler.request.arguments:
             params['sent'] = True
-
 
         self.render(request_handler, self.templating, context.settings['template'], params)

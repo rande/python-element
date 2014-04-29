@@ -1,7 +1,9 @@
 {% extends context.settings.base_template %}
 
 {% block content %}
-    <h1>{{ context.node.title }}</h1>
+    {% if context.node.title %}
+        <h1>{{ context.node.title }}</h1>
+    {% endif %}
     
     {{ content|safe }}
 {% endblock %}

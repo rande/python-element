@@ -7,7 +7,8 @@ class NodeHandler(object):
     def finalize(self, request_handler):
         pass
 
-    def render(self, request_handler, templating, template_name, params):
+    def render(self, request_handler, templating, template_name, params=None):
+        params = params or {}
         template = templating.get_template(template_name)
 
         request_handler.write(template.render(params))
