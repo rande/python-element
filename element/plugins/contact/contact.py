@@ -32,7 +32,7 @@ class ContactHandler(element.node.NodeHandler):
     def execute(self, request_handler, context):
 
         contact = Contact()
-        form = ContactForm(TornadoMultiDict(request_handler.request), contact)
+        form = ContactForm(TornadoMultiDict(request_handler), contact)
 
         params = {
             'sent': False,
