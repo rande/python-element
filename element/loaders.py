@@ -1,5 +1,6 @@
-import os, yaml
+import os, yaml, re
 import element
+
 
 class NodeLoader(object):
     pass
@@ -41,7 +42,21 @@ class YamlNodeLoader(NodeLoader):
         return path[-3:] == 'yml' and os.path.isfile(path)
 
     def load(self, path):
-        return yaml.load(open(path, 'r'))
+        content = open(path, 'r').read()
+
+        data = re.split("\n----\n", content, 2)
+
+        print data, len(data)
+
+        if len(data) > 1:
+            content = data[0]
+
+        node = yaml.load(content)
+
+        if len(data) > 2:
+            node['content'] = data[1]
+
+        return node
 
     def save(self, path, data):
         yaml.safe_dump(data, file(path, 'w'), 

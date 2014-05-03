@@ -32,13 +32,14 @@ class FsManagerTest(unittest.TestCase):
 
 
     def test_build_references(self):
-        self.assertEquals(4, len(self.fs.files))
+        self.assertEquals(5, len(self.fs.files))
 
         expected = {
             'eacacfab-74cf-6c8d-5e393165': 'feeds',
             '50093cac-fdc1-5ba6-6f12d44e': 'feeds/all.rss',
             'fca0ea55-c21b-186e-fe6924a5': 'sonata_small.png',
-            'c3e6be59-3448-0daa-be2dd043': '2013/my-post-content'
+            'c3e6be59-3448-0daa-be2dd043': '2013/my-post-content',
+            'fa3b5e88-acfb-fc73-90125d9e': '2013/inline-content',
         }
 
         self.assertEquals(expected, self.fs.files)
@@ -70,14 +71,14 @@ class FsManagerTest(unittest.TestCase):
 
     def test_find(self):
         cases = [
-            ({}, 4),
-            ({'type': 'blog.post'}, 1),
+            ({}, 5),
+            ({'type': 'blog.post'}, 2),
             ({'type': 'fake'}, 0),
-            ({'type': 'fake', 'types': ['blog.post']}, 1),
-            ({'types': ['blog.post', 'fake']}, 1),
-            ({'types': [], 'tags': ['red', 'yellow']}, 1),
+            ({'type': 'fake', 'types': ['blog.post']}, 2),
+            ({'types': ['blog.post', 'fake']}, 2),
+            ({'types': [], 'tags': ['red', 'yellow']}, 2),
             ({'types': [], 'tags': ['red', 'yellow', 'brown']}, 0),
-            ({'types': [], 'tags': []}, 4)
+            ({'types': [], 'tags': []}, 5)
         ]
 
         for kwarg, expected in cases:

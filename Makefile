@@ -11,6 +11,7 @@ upload:
 test:
 	nosetests
 	cd element/standalone/skeleton && nosetests
+	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 
 install:
 	pip install -r requirements_test.txt
@@ -20,7 +21,7 @@ doc:
 	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 
 dev:
-	cd element/standalone/skeleton && python start.py tornado:start --verbose -d --bind element.vagrant:5000
+	cd element/standalone/skeleton && python start.py tornado:start --verbose -d --bind element.vagrant
 
 prod:
 	cd element/standalone/skeleton && python start.py tornado:start -np 8

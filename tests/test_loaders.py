@@ -20,6 +20,12 @@ class YamlNodeLoaderTest(unittest.TestCase):
 
         self.assertIsNotNone(node['content'])
 
+    def test_load_inline(self):
+        node = self.loader.load("%s/2013/inline-content.yml" % self.path)
+
+
+
+
 class InlineLoaderTest(unittest.TestCase):
 
     def setUp(self):
@@ -38,3 +44,5 @@ class InlineLoaderTest(unittest.TestCase):
 
         self.assertEquals('hello', node['type'])
         self.assertEquals('salut', node['id'])
+
+

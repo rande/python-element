@@ -1,38 +1,43 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
-
 Filesystem
 ==========
 
 Features
 ~~~~~~~~
 
-  - Insert here the different feature available for this plugin
+  - Load contents from a yaml file
 
 Configuration
 ~~~~~~~~~~~~~
 
-  - Insert the yaml configuration for the DI
+There is no configuration option.
+
+
+Usage
+~~~~~
+
+You can create a yaml file with the following structure:
 
 .. code-block:: yaml
 
-    element.plugins.cache:
-        cache_control:
-            - { "path": "^.*\\.(txt|jpg|png|gif|xls|doc|docx)$",    "Cache-Control": ['public', 's-maxage=14212800']}
-            - { "path": "^(blog|gallery).*",    "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^.*\\.rss",            "Cache-Control": ['public', 's-maxage=3600']}
-            - { "path": "^contact.*",           "Cache-Control": ['private', 'must-revalidate']}
-            - { "path": "^/$",                  "Cache-Control": ['public', 's-maxage=3600']}
+    title: Inline Content
+    type: blog.post
+    tags: ['red', 'yellow']
 
-Events
-~~~~~~
+    ----
+    ## my title
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rutrum diam
+    lectus, eget ultricies purus. Suspendisse pellentesque enim ullamcorper libero
+    adipiscing vulputate.
 
- - List event or entry points for this plugin
+    ## section 1
+    Curabitur velit ipsum, sagittis volutpat porta at, imperdiet at risus. Donec ipsum nunc,
+    commodo ut laoreet sed, mollis eu dolor. Praesent iaculis, nisl a laoreet elementum,
+    odio lacus aliquam risus, et aliquam turpis metus vestibulum dolor.
 
-Architecture
-~~~~~~~~~~~~
+    Maecenas venenatis nulla in metus egestas sollicitudin. Donec convallis sodales
+    massa, ac feugiat mauris tincidunt vel. Fusce eu leo vel nisi faucibus luctus.
 
- - Provide information about how the feature is implemented
+
+.. note::
+
+    As you notice the file is not a valid yaml file, all the data after the ``----`` separator will be available in the ``content`` field of the node object
