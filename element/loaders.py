@@ -1,5 +1,6 @@
 import os, yaml, re
 import element
+import codecs
 
 
 class NodeLoader(object):
@@ -42,7 +43,7 @@ class YamlNodeLoader(NodeLoader):
         return path[-3:] == 'yml' and os.path.isfile(path)
 
     def load(self, path):
-        meta = open(path, 'r').read()
+        meta = codecs.open(path, "r", "utf-8").read()
 
         data = re.split("(\n|\r\n)----(\n|\r\n)", meta, 2)
 
