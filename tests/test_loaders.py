@@ -23,6 +23,8 @@ class YamlNodeLoaderTest(unittest.TestCase):
     def test_load_inline(self):
         node = self.loader.load("%s/2013/inline-content.yml" % self.path)
 
+        self.assertTrue("content" in node)
+        self.assertEquals(node["content"], "## my title\nLorem ipsum dolor sit amet, consectetur adipiscing elit.")
 
 
 

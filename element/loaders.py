@@ -42,19 +42,17 @@ class YamlNodeLoader(NodeLoader):
         return path[-3:] == 'yml' and os.path.isfile(path)
 
     def load(self, path):
-        content = open(path, 'r').read()
+        meta = open(path, 'r').read()
 
-        data = re.split("\n----\n", content, 2)
-
-        print data, len(data)
+        data = re.split("(\n|\r\n)----(\n|\r\n)", meta, 2)
 
         if len(data) > 1:
-            content = data[0]
+            meta = data[0]
 
-        node = yaml.load(content)
+        node = yaml.load(meta)
 
         if len(data) > 2:
-            node['content'] = data[1]
+            node['content'] = data[3]
 
         return node
 
