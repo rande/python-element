@@ -3,6 +3,7 @@ services:
         class: element.plugins.page.page.PageHandler
         arguments:
             - '@ioc.extra.jinja2'
+            - '@element.plugins.formatter'
 
         tags:
             element.handler: 

@@ -1,7 +1,30 @@
 title: Resume
 type: page.default
-format: markdown
-content: |
-    ## John Doe
+format: rst
 
-    Put a Resume here!!
+----
+
+John Doe
+~~~~~~~~
+
+I can do some python!!
+
+.. code:: python
+
+    import sys
+
+    sys.exit()
+
+Test with a picture
+
+.. image:: python-powered-w-200x80.png
+   :height: 100px
+   :width: 200 px
+   :scale: 50 %
+   :alt: alternate text
+   :align: right
+
+.. raw:: html
+
+    <br />
+    Test with inline html: <b>It works!</b>

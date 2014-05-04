@@ -8,11 +8,12 @@ class SubRequestHandler(RequestHandler):
         return b"".join(self._write_buffer)
 
 class Core(object):
-    def __init__(self, node_manager, context_creator, dispatcher, application):
+    def __init__(self, node_manager, context_creator, dispatcher, application, formatter):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.dispatcher = dispatcher
         self.application = application
+        self.formatter = formatter
 
     def render_node(self, node, defaults=None):
         defaults = defaults or {}
@@ -57,7 +58,4 @@ class Core(object):
             format = content.format
             content = content.content
 
-        if format == 'markdown':
-            return markdown.markdown(content)
-
-        return content
+        return self.formatter.format(content, formatter=format)

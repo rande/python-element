@@ -2,8 +2,9 @@ import markdown, os
 import element.node
 
 class PageHandler(element.node.NodeHandler):
-    def __init__(self, templating):
+    def __init__(self, templating, formatter):
         self.templating = templating
+        self.formatter = formatter
 
     def get_name(self):
         return 'Page'
@@ -14,13 +15,7 @@ class PageHandler(element.node.NodeHandler):
         }
 
     def execute(self, request_handler, context):
-        content = context.node.content
-        if context.node.format == 'markdown':
-            content = markdown.markdown(context.node.content, ['tables'])
-
-        params = {
-            'context': context, 
-            'content': content,
-        }
-
-        self.render(request_handler, self.templating, context.settings['template'], params)
+        self.render(request_handler, self.templating, context.settings['template'], {
+            'context': context,
+            'content': self.formatter.format(context.node.content, formatter=context.node.format),
+        })

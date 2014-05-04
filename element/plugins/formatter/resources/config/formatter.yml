@@ -1,0 +1,3 @@
+services:
+    element.plugins.formatter:
+        class: element.plugins.formatter.Formatter
