@@ -9,6 +9,12 @@ class Formatter(object):
             return markdown.markdown(content, ['tables'])
 
         elif formatter in ['rst', 'sphinx']:
-            return publish_parts(content, writer_name='html')['html_body']
+            parts = publish_parts(content, writer_name='html', settings_overrides={
+                'input_encoding': 'unicode',
+                'output_encoding': 'unicode',
+                'syntax_highlight': 'short',
+            })
+
+            return parts['html_body']
 
         return content

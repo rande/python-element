@@ -82,6 +82,7 @@ element.plugins.page:
 element.plugins.static:
 element.plugins.ngadmin:
 element.plugins.api:
+element.plugins.formatter:
 #element.plugins.websocket:
 
 ioc.extra.event:
