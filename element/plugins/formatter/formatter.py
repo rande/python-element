@@ -6,7 +6,7 @@ class Formatter(object):
     def format(self, content, formatter='markdown'):
 
         if formatter == 'markdown':
-            return markdown.markdown(content, ['tables'])
+            return markdown.markdown(content, ['tables', 'codehilite'])
 
         elif formatter in ['rst', 'sphinx']:
             parts = publish_parts(content, writer_name='html', settings_overrides={
