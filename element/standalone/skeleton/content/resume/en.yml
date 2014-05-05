@@ -9,7 +9,8 @@ John Doe
 
 I can do some python!!
 
-.. code:: python
+.. code-block:: python
+   :number-lines:
 
     import sys
 

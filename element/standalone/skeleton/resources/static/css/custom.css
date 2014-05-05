@@ -14,3 +14,33 @@ h3, .h3 {
 h1, h2, h3 {
     margin-top: 15px;
 }
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 970px;
+  }
+}
+
+footer {
+    margin-top: 10px;
+}
+
+footer h3, footer p {
+    color: #6B6D70;
+}
+
+code, kbd, pre, samp, pre.code {
+    font-family: "Courier New",monospace;
+    color: #F8F8F2;
+    background: #49483E;
+}

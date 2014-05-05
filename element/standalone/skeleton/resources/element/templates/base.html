@@ -14,9 +14,9 @@
             <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
             <link href="{{ asset('vendor/flatui/css/flat-ui.css') }}" rel="stylesheet">
             <link href="{{ asset('vendor/flatui/css/demo.css') }}" rel="stylesheet">
-
+            <link href="{{ asset('sphinx.css', module='element.plugins.formatter') }}" rel="stylesheet">
+            <link href="{{ asset('pygment/monokai.css', module='element.plugins.formatter') }}" rel="stylesheet">
             <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
-
         {% endblock %}
 
         {% block element_head_favicon %}
@@ -25,79 +25,75 @@
         {% endblock %}
 
         {% block element_head_js %}
-          <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
-          <!--[if lt IE 9]>
+            <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+            <!--[if lt IE 9]>
             <script src="{{ asset('vendor/html5shiv/dist/html5shiv.js') }}"></script>
-          <![endif]-->
+            <![endif]-->
         {% endblock %}
 
         {% block element_head_feed %}
-            <link href="{{ url_for('element.element_path', path='/feeds/all.rss', force_external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate" />
-            <link href="{{ url_for('element.element_path', path='/feeds/python.rss', force_external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate" />
-            <link href="{{ url_for('element.element_path', path='/feeds/all.atom', force_external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate" />
-            <link href="{{ url_for('element.element_path', path='/feeds/python.atom', force_external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate" />
+            <link href="{{ url_for('element.element_path', path='/feeds/all.rss', force_external=True) }}" title="Python Element - All feeds" type="application/rss+xml" rel="alternate"/>
+            <link href="{{ url_for('element.element_path', path='/feeds/python.rss', force_external=True) }}" title="Python Element - Python feeds" type="application/rss+xml" rel="alternate"/>
+            <link href="{{ url_for('element.element_path', path='/feeds/all.atom', force_external=True) }}" title="Python Element - All feeds" type="application/atom+xml" rel="alternate"/>
+            <link href="{{ url_for('element.element_path', path='/feeds/python.atom', force_external=True) }}" title="Python Element - Python feeds" type="application/atom+xml" rel="alternate"/>
         {% endblock %}
 
     </head>
 
-    <body>
+    <body class="codehilite">
         <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="navbar navbar-inverse navbar-embossed" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                                <span class="sr-only">Toggle navigation</span>
+                            </button>
+                        </div>
 
-          <div class="row">
-            <div class="col-xs-12">
-              <div class="navbar navbar-inverse navbar-embossed" role="navigation">
-                    <div class="navbar-header">
-                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                        <span class="sr-only">Toggle navigation</span>
-                      </button>
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-left">
+                                <li><a href="{{ url_for('element.element_home') }}">Element</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='blog') }}">Blog</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='gallery') }}">Gallery</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='contact') }}">Contact</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='resume') }}">Resume</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='feeds') }}">Feeds</a></li>
+                                <li><a href="{{ url_for('element.element_path', path='stats/parameters') }}">Stats</a></li>
+                            </ul>
+                        </div>
                     </div>
-
-                    <div class="collapse navbar-collapse">
-                      <ul class="nav navbar-nav navbar-left">
-                        <li><a href="{{ url_for('element.element_home') }}">Element</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='blog') }}">Blog</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='gallery') }}">Gallery</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='contact') }}">Contact</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='resume') }}">Resume</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='feeds') }}">Feeds</a></li>
-                        <li><a href="{{ url_for('element.element_path', path='stats/parameters') }}">Stats</a></li>
-                      </ul>
-                    </div><!--/.nav-collapse -->
-
-              </div>
+                </div>
             </div>
-          </div>
 
-          {% block content %}{% endblock %}
-
+            {% block content %}{% endblock %}
         </div>
 
         <footer>
-          <div class="container">
-            <div class="row">
-              <div class="col-xs-7">
-                <h3 class="footer-title">About</h3>
-                <p>
-                  Python Element is a CMS based on python built on standard libraries, such as
-                  Tornado, jinja, markdown and other tools.
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <h3 class="footer-title">About</h3>
+                        <p>
+                            Python Element is a CMS based on python built on standard libraries, such as
+                            Tornado, jinja, markdown and other tools.
+                        </p>
+                    </div>
 
-                </p>
-              </div> <!-- /span8 -->
+                    <div class="col-xs-5">
+                        <div class="footer-banner">
+                            <h3 class="footer-title">Python Element</h3>
+                            <ul>
+                                <li>Yaml Based</li>
+                                <li>Node handlers</li>
+                                <li>Tornado with a bit of IOC</li>
+                            </ul>
 
-              <div class="col-xs-5">
-                <div class="footer-banner">
-                  <h3 class="footer-title">Python Element</h3>
-                  <ul>
-                    <li>Yaml Based</li>
-                    <li>Node handlers</li>
-                    <li>Tornado with a bit of IOC</li>
-                  </ul>
-
-                  <a href="https://github.com/rande/python-element" target="_blank">View on Github</a>
+                            <a href="https://github.com/rande/python-element" target="_blank">View on Github</a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </footer>
 
         {% block element_footer_css %}{% endblock %}
