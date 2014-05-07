@@ -7,16 +7,15 @@ class FormatterTest(unittest.TestCase):
         self.formmater = Formatter()
 
     def test_markdown(self):
-        content = self.formmater.format('**bold**')
+        content = self.formmater.format(u'**bold**')
 
         self.assertEquals("<p><strong>bold</strong></p>", content)
 
-        content = self.formmater.format('**bold**', formatter='markdown')
+        content = self.formmater.format(u'**bold**', formatter='markdown')
 
         self.assertEquals("<p><strong>bold</strong></p>", content)
 
-
-    def test_rst(self):
-        content = self.formmater.format('**bold**', formatter='rst')
+    def test_rst_with_code(self):
+        content = self.formmater.format(u'**bold**', formatter='rst')
 
         self.assertEquals('<div class="document">\n<p><strong>bold</strong></p>\n</div>\n', content)
