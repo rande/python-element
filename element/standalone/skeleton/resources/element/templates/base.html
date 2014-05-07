@@ -7,8 +7,6 @@
             {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
         {% endblock %}
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <!-- Loading Bootstrap -->
         {% block element_head_css %}
             <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">

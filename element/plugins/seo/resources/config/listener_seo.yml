@@ -3,6 +3,8 @@ services:
         class: element.plugins.seo.listener.SeoPage
         arguments:
             - "%element.seo.page.title_pattern%"
+            - "%element.seo.page.metas%"
+            - "%element.seo.page.keywords%"
 
     element.plugins.listener.seo:
         class: element.plugins.seo.listener.SeoListener

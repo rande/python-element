@@ -50,6 +50,26 @@ element.plugins.security:
 
 element.plugins.seo:
     title_pattern: "%seo.title_pattern%"
+    metas:
+        name:
+            keywords:             python, element, cms, markdown
+            description:          Python Element by Thomas Rabaix ~ A CMS based on Tornado with a bit of "ioc"
+            robots:               index, follow
+            viewport:             width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no
+
+        property:
+            # Facebook application settings
+            #'fb:app_id':          XXXXXX
+            #'fb:admins':          admin1, admin2
+
+            # Open Graph information
+            # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
+            'og:site_name':       Python Element by Thomas Rabaix
+            'og:description':     A CMS based on Tornado
+
+        http-equiv:
+            'Content-Type':         text/html; charset=utf-8
+            #'X-Ua-Compatible':      IE=EmulateIE7
 
 element.plugins.cache:
     cache_control:
@@ -71,6 +91,13 @@ ioc.extra.tornado:
     #static_folder:      '%project.root_folder%/resources/static'
     template_folder:    'templates'
 
+ioc.extra.redis:
+    connections:
+        websocket: { db: 1 }
+    clients:
+        websocket:
+            connection: websocket
+
 element.plugins.action:
 element.plugins.blog:
 element.plugins.contact:
@@ -82,8 +109,8 @@ element.plugins.page:
 element.plugins.static:
 element.plugins.ngadmin:
 element.plugins.api:
-element.plugins.formatter:
 #element.plugins.websocket:
+element.plugins.formatter:
 
 ioc.extra.event:
 ioc.extra.stats:
