@@ -4,28 +4,29 @@ format: markdown
 enabled: 1
 published_at: Fri, 18 Sep 2009 19:19:16
 comment_enabled: 
-content: | 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus, 
-    at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique 
-    tempus ligula blandit sodales. Nunc luctus, orci in interdum porttitor, urna massa scelerisque 
-    felis, eget hendrerit sapien eros sed augue. Ut quam mauris, feugiat nec laoreet pellentesque, 
-    molestie eget orci. Vivamus leo leo, convallis et sodales vel, fermentum sed leo. Cras sit 
-    amet dui vel sapien consectetur adipiscing. Pellentesque lectus massa, aliquet et ultrices 
-    sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus 
-    aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
 
-    Nullam lacinia ante justo. Aliquam consectetur semper magna, in imperdiet ligula posuere vel. 
-    Ut ut nulla tortor. Integer laoreet tellus id mi feugiat et bibendum dolor iaculis. Phasellus
-    id quam quis tortor interdum venenatis eu eget lacus. Aenean a magna non risus lobortis 
-    sollicitudin eget quis odio. Proin at turpis augue, a dignissim sapien. Duis eget sem sit 
-    amet urna hendrerit semper. Nulla facilisi. Nunc molestie facilisis tellus. Quisque eget 
-    volutpat magna. Integer nec facilisis est.
+----
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus,
+at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique
+tempus ligula blandit sodales. Nunc luctus, orci in interdum porttitor, urna massa scelerisque
+felis, eget hendrerit sapien eros sed augue. Ut quam mauris, feugiat nec laoreet pellentesque,
+molestie eget orci. Vivamus leo leo, convallis et sodales vel, fermentum sed leo. Cras sit
+amet dui vel sapien consectetur adipiscing. Pellentesque lectus massa, aliquet et ultrices
+sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus
+aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
 
-    Etiam dapibus dui non ante imperdiet ut pharetra lorem blandit. Vivamus sit amet laoreet augue.
-    Pellentesque eu ipsum non nunc porttitor pharetra. Pellentesque in dui massa. Sed venenatis 
-    lectus id arcu sagittis pharetra. Donec porttitor justo vel arcu posuere gravida non nec est. 
-    Suspendisse ornare tempus sapien at fermentum. Phasellus ultrices venenatis eros sed convallis.
-    Nullam bibendum laoreet orci eu vestibulum. Praesent sagittis, massa sed pharetra pulvinar, 
-    diam dui semper lacus, vel ornare diam ipsum sit amet nunc. Pellentesque eu rutrum erat. 
-    Suspendisse eu scelerisque velit. Integer ac mi quam, vitae convallis lacus.
+Nullam lacinia ante justo. Aliquam consectetur semper magna, in imperdiet ligula posuere vel.
+Ut ut nulla tortor. Integer laoreet tellus id mi feugiat et bibendum dolor iaculis. Phasellus
+id quam quis tortor interdum venenatis eu eget lacus. Aenean a magna non risus lobortis
+sollicitudin eget quis odio. Proin at turpis augue, a dignissim sapien. Duis eget sem sit
+amet urna hendrerit semper. Nulla facilisi. Nunc molestie facilisis tellus. Quisque eget
+volutpat magna. Integer nec facilisis est.
+
+Etiam dapibus dui non ante imperdiet ut pharetra lorem blandit. Vivamus sit amet laoreet augue.
+Pellentesque eu ipsum non nunc porttitor pharetra. Pellentesque in dui massa. Sed venenatis
+lectus id arcu sagittis pharetra. Donec porttitor justo vel arcu posuere gravida non nec est.
+Suspendisse ornare tempus sapien at fermentum. Phasellus ultrices venenatis eros sed convallis.
+Nullam bibendum laoreet orci eu vestibulum. Praesent sagittis, massa sed pharetra pulvinar,
+diam dui semper lacus, vel ornare diam ipsum sit amet nunc. Pellentesque eu rutrum erat.
+Suspendisse eu scelerisque velit. Integer ac mi quam, vitae convallis lacus.
 
