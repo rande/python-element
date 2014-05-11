@@ -1,6 +1,7 @@
 import os, yaml, re
 import element
 import codecs
+import copy
 
 
 class NodeLoader(object):
@@ -58,11 +59,20 @@ class YamlNodeLoader(NodeLoader):
         return node
 
     def save(self, path, data):
-        yaml.safe_dump(data, file(path, 'w'), 
-            canonical=False,
-            encoding='utf-8',
-            allow_unicode=True
-        )
+        data = copy.deepcopy(data)
+
+        content = False
+
+        if 'content' in data:
+            content = data['content']
+            del data['content']
+
+        data = yaml.safe_dump(data, canonical=False, encoding='utf-8', allow_unicode=True)
+
+        if content:
+            file(path, 'w').write(u"%s\n\n----\n%s" % (data, content))
+        else:
+            file(path, 'w').write(data)
 
         return True
 

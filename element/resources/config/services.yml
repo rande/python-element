@@ -9,6 +9,8 @@ services:
 
     element.context.creator:
         class: element.context.ContextCreator
+        arguments:
+            - '@ioc.extra.event_dispatcher'
 
     element.node.manager:
         class: element.node.NodeManager

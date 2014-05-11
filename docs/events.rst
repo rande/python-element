@@ -25,11 +25,12 @@ element.nodes.load.success
 --------------------------
 
 This event is used when a set of nodes is loaded. While a node is loaded, no ``element.node.load.success`` event is notified.
+This event must be used to alter the raw node data, ie the data altered can be persisted as it.
 
 element.node.load.success
 -------------------------
 
-This event is used when a node is loaded.
+This event is used when a node is loaded. (see ``element.nodes.load.success`` event)
 
 element.node.load.fail
 ----------------------
@@ -55,3 +56,11 @@ element.node.post_save
 ----------------------
 
 This event is used when a node has been saved.
+
+
+element.node.context.load
+-------------------------
+
+This event is used to alter the NodeContext object, you should not used this event to alter the node object. You can
+use this event to alter temporary data (data only required in the Request Scope). The SEO plugins used this event to
+add missing seo information from the node.

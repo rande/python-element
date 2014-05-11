@@ -1,7 +1,8 @@
 from node import NodeContext
 
 class ContextCreator(object):
-    def __init__(self, defaults=None):
+    def __init__(self, event_dispatcher, defaults=None):
+        self.event_dispatcher = event_dispatcher
         self.defaults = defaults or {
             'base_template': 'element:base.html',
         }
@@ -17,4 +18,10 @@ class ContextCreator(object):
         if not settings['base_template']:
             settings['base_template'] = 'element:empty.html'
 
-        return NodeContext(node, settings)
+        context = NodeContext(node, settings)
+
+        self.event_dispatcher.dispatch('element.node.context.load', {
+            'context': context
+        })
+
+        return context

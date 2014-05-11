@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
 
-        {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
+        {{ render_node_event('element.seo.headers', options={'subject': context})|safe }}
 
         <!-- Loading Bootstrap -->
         {% block element_css %}

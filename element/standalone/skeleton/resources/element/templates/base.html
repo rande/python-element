@@ -4,7 +4,7 @@
         <meta charset="utf-8">
 
         {% block element_head_seo %}
-            {{ render_node_event('element.seo.headers', options={'subject': context.node})|safe }}
+            {{ render_node_event('element.seo.headers', options={'subject': context})|safe }}
         {% endblock %}
 
         <!-- Loading Bootstrap -->

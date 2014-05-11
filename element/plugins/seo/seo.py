@@ -13,20 +13,22 @@ class SeoHandler(element.node.NodeHandler):
         return 'Seo'
 
     def execute(self, request_handler, context):
-        params = {
+        return self.render(request_handler, self.templating, context.settings['template'], {
             'context': context,
-            'seo': context.node.seo
-        }
-
-        return self.render(request_handler, self.templating, context.settings['template'], params)
+            'seo': context.seo
+        })
 
     def listener(self, event):
-        if 'seo' not in event.get('subject').data:
+        """
+        listen to element.seo.headers event and return a node with seo information only
+        subject should be a NodeContext object
+        """
+        if 'seo' not in event.get('subject').settings:
             return
 
         node = element.node.Node('seo://%s' % event.get('subject').id, {
             'type': 'seo.headers',
-            'seo': event.get('subject').data['seo'],
+            'seo': event.get('subject').seo,
         })
 
         event.set('node', node)

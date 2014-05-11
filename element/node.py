@@ -196,3 +196,9 @@ class NodeContext(object):
             return self.settings[name]
 
         return None
+
+    def __getitem__(self, name):
+        if name in self.settings:
+            return self.settings[name]
+
+        return None

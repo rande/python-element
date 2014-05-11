@@ -49,7 +49,7 @@ class Extension(ioc.component.Extension):
         auth_providers = []
 
         parameter = []
-        for name, settings in config.all().iteritems():
+        for name, settings in config.iteritems():
             pattern = settings.get('pattern', '.*')
 
             parameter.append((re.compile(pattern), self.get_firewall_context(name, settings, container_builder, auth_providers)))

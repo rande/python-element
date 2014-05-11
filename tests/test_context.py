@@ -6,7 +6,9 @@ import mock
 
 class ContextCreatorTest(unittest.TestCase):
     def test_build(self):
-        creator = element.context.ContextCreator()
+        event_dispatcher = mock.Mock()
+
+        creator = element.context.ContextCreator(event_dispatcher)
 
         handler = mock.Mock()
         handler.get_defaults.return_value = {}

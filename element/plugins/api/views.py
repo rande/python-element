@@ -10,6 +10,7 @@ class CrudView(object):
         request_handler.set_header('Content-Type', 'application/script')
 
     def build_json_response(self, request_handler, data):
+        print data
         request_handler.write(json.dumps(data, default=date_handler))
         request_handler.set_header('Content-Type', 'application/json')
 

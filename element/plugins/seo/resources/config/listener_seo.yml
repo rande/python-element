@@ -12,4 +12,4 @@ services:
             - "@element.plugins.seo.page"
         tags:
             event.listener: 
-                - { name: element.node.load.success, method: add_seo }
+                - { name: element.node.context.load, method: add_seo }
