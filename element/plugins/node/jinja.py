@@ -39,7 +39,7 @@ class Core(object):
         # render the response
         handler.execute(request_handler, context)
 
-        return request_handler.get_buffer()
+        return self.unicode(request_handler.get_buffer())
 
     def render_node_event(self, event_name, options=None):
         event = self.dispatcher.dispatch(event_name, options or {})
@@ -47,7 +47,7 @@ class Core(object):
         if not event.has('node'):
             return "<!-- no listener registered for event: %s -->" % event_name
 
-        return self.render_node(event.get('node'))
+        return self.unicode(self.render_node(event.get('node')))
 
     def markup(self, content, format=None):
         if isinstance(content, element.node.NodeContext):
@@ -58,4 +58,10 @@ class Core(object):
             format = content.format
             content = content.content
 
-        return self.formatter.format(content, formatter=format)
+        return self.unicode(self.formatter.format(content, formatter=format))
+
+    def unicode(self, content):
+        if isinstance(content, unicode):
+            return content
+
+        return content.decode("utf-8")

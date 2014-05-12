@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import element.node
 from ioc.helper import deepcopy
 
