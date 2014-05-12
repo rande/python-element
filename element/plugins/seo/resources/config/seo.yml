@@ -1,0 +1,23 @@
+services:
+    element.plugins.seo.page:
+        class: element.plugins.seo.SeoPage
+        arguments:
+            - "%element.seo.page.title_pattern%"
+            - "%element.seo.page.metas%"
+            - "%element.seo.page.keywords%"
+
+    element.plugins.listener.seo:
+        class: element.plugins.seo.SeoListener
+        arguments:
+            - "@element.plugins.seo.page"
+        tags:
+            event.listener:
+                - { name: element.seo.headers, method: listener }
+
+    element.plugins.seo:
+        class: element.plugins.seo.SeoHandler
+        arguments:
+            - '@ioc.extra.jinja2'
+        tags:
+            element.handler:
+                - { name: seo.headers }
