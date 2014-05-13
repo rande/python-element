@@ -1,11 +1,18 @@
 services:
-    element.tornado.view.index:
-        class: element.views.PathView
-        arguments: 
+    element.node.renderer:
+        class: element.views.NodeRenderer
+        arguments:
             - '@element.node.manager'
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
             - '@logger'
+
+    element.tornado.view.index:
+        class: element.views.PathView
+        arguments: 
+            - '@element.node.manager'
+            - '@element.node.renderer'
+            - '@ioc.extra.event_dispatcher'
 
     element.context.creator:
         class: element.context.ContextCreator

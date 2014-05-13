@@ -1,8 +1,10 @@
 import element.node
 
-from element.views import Dispatcher
+class ActionView(object):
+    def __init__(self, rendered, event_dispatcher):
+        self.rendered = rendered
+        self.event_dispatcher = event_dispatcher
 
-class ActionView(Dispatcher):
     def dispatch(self, request_handler, *args, **kwargs):
         if '_controller' not in kwargs:
             return
@@ -26,4 +28,4 @@ class ActionView(Dispatcher):
             'node': node
         })
 
-        return self._execute(request_handler, event.get('node'))
+        return self.rendered.render(request_handler, event.get('node'))

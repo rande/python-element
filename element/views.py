@@ -1,13 +1,13 @@
 import element.node
 
-class Dispatcher(object):
+class NodeRenderer(object):
     def __init__(self, node_manager, context_creator, event_dispatcher, logger):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.event_dispatcher = event_dispatcher
         self.logger = logger
 
-    def render_node(self, node, request_handler, node_handler):
+    def _render_node(self, node, request_handler, node_handler):
         # build the execution context
         context = self.context_creator.build(node, node_handler)
 
@@ -22,7 +22,7 @@ class Dispatcher(object):
             'request_handler': request_handler
         })
 
-    def _execute(self, request_handler, node):
+    def render(self, request_handler, node):
         # load the related node's handler
         node_handler = self.node_manager.get_handler(node)
 
@@ -30,7 +30,8 @@ class Dispatcher(object):
             event = self.event_dispatcher.dispatch('element.node.internal_error', {
                 'node': node,
                 'reason': 'No handler found',
-                'status_code': 500
+                'status_code': 500,
+                'request_handler': request_handler
             })
 
             # no listener to generate a valid node error
@@ -49,21 +50,26 @@ class Dispatcher(object):
 
                 return
 
-        return self.render_node(node, request_handler, node_handler)
+        return self._render_node(node, request_handler, node_handler)
 
-class PathView(Dispatcher):
+class PathView(object):
+    def __init__(self, node_manager, renderer, event_dispatcher):
+        self.node_manager = node_manager
+        self.renderer = renderer
+        self.event_dispatcher = event_dispatcher
+
     def execute(self, request_handler, path):
         # load the node
-        node, status_code = self.get_node(path)
+        node, status_code = self.get_node(request_handler, path)
 
         request_handler.set_status(status_code)
 
         if not node:
             return
 
-        return self._execute(request_handler, node)
+        return self.renderer.render(request_handler, node)
 
-    def get_node(self, id):
+    def get_node(self, request_handler, id):
         node = self.node_manager.get_node(id)
 
         status_code = 200
@@ -73,7 +79,8 @@ class PathView(Dispatcher):
 
             event = self.event_dispatcher.dispatch('element.node.not_found', {
                 'path': id,
-                'status_code': status_code
+                'status_code': status_code,
+                'request_handler': request_handler
             })
 
             if not event.has('node'):  # no error handler defined for the application

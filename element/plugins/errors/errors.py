@@ -1,8 +1,9 @@
 
 
 class ErrorListener(object):
-    def __init__(self, node_manager):
+    def __init__(self, node_manager, renderer):
         self.node_manager = node_manager
+        self.renderer = renderer
 
     def handle_400_error(self, event):
         return self.handle('errors/40x', event)
@@ -13,9 +14,7 @@ class ErrorListener(object):
     def handle(self, path, event):
         node = self.node_manager.get_node(path)
 
-        if not node:
+        if not node or not event.has('request_handler'):
             return
 
-        node.response['status_code'] = event.get('status_code')
-
-        event.set('node', node)
+        self.renderer.render(event.get('request_handler'), node)

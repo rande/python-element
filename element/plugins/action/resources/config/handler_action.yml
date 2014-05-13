@@ -13,7 +13,5 @@ services:
     element.plugins.node.view.action:
         class: element.plugins.action.views.ActionView
         arguments:
-            - '@element.node.manager'
-            - '@element.context.creator'
+            - '@element.node.renderer'
             - '@ioc.extra.event_dispatcher'
-            - '@logger'
