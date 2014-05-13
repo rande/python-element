@@ -1,6 +1,5 @@
 type: blog.post
 title: Python is Zen
-slug: plugins-status
 format: markdown
 enabled: 1
 published_at: Fri, 18 Sep 2009 19:19:16

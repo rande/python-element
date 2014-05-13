@@ -43,15 +43,16 @@ A blog post is defined as:
     enabled: 1
     published_at: Fri, 18 Sep 2009 19:19:16
     comment_enabled:
-    content: |
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus,
-        at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique
-        tempus ligula blandit sodales. Nunc luctus, orci in interdum porttitor, urna massa scelerisque
-        felis, eget hendrerit sapien eros sed augue. Ut quam mauris, feugiat nec laoreet pellentesque,
-        molestie eget orci. Vivamus leo leo, convallis et sodales vel, fermentum sed leo. Cras sit
-        amet dui vel sapien consectetur adipiscing. Pellentesque lectus massa, aliquet et ultrices
-        sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus
-        aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
+
+    ----
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras gravida malesuada tellus,
+    at tincidunt lorem accumsan vel. Vestibulum varius sodales sagittis. Quisque tristique
+    tempus ligula blandit sodales. Nunc luctus, orci in interdum porttitor, urna massa scelerisque
+    felis, eget hendrerit sapien eros sed augue. Ut quam mauris, feugiat nec laoreet pellentesque,
+    molestie eget orci. Vivamus leo leo, convallis et sodales vel, fermentum sed leo. Cras sit
+    amet dui vel sapien consectetur adipiscing. Pellentesque lectus massa, aliquet et ultrices
+    sit amet, volutpat vel leo. Nulla aliquet sodales enim ac dictum. Proin mattis arcu a metus
+    aliquam pulvinar. Phasellus sed lectus elit. Donec vitae urna magna. Vestibulum id volutpat eros.
 
 The ``format`` option defines how to handle the ``content`` field. You can provide a markdown content or a html content.
 

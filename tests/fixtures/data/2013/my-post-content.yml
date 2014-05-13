@@ -1,16 +1,17 @@
 title: My Post Content
 type: blog.post
 tags: ['red', 'yellow']
-content: |
-    ## my title
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rutrum diam 
-    lectus, eget ultricies purus. Suspendisse pellentesque enim ullamcorper libero 
-    adipiscing vulputate. 
 
-    ## section 1
-    Curabitur velit ipsum, sagittis volutpat porta at, imperdiet at risus. Donec ipsum nunc, 
-    commodo ut laoreet sed, mollis eu dolor. Praesent iaculis, nisl a laoreet elementum, 
-    odio lacus aliquam risus, et aliquam turpis metus vestibulum dolor.
+----
+## my title
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rutrum diam
+lectus, eget ultricies purus. Suspendisse pellentesque enim ullamcorper libero
+adipiscing vulputate.
 
-    Maecenas venenatis nulla in metus egestas sollicitudin. Donec convallis sodales 
-    massa, ac feugiat mauris tincidunt vel. Fusce eu leo vel nisi faucibus luctus. 
+## section 1
+Curabitur velit ipsum, sagittis volutpat porta at, imperdiet at risus. Donec ipsum nunc,
+commodo ut laoreet sed, mollis eu dolor. Praesent iaculis, nisl a laoreet elementum,
+odio lacus aliquam risus, et aliquam turpis metus vestibulum dolor.
+
+Maecenas venenatis nulla in metus egestas sollicitudin. Donec convallis sodales
+massa, ac feugiat mauris tincidunt vel. Fusce eu leo vel nisi faucibus luctus.

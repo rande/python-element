@@ -10,7 +10,7 @@ There is no configuration option. You only need to enable the plugin by adding t
 
 .. code-block:: yaml
 
-    element.plugins.page:
+    element.plugins.node:
 
 Usage
 -----
@@ -72,10 +72,11 @@ This filter take a node and return a formatted string.
     type: blog.post
     title: Test
     format: markdown
-    content: |
-        ## John Doe
 
-        Put a Resume here!!
+    ----
+    ## John Doe
+
+    Put a Resume here!!
 
 
 .. code-block:: jinja
