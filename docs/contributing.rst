@@ -7,13 +7,9 @@ Any contribution must have its own unit tests to ensure good quality and avoid r
 Unit Tests
 ~~~~~~~~~~
 
-Unit tests are important to avoid bugs. The current test suite used unittest2, to run tests::
+Unit tests are important to avoid bugs. The current test suite used nosetests, to run tests::
 
-    unit2 discover
-
-If you are using nosetests, you can run tests with::
-
-    nosetests
+    make test
 
 Loading fixtures
 ~~~~~~~~~~~~~~~~
@@ -21,11 +17,11 @@ Loading fixtures
 The repository comes with a set of fixtures that you can load to test the solution, or improve it! To load them just
 run the following commands::
 
-    python element/standalone/skeleton/loads.py
+    make fixtures
 
 Once fixtures are loaded you can start the http webserver with the command::
 
-    python element/standalone/skeleton/wsgi.py
+    make dev
 
 Documentations
 ~~~~~~~~~~~~~~
