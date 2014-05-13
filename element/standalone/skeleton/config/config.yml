@@ -91,12 +91,12 @@ ioc.extra.tornado:
     #static_folder:      '%project.root_folder%/resources/static'
     template_folder:    'templates'
 
-ioc.extra.redis:
-    connections:
-        websocket: { db: 1 }
-    clients:
-        websocket:
-            connection: websocket
+#ioc.extra.redis:
+#    connections:
+#        websocket: { db: 1 }
+#    clients:
+#        websocket:
+#            connection: websocket
 
 element.plugins.action:
 element.plugins.blog:
