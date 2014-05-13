@@ -32,12 +32,12 @@ Checking installation
 
 .. code-block:: bash
 
-    unit2 discover
+    make test
 
 Running dummy site
 ~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-    python element/standalone/skeleton/loads.py # load some data into mongodb
-    python element/standalone/skeleton/wsgi.py  # start the wsgi application
+    make fixtures
+    make dev
