@@ -20,7 +20,10 @@ setup(
         "futures",
         "redis",
         "mailer",
-        "ioc"
+        "ioc",
+        "docutils",
+        "pymongo",
+        "python-dateutil"
     ],
     include_package_data = True,
 )

@@ -4,12 +4,15 @@ Contributing
 Thanks for going into this section! This page tries to summaries all information required to contribute to this project.
 Any contribution must have its own unit tests to ensure good quality and avoid regressions.
 
-Unit Tests
-~~~~~~~~~~
 
-Unit tests are important to avoid bugs. The current test suite used nosetests, to run tests::
+Retrieving the code
+~~~~~~~~~~~~~~~~~~~
 
-    make test
+.. code-block::
+
+    git clone https://github.com/rande/python-element.git
+    pip install -e python-element
+    cd python-element
 
 Loading fixtures
 ~~~~~~~~~~~~~~~~
@@ -19,7 +22,17 @@ run the following commands::
 
     make fixtures
 
-Once fixtures are loaded you can start the http webserver with the command::
+Unit Tests
+~~~~~~~~~~
+
+Unit tests are important to avoid bugs. The current test suite used nosetests, to run tests::
+
+    make test
+
+Running code
+~~~~~~~~~~~~
+
+Once fixtures are loaded, you can start the http webserver with the command::
 
     make dev
 

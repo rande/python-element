@@ -22,9 +22,10 @@ if __name__ == '__main__':
     print 
     print "2. You can now run the small demo project:"
     print "  cd %s" % options.destination
-    print "  python start.py tornado:start --host=127.0.0.1 --port=80"
+    print "  python start.py element:demo:fixtures"
+    print "  python start.py tornado:start --verbose -d"
     print 
-    print "3. Open a browser and go to http://127.0.0.1"
+    print "3. Open a browser and go to http://127.0.0.1:5000"
     print ""
     print "--"
     print "Python Element - Thomas Rabaix <thomas.rabaix@gmail.com>"

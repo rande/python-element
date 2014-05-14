@@ -3,8 +3,23 @@ Install
 
 Python Element has been tested with python 2.7 only and might not work with python 3.x.
 
+Short story
+~~~~~~~~~~~
+
+    sudo apt-get install mongodb-server
+    virtualenv --system-site-packages foobar
+    source foobar/bin/activate
+    pip install git+http://github.com/rande/python-element.git
+    python -m element my-project
+    cd my-project
+    python start.py element:demo:fixtures
+    python start.py tornado:start --verbose -d
+
+
 Install services
 ~~~~~~~~~~~~~~~~
+
+The default skeleton required a mongodb server running, this is not mandatory for small website.
 
 .. code-block:: bash
 
@@ -20,24 +35,23 @@ Virtual Env makes sure there are not conflict with any installed lib by creating
     virtualenv --system-site-packages element
     source element/bin/activate
 
-Install python element code
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install python element
+~~~~~~~~~~~~~~~~~~~~~~
+
+You can install the package by using the main code on github
 
 .. code-block:: bash
 
-    pip install -r requirements_test.txt
+    pip install git+http://github.com/rande/python-element.git
 
-Checking installation
-~~~~~~~~~~~~~~~~~~~~~
+Setup your first project
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
-
-    make test
-
-Running dummy site
-~~~~~~~~~~~~~~~~~~
+The following command will help you creating your first project based on a skeleton website that you can tweak to
+match your needs.
 
 .. code-block:: bash
 
-    make fixtures
-    make dev
+    python -m element my-project
+
+The script will explain the next steps.
