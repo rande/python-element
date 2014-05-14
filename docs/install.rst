@@ -6,6 +6,8 @@ Python Element has been tested with python 2.7 only and might not work with pyth
 Short story
 ~~~~~~~~~~~
 
+.. code-block:: bash
+
     sudo apt-get install mongodb-server
     virtualenv --system-site-packages foobar
     source foobar/bin/activate
