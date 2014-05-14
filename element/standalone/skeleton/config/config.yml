@@ -1,6 +1,11 @@
 parameters: 
     base_url: '/'
 
+
+# the webapp module can be used to store the application code
+webapp:
+
+
 element:
     base_url: '%base_url%'
 

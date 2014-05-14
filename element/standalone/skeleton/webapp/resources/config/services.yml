@@ -1,0 +1,5 @@
+services:
+    webapp.test.error:
+        class: webapp.test.views.ErrorView
+        arguments:
+            - '@ioc.extra.jinja2'

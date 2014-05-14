@@ -1,0 +1,9 @@
+type: action.collection
+actions:
+    webapp_error_index:
+        type: action.raw
+        path: /<int:error>
+        methods: ['GET']
+        defaults:
+            _controller: webapp.test.error:execute
+
