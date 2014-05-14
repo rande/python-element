@@ -8,7 +8,7 @@ Any contribution must have its own unit tests to ensure good quality and avoid r
 Retrieving the code
 ~~~~~~~~~~~~~~~~~~~
 
-.. code-block::
+.. code-block:: bash
 
     git clone https://github.com/rande/python-element.git
     pip install -e python-element
