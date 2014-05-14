@@ -11,6 +11,16 @@ setup(
     author_email="thomas.rabaix@gmail.com",
     url="https://github.com/rande/python-element",
     packages = find_packages(),
-    install_requires=["markdown"],
+    install_requires=[
+        "markdown",
+        "Jinja2",
+        "tornado",
+        "WTForms",
+        "Werkzeug",
+        "futures",
+        "redis",
+        "mailer",
+        "ioc"
+    ],
     include_package_data = True,
 )
