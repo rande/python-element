@@ -1,0 +1,17 @@
+services:
+    element.plugins.profiler.collector.pycallgraph:
+        class: element.plugins.profiler.PyCallgraphCollector
+        arguments:
+            - "%element.plugins.profiler.output_dir%"
+
+    element.plugins.profiler:
+        class: element.plugins.profiler.profiler.Profiler
+        arguments:
+            - "%ioc.debug%"
+            - "%element.plugins.profiler.output_dir%"
+        tags:
+            event.listener:
+                - { name: handler.request, method: on_request }
+                - { name: handler.terminate, method: on_terminate }
+        calls:
+             - [ add_collector, [ 'pycallgraph', '@element.plugins.profiler.collector.pycallgraph' ]]

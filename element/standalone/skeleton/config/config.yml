@@ -116,6 +116,7 @@ element.plugins.ngadmin:
 element.plugins.api:
 #element.plugins.websocket:
 element.plugins.formatter:
+element.plugins.profiler:
 
 ioc.extra.event:
 ioc.extra.stats:
