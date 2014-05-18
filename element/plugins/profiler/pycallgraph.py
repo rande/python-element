@@ -174,7 +174,7 @@ class PyCallgraphCollector(object):
         callgraph.start()
 
         request_handler.run.add_data('callgraph', callgraph)
-        request_handler.run.add_metric('callgraph', filename)
+        request_handler.run.add_metric('callgraph', True)
 
     def on_terminate(self, request_handler, run):
         run.get_data('callgraph').done()

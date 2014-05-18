@@ -1,4 +1,7 @@
 services:
+    element.plugins.profiler.collector.request:
+        class: element.plugins.profiler.collector.RequestCollector
+
     element.plugins.profiler.collector.pycallgraph:
         class: element.plugins.profiler.PyCallgraphCollector
         arguments:
@@ -15,3 +18,4 @@ services:
                 - { name: handler.terminate, method: on_terminate }
         calls:
              - [ add_collector, [ 'pycallgraph', '@element.plugins.profiler.collector.pycallgraph' ]]
+             - [ add_collector, [ 'request', '@element.plugins.profiler.collector.request' ]]

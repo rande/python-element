@@ -1,5 +1,6 @@
 import uuid
 import os
+import json
 
 class Run(object):
     def __init__(self):
@@ -55,6 +56,13 @@ class Profiler(object):
 
         for name, collector in self.collectors.iteritems():
             collector.on_terminate(request_handler, request_handler.run)
+
+        self.store_metrics(request_handler.run)
+
+    def store_metrics(self, run):
+        path = "%s/%s/metric.json" % (self.output_path, run.id)
+
+        json.dump(run.metrics, open(path, 'wb'))
 
 
 class RunView(object):
