@@ -76,3 +76,16 @@ Plugins
 Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
 
 You can view current internal plugin in the :doc:`plugins section</plugins>`
+
+
+Bower
+-----
+
+Elements relies on ``bower`` to install assets. All plugins use the base path ``resources/static/vendor`` to declare
+assets. So you should/must configure your ``.bowerrc`` like this.
+
+.. code-block:: json
+
+    {
+        "directory": "resources/static/vendor"
+    }
