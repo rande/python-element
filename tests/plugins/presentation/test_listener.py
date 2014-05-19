@@ -11,6 +11,4 @@ class PresentationNodeTest(unittest.TestCase):
             'content': "slide1\n----\nslide2\n----\nslide3"
         })
 
-        print n.slides()
-
         self.assertEquals(3, len(n.slides()))

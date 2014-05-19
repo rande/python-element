@@ -25,8 +25,6 @@ class PresentationNode(Node):
             if content.strip() == "":
                 continue
 
-            print content
-
             self._slides.append(Slide(content))
 
 
