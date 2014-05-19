@@ -5,3 +5,5 @@ tags: ['red', 'yellow']
 ----
 ## my title
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+----
+yes try with double split ... which shouldn't split at this point

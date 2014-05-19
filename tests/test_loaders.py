@@ -24,9 +24,7 @@ class YamlNodeLoaderTest(unittest.TestCase):
         node = self.loader.load("%s/2013/inline-content.yml" % self.path)
 
         self.assertTrue("content" in node)
-        self.assertEquals(node["content"], "## my title\nLorem ipsum dolor sit amet, consectetur adipiscing elit.")
-
-
+        self.assertEquals(node["content"], "## my title\nLorem ipsum dolor sit amet, consectetur adipiscing elit.\n----\nyes try with double split ... which shouldn't split at this point")
 
 class InlineLoaderTest(unittest.TestCase):
 

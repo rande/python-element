@@ -1,8 +1,6 @@
 import os, yaml, re
-import element
 import codecs
 import copy
-
 
 class NodeLoader(object):
     pass
@@ -46,7 +44,7 @@ class YamlNodeLoader(NodeLoader):
     def load(self, path):
         meta = codecs.open(path, "r", "utf-8").read()
 
-        data = re.split("(\n|\r\n)----(\n|\r\n)", meta, 2)
+        data = re.split("(\n|\r\n)----(\n|\r\n)", meta, 1)
 
         if len(data) > 1:
             meta = data[0]
