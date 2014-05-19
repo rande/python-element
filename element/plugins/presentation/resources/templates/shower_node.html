@@ -1,0 +1,17 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+
+    <header class="caption">
+        <h1>{{ context.title }}</h1>
+        <p>{{ context.abstract }}</p>
+    </header>
+
+    {% for slide in context.node.slides() %}
+        <section class="slide">
+            <div>
+                {{ slide.content|markup(slide.format)|safe }}
+            </div>
+        </section>
+    {% endfor %}
+{% endblock %}

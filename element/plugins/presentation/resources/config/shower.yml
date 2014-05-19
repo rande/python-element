@@ -1,0 +1,16 @@
+services:
+    element.plugins.presentation:
+        class: element.plugins.presentation.presentation.PresentationHandler
+        arguments:
+            - '@ioc.extra.jinja2'
+            - '@element.plugins.formatter'
+
+        tags:
+            element.handler:
+                - { name: presentation.shower }
+
+    element.plugins.presentation.listener:
+        class: element.plugins.presentation.listener.PresentationListener
+        tags:
+            event.listener:
+                - { name: node.mapper.pre_initialize, method: register }

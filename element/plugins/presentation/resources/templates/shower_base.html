@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        {% if context %}
+            {{ render_node_event('element.seo.headers', options={'subject': context})|safe }}
+        {% else %}
+            {{ render_node_event('element.seo.headers')|safe }}
+        {% endif %}
+
+        <link rel="stylesheet" href="{{ asset('vendor/shower-ribbon/styles/screen.css') }}">
+    </head>
+
+    <body class="list">
+
+        {% block content %}{% endblock %}
+
+        <div class="progress">
+            <div></div>
+        </div>
+
+        <script src="{{ asset('vendor/shower-core/shower.min.js') }}"></script>
+    </body>
+</html>
+
