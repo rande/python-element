@@ -2,13 +2,6 @@ from tests.functionals import AuthAsyncHTTPTestCase
 import json
 
 class FunctionTest(AuthAsyncHTTPTestCase):
-
-    def assert_json(self, response):
-        self.assertEquals(200, response.code)
-        self.assertEquals('application/json', response.headers['Content-Type'])
-
-        return self
-
     def test_handlers(self):
         response = self.get('/api/element/handlers.json')
 
@@ -16,7 +9,7 @@ class FunctionTest(AuthAsyncHTTPTestCase):
 
         body = json.loads(response.body)
 
-        self.assertEquals(14, len(body['results']))
+        self.assertEquals(15, len(body['results']))
 
     def test_node_list(self):
         response = self.get('/api/element/node.json')

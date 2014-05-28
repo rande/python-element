@@ -68,3 +68,11 @@ class AuthAsyncHTTPTestCase(AsyncHTTPTestCase):
         response = self.do_fetch(url, method="DELETE", **kwargs)
 
         return response, json.loads(response.body)
+
+    def assert_json(self, response):
+        self.assertEquals(200, response.code)
+        self.assertEquals('application/json', response.headers['Content-Type'])
+
+    def assert_pdf(self, response):
+        self.assertEquals(200, response.code)
+        self.assertEquals('application/pdf', response.headers['Content-Type'])
