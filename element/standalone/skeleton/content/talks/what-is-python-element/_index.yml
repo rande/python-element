@@ -1,0 +1,31 @@
+type: presentation.shower
+title: What is python element?
+abstract: A naive CMS built on Python Tornado with a bit of IoC
+published_at: 20 May 2014 12:37:48
+
+----
+## Python Element
+
+- Based on tornado
+    - Async Friendly
+    - No WSGI (async friendly)
+- Used well known libs: jinja2, wtforms, ioc
+- Node based
+
+----
+
+## Why ?
+
+- Personal Python learning project
+    - Want to play with async and websocket code
+    - Learn new things!
+- Why not ?
+
+----
+## Demo
+
+- This talk is a small demo ;)
+- It is a ``presentation.shower`` node type
+
+----
+## To complete

@@ -1,0 +1,5 @@
+title: Talks
+type: node.index
+filters:
+    types: [presentation.shower]
+    path: /talks

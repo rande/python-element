@@ -16,7 +16,9 @@
     "socket.io-client": "~1.0.0",
     "html5shiv": "~3.7.0",
     "modernizr": "~2.7.1",
-    "lightbox": "~2.7.1"
+    "lightbox": "~2.7.1",
+    "mousetrap": "~1.4.1",
+    "shower": "~1"
   },
   "license": "MIT",
   "private": true,

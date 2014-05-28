@@ -31,7 +31,7 @@ You need to install ``shower``, open your bower.json file and add
 Usage
 -----
 
-A presentation  is defined as:
+A presentation is defined as:
 
 .. code-block:: yaml
 
