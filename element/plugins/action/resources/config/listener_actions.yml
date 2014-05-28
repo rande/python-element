@@ -6,4 +6,4 @@ services:
             - '@ioc.extra.tornado.router'
         tags:
             event.listener: 
-                - { name: ioc.container.built, method: load_action }
+                - { name: ioc.container.built, method: load_actions }

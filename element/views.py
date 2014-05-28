@@ -14,13 +14,16 @@ class NodeRenderer(object):
         self.logger.debug("element.node.Dispatcher: render node: %s with handler: %s" % (node.id, node_handler))
 
         # render the node
-        node_handler.execute(request_handler, context)
+        result = node_handler.execute(request_handler, context)
 
         # allow external services to update the request_handler
         self.event_dispatcher.dispatch('element.node.render_response', {
             'context': context,
-            'request_handler': request_handler
+            'request_handler': request_handler,
+            'result': result
         })
+
+        return result
 
     def render(self, request_handler, node):
         # load the related node's handler

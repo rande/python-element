@@ -7,48 +7,59 @@ class TornadoActionLoader(object):
         self.base_url = base_url
         self.router = router
 
-    def load_action(self, event):
+    def add_action(self, base_path, settings, container):
+        if 'name' not in settings:
+            raise Exception('Missing action name')
+
+        if 'type' not in settings:
+            settings['type'] = 'action.node'
+
+        if 'path' not in settings:
+            settings['path'] = ''
+
+        if 'methods' not in settings:
+            settings['methods'] = ['GET']
+
+        if 'defaults' not in settings:
+            settings['defaults'] = {}
+
+        if '_controller' not in settings['defaults']:
+            raise Exception('_controller key is missing for route %s' % settings['name'])
+
+        service, method = settings['defaults']['_controller'].split(":")
+
+        if settings['type'] == 'action.raw':
+            view_func = getattr(container.get(service), method)
+        elif settings['type'] == 'action.node':
+            view_func = getattr(container.get('element.plugins.node.view.action'), 'dispatch')
+        else:
+            raise Exception('Invalid action type')
+
+        self.router.add(
+            settings['name'],
+            self.base_url + base_path + settings['path'],
+            view_func=view_func,
+            methods=settings['methods'],
+            defaults=settings['defaults']
+        )
+
+    def load_actions(self, event):
         container = event.get('container')
         node_manager = container.get('element.node.manager')
 
-        nodes = node_manager.get_nodes(
-            type='action.collection', 
-            selector=lambda node: now > node.published_at and node.enabled
-        )
+        self.load_action_node(container, node_manager)
+        self.load_collection_node(container, node_manager)
 
-        for node in nodes:
-            for name, settings in node.actions.iteritems():
-                if 'type' not in settings:
-                    settings['type'] = 'action.node'
+    def load_action_node(self, container, node_manager):
+        for node in node_manager.get_nodes(types=['action.node', 'action.raw']):
+            self.add_action(node.id, node.data, container)
 
-                if 'methods' not in settings:
-                    settings['methods'] = ['GET']
+    def load_collection_node(self, container, node_manager):
+        for collection in node_manager.get_nodes(type='action.collection',):
+            for name, settings in collection.actions.iteritems():
+                settings['name'] = name
 
-                if 'defaults' not in settings:
-                    settings['defaults'] = {}
-
-                if '_controller' not in settings['defaults']:
-                    raise Exception('_controller key is missing for route %s' % name)
-
-                service, method = settings['defaults']['_controller'].split(":")
-
-                if settings['type'] == 'action.raw':
-                    self.router.add(
-                        name,
-                        "%s%s%s" % (self.base_url, node.id, settings['path']),
-                        view_func=getattr(container.get(service), method),
-                        methods=settings['methods'],
-                        defaults=settings['defaults']
-                    )
-                elif settings['type'] == 'action.node':
-                    self.router.add(
-                        name,
-                        "%s%s%s" % (self.base_url, node.id, settings['path']),
-                        view_func=getattr(container.get('element.plugins.node.view.action'), 'dispatch'),
-                        methods=settings['methods'],
-                        defaults=settings['defaults']
-                    )
-
+                self.add_action(collection.id, settings, container)
 
 class ActionHandler(NodeHandler):
     def __init__(self, container, application, templating):
@@ -67,9 +78,7 @@ class ActionHandler(NodeHandler):
     def execute(self, request_handler, context):
         service = self.container.get(context.node.serviceId)
 
-        sub_request_handler = SubRequestHandler(self.application, HTTPRequest(request_handler.request.method, request_handler.request.path))
-
-        result = getattr(service, context.node.method)(sub_request_handler, context, **(context.node.kwargs or {}))
+        result = getattr(service, context.node.method)(request_handler, context, **(context.node.kwargs or {}))
 
         if isinstance(result, tuple):
             status_code, template, params = result
@@ -81,10 +90,7 @@ class ActionHandler(NodeHandler):
 
             request_handler.set_status(status_code)
 
-        else:
-            request_handler.set_status(sub_request_handler.get_status())
-            request_handler.write(sub_request_handler.get_buffer())
-
+        return result
 
 class DefaultIndex(object):
     def __init__(self, node_manager):
