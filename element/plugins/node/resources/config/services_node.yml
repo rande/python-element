@@ -52,3 +52,11 @@ services:
             event.listener:
                 - { name: element.node.load.success, method: on_node_load }
                 - { name: element.nodes.load.success, method: on_nodes_load }
+
+    element.plugins.node.response.listener:
+        class: element.plugins.node.jinja.ResponseListener
+        arguments:
+            - '@ioc.extra.jinja2'
+        tags:
+            event.listener:
+                - { name: handler.response, method: handle }

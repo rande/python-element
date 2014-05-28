@@ -65,3 +65,20 @@ class Core(object):
             return content
 
         return content.decode("utf-8")
+
+class ResponseListener(object):
+    def __init__(self, templating):
+        self.templating = templating
+
+    def handle(self, event):
+
+        result = event.get('result')
+
+        if not isinstance(result, tuple):
+            return
+
+        request_handler = event.get('request_handler')
+        status_code, template_name, params = result
+
+        request_handler.set_status(status_code)
+        request_handler.write(self.templating.get_template(template_name).render(params))
