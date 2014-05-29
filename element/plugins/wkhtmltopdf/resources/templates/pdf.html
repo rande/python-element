@@ -1,0 +1,40 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+    <h2>Url To PDF</h2>
+    
+    {% if form.errors %}
+    <ul class="errors">
+        {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+            {% for error in field_errors %}
+                <li>{{ form[field_name].label }}: {{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div>
+        <form action="{{ url_for('wkhtmltopdf_index') }}" method="GET" novalidate="novalidate">
+            {{ form.csrf_token }}
+
+            {{ form.url.label }} {{ form.url() }}
+            {% if form.url.errors %}
+                <ul class="errors">
+                    {% for error in form.url.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+
+            {{ form.setting_name.label }} {{ form.setting_name() }}
+            {% if form.setting_name.errors %}
+                <ul class="errors">
+                    {% for error in form.setting_name.errors %}<li>{{ error }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+
+            <input type="submit">
+        </form>
+    </div>
+{% endblock %}
+
+
+

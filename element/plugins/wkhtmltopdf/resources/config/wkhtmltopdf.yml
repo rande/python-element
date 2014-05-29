@@ -1,0 +1,6 @@
+services:
+    element.plugins.wkhtmltopdf.generate:
+        class: element.plugins.wkhtmltopdf.views.GeneratePdfView
+        arguments:
+            - '%element.plugins.wkhtmltopdf.data_path%'
+            - '@logger'

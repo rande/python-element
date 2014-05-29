@@ -1,0 +1,5 @@
+title: Element Lab
+type: node.index
+filters:
+    limit: 100
+    path: /labs

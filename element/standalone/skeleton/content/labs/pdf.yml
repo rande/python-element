@@ -1,0 +1,6 @@
+title: PDF generation
+type: action.raw
+name: wkhtmltopdf_index
+methods: ['GET']
+defaults:
+    _controller: element.plugins.wkhtmltopdf.generate:execute
