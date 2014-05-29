@@ -6,5 +6,5 @@ from tests import TemplateEngine
 
 class PostHandlerTest(unittest.TestCase):     
     def test_init(self):
-        handler = element.plugins.blog.blog.PostHandler(TemplateEngine())
+        handler = element.plugins.blog.blog.PostHandler()
         
