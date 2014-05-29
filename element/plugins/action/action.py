@@ -90,6 +90,8 @@ class ActionHandler(NodeHandler):
 
             request_handler.set_status(status_code)
 
+            return None
+
         return result
 
 class DefaultIndex(object):
