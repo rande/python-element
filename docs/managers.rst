@@ -1,7 +1,3 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
 Managers
 ========
 

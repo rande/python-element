@@ -20,8 +20,7 @@ Definitions
     * ``copyright``
     * ``authors``
 
-
-* node handler: it is a service used to render a node, there is one service per node type.
+* ``node handler``: it is a service used to render a node, there is one service per node type.
 
 Components used
 ~~~~~~~~~~~~~~~
@@ -49,7 +48,7 @@ its own configuration:
 .. note::
 
     This configuration layout is not mandatory, you can organize those files as you want. Just alter the start.py file
-    in order to match your wish.
+    in order to match your wishes.
 
 There are 2 ways to use the application:
 
@@ -76,7 +75,6 @@ Plugins
 Every things is a plugin, if you don't like a feature just don't enable the plugin and create your own plugin!
 
 You can view current internal plugin in the :doc:`plugins section</plugins>`
-
 
 Bower
 -----

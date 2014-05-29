@@ -16,6 +16,7 @@ References
 
    install
    architecture
+   node
    events
    managers
    plugins
