@@ -22,7 +22,7 @@ Usage
 
 Just place a store a file in the datasource and access it with a browser. That's it.
 
-.. code-block::
+.. code-block:: yaml
 
     # pdf.yml
     title: PDF generation
