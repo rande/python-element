@@ -1,3 +1,10 @@
 services:
     element.plugins.formatter:
         class: element.plugins.formatter.Formatter
+
+        tags:
+            jinja2.filter:
+                - { name: markup, method: markup}
+                - { name: format, method: format}
+            jinja2.global:
+                - { name: render_jinja_block, method: render_jinja_block}

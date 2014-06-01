@@ -8,12 +8,11 @@ class SubRequestHandler(RequestHandler):
         return b"".join(self._write_buffer)
 
 class Core(object):
-    def __init__(self, node_manager, context_creator, dispatcher, application, formatter):
+    def __init__(self, node_manager, context_creator, dispatcher, application):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.dispatcher = dispatcher
         self.application = application
-        self.formatter = formatter
 
     def render_node(self, node, defaults=None):
         defaults = defaults or {}
@@ -48,17 +47,6 @@ class Core(object):
             return "<!-- no listener registered for event: %s -->" % event_name
 
         return self.unicode(self.render_node(event.get('node')))
-
-    def markup(self, content, format=None):
-        if isinstance(content, element.node.NodeContext):
-            format = content.node.format
-            content = content.node.content
-
-        if isinstance(content, element.node.Node):
-            format = content.format
-            content = content.content
-
-        return self.unicode(self.formatter.format(content, formatter=format))
 
     def unicode(self, content):
         if isinstance(content, unicode):
