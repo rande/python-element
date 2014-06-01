@@ -28,7 +28,7 @@ Preview
 .. figure:: ../images/profiler_wdt.png
    :align: center
 
-   The wdt display memory usage, processing time, controller and python version
+   The wdt displays memory usage, processing time, controller and python version
 
 
 .. figure:: ../images/profiler_view_config.png
@@ -41,4 +41,4 @@ Credits
 -------
 
 The WDT is a python port of the `Symfony2 Profiler <http://symfony.com>`_.
-Icons created by `Sensio <http://sension.com>`_ are shared under a `Creative Commons Attribution license <http://creativecommons.org/licenses/by-sa/3.0/>`_.
+Icons created by `Sensio <http://sensio.com>`_ are shared under a `Creative Commons Attribution license <http://creativecommons.org/licenses/by-sa/3.0/>`_.
