@@ -8,7 +8,10 @@ from tornado.httpserver import HTTPRequest
 from element.plugins.profiler import Run
 
 class RequestCollectorTest(unittest.TestCase):
-
+    def setUp(self):
+        self.handler = RequestHandler(Application(), HTTPRequest('GET', '/'))
+        self.handler.run = Run()
+        self.collector = RequestCollector()
 
     def test_on_request(self):
 
@@ -18,10 +21,7 @@ class RequestCollectorTest(unittest.TestCase):
         handler = RequestHandler(app, request)
         handler.run = Run()
 
-
-        c = RequestCollector()
-
-        c.on_request(handler, handler.run)
+        self.collector.on_request(handler, handler.run)
 
         self.assertEquals(handler.run.get_metric('request'), {
             'body_arguments': {},
@@ -36,5 +36,38 @@ class RequestCollectorTest(unittest.TestCase):
             'query_arguments': {'hello': ['world']},
             'remote_ip': None,
             'uri': '/collector?hello=world',
-            'version': 'HTTP/1.0'
+            'version': 'HTTP/1.0',
+            'controller': {'class': False, 'file': False, 'line': False, 'method': False},
+            'route': False,
+            'status_code': False,
+        })
+
+
+    def test_on_callback(self):
+        class NodeHandler(object):
+            def execute(self):
+                pass
+
+        m = {'host': 'localhost'}
+        self.handler.run.add_metric('request', m)
+        self.collector.on_callback(self.handler, self.handler.run, 'element.home', NodeHandler().execute, {'foo': 'bar'})
+
+        self.assertEqual(m, {
+            'controller': {'class': 'tests.plugins.profiler.test_collector.NodeHandler',
+            'method': 'execute'},
+            'host': 'localhost',
+            'route': 'element.home',
+            'route_parameters': {'foo': 'bar'}
+        })
+
+    def test_on_response(self):
+
+        m = {'host': 'localhost'}
+        self.handler.run.add_metric('request', m)
+        self.handler.set_status(404) # let's make it useful
+        self.collector.on_response(self.handler, self.handler.run)
+
+        self.assertEqual(m, {
+            'host': 'localhost',
+            'status_code': 404
         })

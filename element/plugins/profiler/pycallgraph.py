@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division
 
+from .collector import BaseCollector
+
 from pycallgraph import PyCallGraph, Config, GlobbingFilter
 from pycallgraph.metadata import __version__
 from pycallgraph.color import Color
@@ -155,13 +157,11 @@ class DotGraphvizOutput(Output):
 
         return output
 
-
-class PyCallgraphCollector(object):
+class PyCallgraphCollector(BaseCollector):
     def __init__(self, output_path):
         self.output_path = output_path
 
     def on_request(self, request_handler, run):
-
         filename = "%s/%s/pycallgraph.dot" % (self.output_path, run.id)
 
         config = Config()
@@ -178,3 +178,7 @@ class PyCallgraphCollector(object):
 
     def on_terminate(self, request_handler, run):
         run.get_data('callgraph').done()
+
+    def get_template(self, run):
+        # to do: add the d3js code or the png view ...
+        return False

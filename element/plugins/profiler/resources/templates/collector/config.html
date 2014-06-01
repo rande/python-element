@@ -1,0 +1,228 @@
+{% extends 'element.plugins.profiler:profiler/layout.html' %}
+
+{% block toolbar %}
+    {# Element Logo #}
+    {% macro _logo_icon(collector) %}
+        <a href="http://python-element.readthedocs.org/">
+            <img width="26" height="28" alt="Element" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAABeElEQVR42u2WP0vDQBjG+1mEbsWhrUlorQkSzWAnoaJ2EtpNHaXSmiGh9ht0EKV26Nr/BQVJ4p+O0mJikn6ax8uBIlScrkUwBw933PD+eO/e97mLRMKxyBGPx58TiQRYKogZAv8OMJlMQlEUFItFFAoFyLJM9xYCFEUR9w8GfN+H53lUwfq2cQWe59kCd7JZGKYJ27bRaNxA1zVc1mrodLtwCbjVaiKVEtgBK6pKM2o2r5FOp772ZXkLL+MxJpNXcsRHbIBrHIf+aATXff8xYKvdwWw2Q7l8zgbICwIckp3jONA0bU7tfp8CVfWCDXA9k6EBvxfLvFyUSmdsgALJ0PV8TKeT5fQhR0r+zrToHSrbm0tofNLYerVKj7TXay/Hafb2D2A9PhGoh163Q10mn8/j+OQUg+EQlmUgl9tl6zSHBFCv1/FGmv+zgILZMAxUKmVI0sZivDRDqjbw00CSJP5qa+HzFALZA6PR6EosFltlqSDm//r7fgBIRnJjYbIP1AAAAABJRU5ErkJggg==" />
+            <span>
+                {% if collector.application_name %}
+                    {{ collector.application_name }} {{ collector.application_version }}
+                {% else %}
+                    {{ collector.element_version }}
+                {% endif %}
+            </span>
+        </a>
+    {% endmacro %}
+
+    {% macro _logo_text(collector) %}
+        {% if collector.application_name %}
+            <div class="sf-toolbar-info-piece">
+                {{ collector.application_name }} <b>{{ collector.application_version }}</b>
+            </div>
+        {% endif %}
+        <div class="sf-toolbar-info-piece">
+            Element <b>{{ collector.element_version }}</b>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <a href="http://python-element.readthedocs.org/en/{{ collector.element_version }}/" rel="help">Python Element Documentation</a>
+        </div>
+    {% endmacro %}
+
+    {% set icon = _logo_icon(collector) %}
+    {% set text = _logo_text(collector) %}
+    {% set link = False %}
+
+    {% include 'element.plugins.profiler:profiler/toolbar_item.html' %}
+
+    {# Python Information #}
+    {% macro _python_icon(collector) %}
+        <a href="{{ path('element_profiler_pyinfo') }}">
+            <img width="26" height="28" alt="Python" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAC3ElEQVR42u2Wy2tTQRTGW61VqQ9ao1kYYkzSvN9BUFCr/gHSbkQ36saCXRQEdScufCwEtWJLFXUjgq0oVKhKF6IogiDUhSCKdOFKRReKpWkwVn8H5uJlOremyV32wscd5sw535zHnJmGhoXv37c0Ho9vSKfTxUwmsy2VSu3gv5l/yOfzLXeVKZFI+DF+NJfL3QEv8/n8W/AevAYj2Wz2CFjvClkgEFgGWQ+GP0I2USgUpsBMsVj8I5Ax+IbseDQaXVk3ISFsxdgFCK9LOPk/hKhiEVqkMi+RqJswEol4MDYI6TCe7mL8AoLfdkJF+owNBesmjMViazDWh9EfGqZ0QjwMe73eFjbWogppcTUci1BsUxUZhDCiPNtnB0UyqBMShU5ko+Ax4yHW7MHWirnIlkCynYWXUBjDyHMnSJUaCA8q7628fsBWlzhhZEsmk5tY9ASFX3qO/gcInkJ4wCJUqDDX7/f7W018TYTuGIo/ayCbwfAtotOt6+PAGPOxWWzhcHitlL79jFVLBt5J6NC/wrisyaU5bDF1kzCC+w5Gv4NhvOiRsFkgIvtpbV3oJhn3suaTvmHVkTpMBzyG4JHhQH8RYxjdCskZcI25GzbcBK9YXzJtFtm49NxZhBgKILyrKUjSR1DYrVflPHI7CtpNOVyFoM/etlCYhuwc+Tll6i5VEE6jez4YDK42HniEUmVfbUolNnGWuf4aCqlMVKTddTieernbJKy2SrMIB/RCYO6qE5BflttDckfum+fqNI20tHYWHhYicJodduqEzI+Dk3bIGZRWiNxDH22b76XcpHbWHAqF1umEqhPJvTiJN58lDdI/2ehGt26LAVOeIHmj0tCLlw9kXDeh3OIYlCqtGApjAq/2QnaRNfeY97vxypDq3YlxecuU9OcFc2XpMKw54VT+Nb1rpLzFU3BbOpIcaIiG5OyCQ648LxweVD7CHFXV7PN4PPJwalx4RVvfX4jS/cDT4/cZAAAAAElFTkSuQmCC" />
+        </a>
+    {% endmacro %}
+
+    {% macro _python_text(collector) %}
+        <div class="sf-toolbar-info-piece sf-toolbar-info-php">
+            <b>Python</b>
+            <span>{{ collector.python['version'] }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Python System</b>
+            <span>{{ collector.python['system'] }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Python Runtime</b>
+            <span>{{ collector.python['implementation'] }}</span>
+        </div>
+    {% endmacro %}
+
+    {% set icon = _python_icon(collector) %}
+    {% set text = _python_text(collector) %}
+    {% set link = False %}
+
+    {% include 'element.plugins.profiler:profiler/toolbar_item.html' %}
+
+    {# Environment #}
+    {% macro _env_debug_status_class(collector) %}
+        sf-toolbar-status sf-toolbar-status-{% if collector.debug %}green{% else %}red{% endif %}
+    {% endmacro %}
+
+    {% macro _env_icon(collector, token) %}
+        <img width="21" height="28" alt="Environment" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAMAAAC5xgRsAAAAZlBMVEX///////////////////////////////////////////////////////////////////////////////////////////+ZmZmZmZlISEhJSUmdnZ1HR0fR0dFZWVlpaWlfX18/Pz+puygPAAAAIXRSTlMACwwlJygpLzIzNjs8QEtMUmd6e32AucDBw8fIydTm6u5l8MjvAAAAo0lEQVR42r2P2Q6CMBBFL6XsZRGRfZv//0nbDBNEE19MnJeTc5ILKf58ahiUwzy/AJpIWwREwQnEXRdbGCLjrO+djWRvVMiJcigxB7viGogxDdJpSmHEmCVPS7YczJvgUu+CS30IvtbNYZMvsGVo2mVpG/kbm4auiCpdcC3YPCAhSpAdUzaAn6qPKZtUT6ZSzb4bi2hdo9MQ1nX4ASjfV+/4/Z40pyCHrNTbIgAAAABJRU5ErkJggg==" />
+        <span class="sf-toolbar-info-piece-additional-detail {{ _env_debug_status_class(collector) }}"> </span>
+        <span class="sf-toolbar-info-piece-additional sf-toolbar-status">{{ token }}</span>
+        {% if collector.app_name or collector.env %}
+            <span class="sf-toolbar-info-piece-additional-detail">
+                <span class="sf-toolbar-info-with-delimiter">{{ collector.app_name }}</span>
+                <span>{{ collector.env }}</span>
+            </span>
+        {% endif %}
+    {% endmacro %}
+
+    {% macro _env_text(collector, token) %}
+        {% if collector.app_name %}
+            <div class="sf-toolbar-info-piece">
+                <b>Name</b>
+                <span>{{ collector.app_name }}</span>
+            </div>
+        {% endif %}
+        {% if collector.env %}
+            <div class="sf-toolbar-info-piece">
+                <b>Environment</b>
+                <span>{{ collector.env }}</span>
+            </div>
+        {% endif %}
+
+        <div class="sf-toolbar-info-piece">
+            <b>Debug</b>
+            <span class="{{ _env_debug_status_class(collector) }}">{% if collector.debug %}en{% else %}dis{% endif %}abled</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Token</b>
+            <span>
+                {% if profiler_url %}
+                    <a href="{{ profiler_url }}">{{ collector.token }}</a>
+                {% else %}
+                    {{ collector.token }}
+                {% endif %}
+            </span>
+        </div>
+    {% endmacro %}
+
+    {% set icon = _env_icon(collector, token) %}
+    {% set text = _env_text(collector, token) %}
+    {% set link = profiler_url %}
+
+    {% include 'element.plugins.profiler:profiler/toolbar_item.html' %}
+
+{% endblock %}
+
+{% block menu %}
+<span class="label">
+    <span class="icon"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAcCAMAAAC5xgRsAAAAZlBMVEX///////////////////////////////////////////////////////////////////////////////////////////+ZmZmZmZlISEhJSUmdnZ1HR0fR0dFZWVlpaWlfX18/Pz+puygPAAAAIXRSTlMACwwlJygpLzIzNjs8QEtMUmd6e32AucDBw8fIydTm6u5l8MjvAAAAo0lEQVR42r2P2Q6CMBBFL6XsZRGRfZv//0nbDBNEE19MnJeTc5ILKf58ahiUwzy/AJpIWwREwQnEXRdbGCLjrO+djWRvVMiJcigxB7viGogxDdJpSmHEmCVPS7YczJvgUu+CS30IvtbNYZMvsGVo2mVpG/kbm4auiCpdcC3YPCAhSpAdUzaAn6qPKZtUT6ZSzb4bi2hdo9MQ1nX4ASjfV+/4/Z40pyCHrNTbIgAAAABJRU5ErkJggg==" alt="Configuration"></span>
+    <strong>Config</strong>
+</span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Project Configuration</h2>
+    <table>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            {% if collector.application_name %}
+                <th>Application</th>
+                <td>{{ collector.application_name }} {{ collector.application_version }} (on Element {{ collector.element_version }})</td>
+            {% else %}
+                <th>Element version</th>
+                <td>{{ collector.element_version }}</td>
+            {% endif %}
+        </tr>
+        {% if not collector.app_name %}
+            <tr>
+                <th>Application name</th>
+                <td>{{ collector.app_name }}</td>
+            </tr>
+        {% endif %}
+        {% if not collector.env %}
+            <tr>
+                <th>Environment</th>
+                <td>{{ collector.env }}</td>
+            </tr>
+        {% endif %}
+        {% if not collector.debug %}
+            <tr>
+                <th>Debug</th>
+                <td>{% if collector.debug %}enabled{% else %}disabled{% endif %}</td>
+            </tr>
+        {% endif %}
+    </table>
+
+    <h2>Python configuration</h2>
+    <table>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <th>Python version</th>
+            <td>{{ collector.python['version'] }}</td>
+        </tr>
+        <tr>
+            <th>Python implementation</th>
+            <td>{{ collector.python['implementation'] }}</td>
+        </tr>
+        <tr>
+            <th>Python system</th>
+            <td>{{ collector.python['system'] }}</td>
+        </tr>
+        <tr>
+            <th>Python executable</th>
+            <td>{{ collector.python['executable'] }}</td>
+        </tr>
+        <tr>
+            <th>Python prefix</th>
+            <td>{{ collector.python['prefix'] }}</td>
+        </tr>
+        <tr>
+            <th>Python compiler</th>
+            <td>{{ collector.python['compiler'] }}</td>
+        </tr>
+        <tr>
+            <th>Python api version</th>
+            <td>{{ collector.python['api_version'] }}</td>
+        </tr>
+        <tr>
+            <th>Path</th>
+            <td>{{ collector.python['path'] }}</td>
+        </tr>
+        <tr>
+            <th>OS Path</th>
+            <td>{{ collector.python['os_path'] }}</td>
+        </tr>
+        <tr>
+            <th>OS Version</th>
+            <td>{{ collector.python['os_version'] }}</td>
+        </tr>
+    </table>
+
+    {% if collector.extensions %}
+        <h2>Active extensions</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Path</th>
+            </tr>
+            {% for name in collector.extensions.iterkeys()|sort %}
+            <tr>
+                <th>{{ name }}</th>
+                <td>{{ collector.extensions[name] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+{% endblock %}

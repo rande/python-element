@@ -1,8 +1,3 @@
-.. note::
-
-    This documentation is under construction, more to come soon
-
-
 Profiler
 ========
 
@@ -27,3 +22,23 @@ Usage
 
 The feature is enabled on dev mode, it does not work for threaded environment.
 
+Preview
+-------
+
+.. figure:: ../images/profiler_wdt.png
+   :align: center
+
+   The wdt display memory usage, processing time, controller and python version
+
+
+.. figure:: ../images/profiler_view_config.png
+   :align: center
+
+   Display more detailed information profiling panel: config, request, etc ..
+
+
+Credits
+-------
+
+The WDT is a python port of the `Symfony2 Profiler <http://symfony.com>`_.
+Icons created by `Sensio <http://sension.com>`_ are shared under a `Creative Commons Attribution license <http://creativecommons.org/licenses/by-sa/3.0/>`_.

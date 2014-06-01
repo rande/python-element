@@ -1,9 +1,0 @@
-<!-- element.plugins.seo:headers.html -->
-<title>{{ seo.title }}</title>
-
-{% for type, metas in seo['metas'].iteritems() -%}
-    {%- for info in metas.iteritems() %}
-        <meta {{ type }}="{{  info[0] }}" content="{{  info[1] }}" />
-    {%- endfor -%}
-{%- endfor %}
-<!-- /element.plugins.seo:headers.html -->

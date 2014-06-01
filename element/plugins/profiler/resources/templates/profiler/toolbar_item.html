@@ -1,0 +1,11 @@
+{% macro _link_icon(icon, token, name) %}
+    <a href="{{ path('element_profiler_view', token=token, panel=name) }}">{{ icon }}</a>
+{% endmacro %}
+
+{% if link %}
+    {% set icon = _link_icon(icon, token, name) %}
+{% endif %}
+<div class="sf-toolbar-block">
+     <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+     <div class="sf-toolbar-info">{{ text|default('') }}</div>
+</div>

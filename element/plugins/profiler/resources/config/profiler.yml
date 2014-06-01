@@ -2,6 +2,17 @@ services:
     element.plugins.profiler.collector.request:
         class: element.plugins.profiler.collector.RequestCollector
 
+    element.plugins.profiler.collector.config:
+        class: element.plugins.profiler.collector.ConfigCollector
+        arguments:
+            - "@service_container"
+
+    element.plugins.profiler.collector.time:
+        class: element.plugins.profiler.collector.TimeCollector
+
+    element.plugins.profiler.collector.memory:
+        class: element.plugins.profiler.collector.MemoryCollector
+
     element.plugins.profiler.collector.pycallgraph:
         class: element.plugins.profiler.PyCallgraphCollector
         arguments:
@@ -10,12 +21,30 @@ services:
     element.plugins.profiler:
         class: element.plugins.profiler.profiler.Profiler
         arguments:
-            - "%ioc.debug%"
             - "%element.plugins.profiler.output_dir%"
+            - "@ioc.extra.jinja2"
+
+        calls:
+            - [ add_collector, [ 'config', '@element.plugins.profiler.collector.config' ]]
+            #- [ add_collector, [ 'pycallgraph', '@element.plugins.profiler.collector.pycallgraph' ]]
+            - [ add_collector, [ 'request', '@element.plugins.profiler.collector.request' ]]
+            - [ add_collector, [ 'time', '@element.plugins.profiler.collector.time' ]]
+            - [ add_collector, [ 'memory', '@element.plugins.profiler.collector.memory' ]]
+
+    element.plugins.profiler_listener:
+        class: element.plugins.profiler.profiler.ProfilerListener
+        arguments:
+            - "%ioc.debug%"
+            - "@element.plugins.profiler"
+            - "@ioc.extra.jinja2"
         tags:
             event.listener:
                 - { name: handler.request, method: on_request }
+                - { name: handler.callback, method: on_callback, priority: 1 }
+                - { name: handler.response, method: on_response }
                 - { name: handler.terminate, method: on_terminate }
-        calls:
-             - [ add_collector, [ 'pycallgraph', '@element.plugins.profiler.collector.pycallgraph' ]]
-             - [ add_collector, [ 'request', '@element.plugins.profiler.collector.request' ]]
+
+    element.plugins.profiler.view:
+        class: element.plugins.profiler.view.ProfilerView
+        arguments:
+            - "@element.plugins.profiler"

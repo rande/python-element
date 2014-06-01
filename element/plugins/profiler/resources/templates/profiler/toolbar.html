@@ -1,0 +1,48 @@
+<!-- START of Element Web Debug Toolbar -->
+{% if 'normal' != position %}
+    <div id="sfMiniToolbar-{{ token }}" class="sf-minitoolbar">
+        <a href="javascript:void(0);" title="Show Element toolbar" onclick="
+            var elem = this.parentNode;
+            if (elem.style.display == 'none') {
+                document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'none';
+                document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'none';
+                elem.style.display = 'block';
+            } else {
+                document.getElementById('sfToolbarMainContent-{{ token }}').style.display = 'block';
+                document.getElementById('sfToolbarClearer-{{ token }}').style.display = 'block';
+                elem.style.display = 'none'
+            }
+
+            Sfjs.setPreference('toolbar/displayState', 'block');
+        ">
+            <img width="26" height="28" alt="Element" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAABeElEQVR42u2WP0vDQBjG+1mEbsWhrUlorQkSzWAnoaJ2EtpNHaXSmiGh9ht0EKV26Nr/BQVJ4p+O0mJikn6ax8uBIlScrkUwBw933PD+eO/e97mLRMKxyBGPx58TiQRYKogZAv8OMJlMQlEUFItFFAoFyLJM9xYCFEUR9w8GfN+H53lUwfq2cQWe59kCd7JZGKYJ27bRaNxA1zVc1mrodLtwCbjVaiKVEtgBK6pKM2o2r5FOp772ZXkLL+MxJpNXcsRHbIBrHIf+aATXff8xYKvdwWw2Q7l8zgbICwIckp3jONA0bU7tfp8CVfWCDXA9k6EBvxfLvFyUSmdsgALJ0PV8TKeT5fQhR0r+zrToHSrbm0tofNLYerVKj7TXay/Hafb2D2A9PhGoh163Q10mn8/j+OQUg+EQlmUgl9tl6zSHBFCv1/FGmv+zgILZMAxUKmVI0sZivDRDqjbw00CSJP5qa+HzFALZA6PR6EosFltlqSDm//r7fgBIRnJjYbIP1AAAAABJRU5ErkJggg==" />
+        </a>
+    </div>
+    <style>
+        {% set floatable = true %}
+        {% include 'element.plugins.profiler:profiler/toolbar.css' %}
+    </style>
+    <div id="sfToolbarClearer-{{ token }}" style="clear: both; height: 38px;"></div>
+{% endif %}
+
+<div id="sfToolbarMainContent-{{ token }}" class="sf-toolbarreset">
+    {% for name, template in templates %}
+        {{ render_jinja_block(template, 'toolbar', {
+            'collector': run.get_metric(name),
+            'profiler_url': path('element_profiler_view', token=run.id, panel=name),
+            'token': run.id,
+            'name': name
+        })|safe }}
+    {% endfor %}
+
+    {% if 'normal' != position %}
+        <a class="hide-button" title="Close Toolbar" onclick="
+            var p = this.parentNode;
+            p.style.display = 'none';
+            (p.previousElementSibling || p.previousSibling).style.display = 'none';
+            document.getElementById('sfMiniToolbar-{{ token }}').style.display = 'block';
+            Sfjs.setPreference('toolbar/displayState', 'none');
+        "></a>
+    {% endif %}
+</div>
+<!-- END of Element Web Debug Toolbar -->
