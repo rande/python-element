@@ -4,6 +4,34 @@ abstract: A naive CMS built on Python Tornado with a bit of IoC
 published_at: 20 May 2014 12:37:48
 
 ----
+class: cover
+id: cover
+
+<style>
+#cover h2 {
+    margin: 30px 0px 0px;
+    color: #FFF;
+    text-align: center;
+    font-size: 70px;
+}
+
+#cover p {
+    margin: 10px 0px 0px;
+    text-align: center;
+    color: #FFF;
+    font-style: italic;
+    font-size: 20px;
+}
+
+</style>
+
+## Shower Presentation Engine
+
+Integrated into Python Element
+
+<img src="http://shwr.me/pictures/cover.jpg" />
+
+----
 ## Python Element
 
 - Based on tornado
@@ -13,7 +41,6 @@ published_at: 20 May 2014 12:37:48
 - Node based
 
 ----
-
 ## Why ?
 
 - Personal Python learning project
@@ -28,4 +55,12 @@ published_at: 20 May 2014 12:37:48
 - It is a ``presentation.shower`` node type
 
 ----
-## To complete
+class: shout grow
+data-timing: 00:02
+
+## This slide will change is 2s
+
+----
+class: shout shrink
+
+## The shout effect

@@ -7,7 +7,7 @@
             {{ render_node_event('element.seo.headers')|safe }}
         {% endif %}
 
-        <link rel="stylesheet" href="{{ asset('vendor/shower-ribbon/styles/screen.css') }}">
+        <link rel="stylesheet" href="{{ asset('vendor/shower-' ~ context.theme ~ '/styles/screen.css') }}">
         <link href="{{ asset('sphinx.css', module='element.plugins.formatter') }}" rel="stylesheet">
         <link href="{{ asset('pygment/monokai.css', module='element.plugins.formatter') }}" rel="stylesheet">
     </head>

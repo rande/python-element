@@ -12,6 +12,7 @@ class PresentationHandler(element.node.NodeHandler):
 
         if node.type == 'presentation.shower':
             return {
+                'theme':         'ribbon',
                 'base_template': 'element.plugins.presentation:shower_base.html',
                 'template':      'element.plugins.presentation:shower_node.html',
             }

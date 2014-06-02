@@ -8,9 +8,14 @@
     </header>
 
     {% for slide in context.node.slides() %}
-        <section class="slide">
+        <section
+            class="slide{% if slide.meta.class %} {{ slide.meta.class }}{% endif %}"
+            {% if slide.meta.id %}id="{{ slide.meta.id }}"{% endif %}
+            {% if slide.meta['data-timing'] %}data-timing="{{ slide.meta['data-timing'] }}"{% endif %}
+            >
+
             <div>
-                {{ slide.content|markup(slide.format)|safe }}
+                {{ slide.content|safe }}
             </div>
         </section>
     {% endfor %}
