@@ -13,7 +13,7 @@
         {% endif %}
     {% endmacro %}
 
-    {% if collector.status_code > 400 %}
+    {% if collector.status_code > 400 and collector.status_code < 500 %}
         {% set request_status_code_color = 'yellow' %}
     {% elif 200 == collector.status_code %}
         {% set request_status_code_color = 'green' %}
