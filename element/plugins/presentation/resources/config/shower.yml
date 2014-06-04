@@ -8,6 +8,7 @@ services:
         tags:
             element.handler:
                 - { name: presentation.shower }
+                - { name: presentation.slideshare }
 
     element.plugins.presentation.listener:
         class: element.plugins.presentation.listener.PresentationListener

@@ -4,7 +4,9 @@
 
     <header class="caption">
         <h1>{{ context.title }}</h1>
-        <p>{{ context.abstract }}</p>
+        {% if context.abstract %}
+            <p>{{ context.abstract }}</p>
+        {% endif %}
     </header>
 
     {% for slide in context.node.slides() %}

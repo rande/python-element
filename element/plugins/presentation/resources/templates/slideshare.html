@@ -1,0 +1,22 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+
+    <header class="caption">
+        <h1>{{ context.title }}</h1>
+
+        {% if context.abstract %}
+            <p>{{ context.abstract }}</p>
+        {% endif %}
+    </header>
+
+    <center>
+        <iframe
+            src="http://www.slideshare.net/slideshow/embed_code/{{ context.embed_code }}?rel=0"
+            width="{{ context.width }}"
+            height="{{ context.height }}"
+            frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+            style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+        </iframe>
+    </center>
+{% endblock %}

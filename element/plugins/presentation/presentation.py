@@ -15,6 +15,22 @@ class PresentationHandler(element.node.NodeHandler):
                 'theme':         'ribbon',
                 'base_template': 'element.plugins.presentation:shower_base.html',
                 'template':      'element.plugins.presentation:shower_node.html',
+                'abstract':      False
+            }
+
+        if node.type == 'presentation.slideshare':
+
+            width = node.width or 597
+            height = 486
+
+            if not node.height:
+                height = (width * 3) / 4
+
+            return {
+                'template': 'element.plugins.presentation:slideshare.html',
+                'width': width,
+                'height': height,
+                'abstract': False
             }
 
         return {}

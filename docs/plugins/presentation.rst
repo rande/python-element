@@ -4,8 +4,7 @@ Presentation
 Features
 --------
 
-  - Expose a ``presentation.shower`` node handler to render a node with the `shower presentation tools <https://github.com/shower/shower>`_
-
+  - Expose some presentation nodes (shower, slideshare, raw mode)
 
 Configuration
 -------------
@@ -28,10 +27,10 @@ You need to install ``shower``, open your bower.json file and add
         "shower": "~1"
     }
 
-Usage
------
+Shower Presentation
+-------------------
 
-A presentation is defined as:
+A shower presentation is defined by ``presentation.shower`` node type:
 
 .. code-block:: yaml
 
@@ -73,9 +72,6 @@ You can use some metadata to get better support from the theme
 - ``id``: an html id that you can used to define custom slide
 - ``data-timing``: a timer before switching to the next slide (value format: ``00:03``, ie 3s)
 
-Advance Usage
--------------
-
 You can also include some stylesheet to tweak some slides
 
 .. code-block:: text
@@ -106,3 +102,17 @@ You can also include some stylesheet to tweak some slides
     Integrated into Python Element
 
     <img src="http://shwr.me/pictures/cover.jpg" />
+
+
+Slideshare Presentation
+-----------------------
+
+A shower presentation is defined by ``presentation.slideshare`` node type:
+
+.. code-block:: yaml
+
+    type: presentation.slideshare
+    title: SFPot March 2014 - Sonata Block Bundle
+    published_at: 19 March 2014 12:37:48
+    embed_code: 32480268 # the embed code
+    width: 800           # the width of the presentation (default=597)
