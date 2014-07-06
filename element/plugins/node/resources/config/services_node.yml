@@ -33,10 +33,12 @@ services:
             - '@element.context.creator'
             - '@ioc.extra.event_dispatcher'
             - '@ioc.extra.tornado.application'
+            - 'esi'
         tags:
             jinja2.global:
                 - { name: render_node,       method: render_node}
                 - { name: render_node_event, method: render_node_event}
+                - { name: render,            method: render}
 
     element.plugins.node.mapper.meta_collection:
         class: element.plugins.node.mapper.MetaCollection

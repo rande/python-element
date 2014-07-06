@@ -9,6 +9,9 @@ class Extension(Extension):
         loader = YamlLoader()
         loader.load("%s/resources/config/services_node.yml" % path, container_builder)
 
+        definition = container_builder.get  ('element.plugins.node.jinja2.master')
+        definition.arguments[4] = config.get('render_type', 'esi')
+
     def post_build(self, container_builder, container):
         """
         The build is over, register services-as-methods

@@ -11,8 +11,8 @@ class ContextCreator(object):
         settings = {}
 
         settings.update(self.defaults)
-        settings.update(node.data)
         settings.update(handler.get_defaults(node))
+        settings.update(node.data)
         settings.update(defaults or {})
 
         if not settings['base_template']:

@@ -100,17 +100,25 @@ class ProfilerListener(object):
         if len(content_type) < 9 or content_type[0:9] != 'text/html':
             return
 
+        if request_handler.request.headers.get('Surrogate-Capability'):
+            return
+
+        if request_handler.get_query_argument('_element', default=False) == 'no-debug':
+            return
+
         ## inject the toolbar to the response
         content = self.templating.get_template('element.plugins.profiler:profiler/toolbar_js.html').render({
             'token': str(request_handler.run.id)
         })
 
-        chunk = request_handler.get_chunk_buffer()
+        chunk = request_handler.get_chunk_buffer().decode('utf-8')
         request_handler.reset_chunk_buffer()
 
         k = chunk.rfind('</body>')
 
-        request_handler.write(chunk[:k] + content + chunk[k:])
+        request_handler.write(chunk[:k])
+        request_handler.write(content)
+        request_handler.write(chunk[k:])
 
         for name, collector in self.profiler.collectors.iteritems():
             collector.on_response(request_handler, request_handler.run)

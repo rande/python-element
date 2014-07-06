@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    {#{ render(path('element_profiler_wdt', token=token, position='normal')) }#}
+    {{ render(path('element_profiler_wdt', token=token, position='normal')) }}
 
     <div id="content">
         {% include 'element.plugins.profiler:profiler/header.html' %}

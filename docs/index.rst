@@ -1,8 +1,3 @@
-.. IoC documentation master file, created by
-   sphinx-quickstart on Fri Mar 29 01:43:00 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Python Element's documentation!
 ===============================
 
@@ -16,6 +11,7 @@ References
 
    install
    architecture
+   running-element
    node
    events
    managers

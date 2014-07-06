@@ -1,18 +1,23 @@
-import element.node
-import markdown
 from tornado.web import RequestHandler
 from tornado.httpserver import HTTPRequest
+import jinja2
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 class SubRequestHandler(RequestHandler):
     def get_buffer(self):
         return b"".join(self._write_buffer)
 
 class Core(object):
-    def __init__(self, node_manager, context_creator, dispatcher, application):
+    def __init__(self, node_manager, context_creator, dispatcher, application, render_type):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.dispatcher = dispatcher
         self.application = application
+        self.render_type = render_type
 
     def render_node(self, node, defaults=None):
         defaults = defaults or {}
@@ -47,6 +52,18 @@ class Core(object):
             return "<!-- no listener registered for event: %s -->" % event_name
 
         return self.unicode(self.render_node(event.get('node')))
+
+    def render(self, path, type=None):
+        if not type:
+            type = self.render_type
+
+        if type == 'esi':
+            return jinja2.Markup('<esi:include src="%s" />' % path)
+
+        elif type == 'ssi':
+            o = urlparse(path)
+            return jinja2.Markup('<!--# include virtual="%s?%s&_element=no-debug" -->' % (o.path, o.query))
+
 
     def unicode(self, content):
         if isinstance(content, unicode):
