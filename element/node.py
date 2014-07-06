@@ -1,4 +1,4 @@
-import yaml, os, functools
+import functools
 from element.manager import generate_uuid
 import datetime
 from element.exceptions import InvalidDataException

@@ -1,4 +1,3 @@
-import markdown, os
 import element.node
 
 class PageHandler(element.node.NodeHandler):

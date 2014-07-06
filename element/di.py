@@ -1,7 +1,6 @@
-from ioc.component import Reference, Definition
+from ioc.component import Reference
 import ioc
 import os
-import re
 
 class Extension(ioc.component.Extension):
     def load(self, config, container_builder):

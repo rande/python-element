@@ -1,5 +1,4 @@
 from bson.objectid import ObjectId, InvalidId
-from bson.dbref import DBRef
 import pymongo
 from element.manager import generate_uuid
 
