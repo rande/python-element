@@ -111,15 +111,16 @@ element.plugins.feed:
 element.plugins.media:
 element.plugins.node:
     render_type: ssi
+
 element.plugins.page:
 element.plugins.static:
 element.plugins.ngadmin:
-element.plugins.api:
 #element.plugins.websocket:
+element.plugins.api:
 element.plugins.formatter:
-element.plugins.presentation:
-element.plugins.wkhtmltopdf:
 element.plugins.profiler:
+element.plugins.wkhtmltopdf:
+element.plugins.presentation:
 
 ioc.extra.event:
 ioc.extra.stats:
