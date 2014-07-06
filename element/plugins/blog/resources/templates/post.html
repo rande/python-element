@@ -7,8 +7,8 @@
         {{ context|markup|safe }}
     </div>
 
-    {{ render_node_event('node.comment.list', options={'subject': context.node})|safe }}
+    {{ render_node_event('node.comment.list', options={'subject': context.node}) }}
 
-    {{ render_node_event('node.comment.form', options={'subject': context.node})|safe }}
+    {{ render_node_event('node.comment.form', options={'subject': context.node}) }}
     
 {% endblock %}

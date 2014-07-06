@@ -32,7 +32,7 @@
             'profiler_url': path('element_profiler_view', token=run.id, panel=name),
             'token': run.id,
             'name': name
-        })|safe }}
+        }) }}
     {% endfor %}
 
     {% if 'normal' != position %}

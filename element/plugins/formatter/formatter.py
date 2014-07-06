@@ -2,6 +2,7 @@ import markdown
 from docutils.core import publish_parts
 import json
 import element.node
+import jinja2
 
 class Formatter(object):
 
@@ -54,4 +55,4 @@ class Formatter(object):
         for block_content in block(template.new_context(parameters)):
             content += block_content
 
-        return content
+        return jinja2.Markup(content)

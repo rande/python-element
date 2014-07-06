@@ -66,9 +66,9 @@ The seo information will be rendered by using the special ``render_node_event`` 
 .. code-block:: jinja
 
     {% if context %}
-        {{ render_node_event('element.seo.headers', options={'subject': context})|safe }}
+        {{ render_node_event('element.seo.headers', options={'subject': context}) }}
     {% else %}
-        {{ render_node_event('element.seo.headers')|safe }}
+        {{ render_node_event('element.seo.headers') }}
     {% endif %}
 
 

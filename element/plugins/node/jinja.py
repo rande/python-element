@@ -43,7 +43,7 @@ class Core(object):
         # render the response
         handler.execute(request_handler, context)
 
-        return self.unicode(request_handler.get_buffer())
+        return jinja2.Markup(self.unicode(request_handler.get_buffer()))
 
     def render_node_event(self, event_name, options=None):
         event = self.dispatcher.dispatch(event_name, options or {})
@@ -51,7 +51,7 @@ class Core(object):
         if not event.has('node'):
             return "<!-- no listener registered for event: %s -->" % event_name
 
-        return self.unicode(self.render_node(event.get('node')))
+        return jinja2.Markup(self.unicode(self.render_node(event.get('node'))))
 
     def render(self, path, type=None):
         if not type:
