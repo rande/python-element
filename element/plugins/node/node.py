@@ -3,9 +3,8 @@ from element.exceptions import PerformanceException
 
 
 class TemplateHandler(element.node.NodeHandler):
-    def __init__(self, node_manager, templating):
+    def __init__(self, node_manager):
         self.node_manager = node_manager
-        self.templating = templating
 
     def get_name(self):
         return 'Node Template'
@@ -17,15 +16,14 @@ class TemplateHandler(element.node.NodeHandler):
         }
 
     def execute(self, request_handler, context):
-        self.render(request_handler, self.templating, context.settings['template'], {
+        return 200,  context.settings['template'], {
             'context': context,
-        })
+        }
 
 
 class IndexHandler(element.node.NodeHandler):
-    def __init__(self, node_manager, templating):
+    def __init__(self, node_manager):
         self.node_manager = node_manager
-        self.templating = templating
 
     def get_name(self):
         return 'Node Index'
@@ -77,8 +75,8 @@ class IndexHandler(element.node.NodeHandler):
 
         nodes.sort(key=lambda node: node.data['published_at'], reverse=True)
 
-        self.render(request_handler, self.templating, context.settings['template'], {
+        return 200, context.settings['template'], {
             'context': context,
             'nodes': nodes
-        })
+        }
 
