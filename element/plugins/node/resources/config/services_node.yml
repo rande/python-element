@@ -3,7 +3,7 @@ services:
         class: element.plugins.node.node.IndexHandler
         arguments: 
             - '@element.node.manager'
-            - '@ioc.extra.jinja2'
+
         tags:
             element.handler: 
                 - { name: node.index }
@@ -12,7 +12,7 @@ services:
         class: element.plugins.node.node.TemplateHandler
         arguments:
             - '@element.node.manager'
-            - '@ioc.extra.jinja2'
+
         tags:
             element.handler:
                 - { name: node.template }
