@@ -11,6 +11,18 @@ class SubRequestHandler(RequestHandler):
     def get_buffer(self):
         return b"".join(self._write_buffer)
 
+class SubConnection(object):
+    def __init__(self, context):
+        self.context = context
+
+    def set_close_callback(self, callback):
+        self.on_connection_close = callback
+
+class SubContext(object):
+    def __init__(self, remote_ip, protocol):
+        self.remote_ip = remote_ip
+        self.protocol = protocol
+
 class Core(object):
     def __init__(self, node_manager, context_creator, dispatcher, application, render_type):
         self.node_manager = node_manager
@@ -37,8 +49,8 @@ class Core(object):
         # build the execution context
         context = self.context_creator.build(node, handler, defaults)
 
-        # create a sub request handler to retrieve the buffer and return it as string
-        request_handler = SubRequestHandler(self.application, HTTPRequest('GET', '/_internal'))
+
+        request_handler = SubRequestHandler(self.application, HTTPRequest('GET', '/_internal', connection=SubConnection(SubContext('127.0.0.1', 'http'))))
 
         # render the response
         handler.execute(request_handler, context)
