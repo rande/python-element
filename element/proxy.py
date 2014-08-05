@@ -1,17 +1,19 @@
-
 # References used to code this file
-#   - https://github.com/senko/tornado-proxy/blob/master/tornado_proxy/proxy.py
 #   - https://raw.githubusercontent.com/tornadoweb/tornado/master/tornado/autoreload.py
 
-import socket
-import tornado.httpserver
-import tornado.web
-import tornado.httpclient
 import os
 import sys
 import types
 import fnmatch
-import re
+import logging
+import socket, re
+
+import tornado.httpclient
+from tornado.iostream import IOStream
+from tornado.tcpserver import TCPServer
+from tornado.httputil import HTTPHeaders
+
+gen_log = logging.getLogger("tornado.general")
 
 try:
     from urllib.parse import urlparse
@@ -43,13 +45,13 @@ class FilesWatcher(object):
 
         self.modify_times = {}
 
-        print("%d files to watch" % len(self._watched_files))
+        gen_log.info("%d files to watch" % len(self._watched_files))
+
         # tornado.ioloop.PeriodicCallback(self.build_watched_files, 5000, io_loop=self.io_loop).start()
         tornado.ioloop.PeriodicCallback(self._reload_on_update, check_time, io_loop=self.io_loop).start()
 
     def build_watched_files(self):
-
-        print("Reloading watched files")
+        gen_log.info("Reloading watched files")
         self._watched_files = set()
         for path in self.paths:
             for pattern in self.patterns:
@@ -120,140 +122,165 @@ class ProxyState(object):
         self.process = False
 
     def start(self):
+        gen_log.info("Start command: %s " % self.command)
         self.process = tornado.process.Subprocess(self.command, shell=False)
         self.process.set_exit_callback(self._restart)
 
     def _restart(self, code):
         if self.reloading:
-            print("Create a new process")
+            gen_log.info("Create a new process !!")
             self.start()
             self.reloading = False
 
     def restart(self, *args, **kwargs):
         self.reloading = True
-        if self.process.proc.returncode != None:
-            self.process.proc.terminate()
 
-class ProxyHandler(tornado.web.RequestHandler):
-    SUPPORTED_METHODS = ['GET', 'POST', 'CONNECT']
+        if not self.process.proc.returncode:
+            gen_log.info("Terminate process")
+            self.process.proc.kill()
 
-    def initialize(self, state, proxy=None):
-        self.state = state
-        self.client = tornado.httpclient.AsyncHTTPClient()
-        self.proxy = proxy or 'localhost:5001'
+def parse_headers(data):
+    headers = HTTPHeaders()
 
-    def handle_response(self, response):
-        if response.error and not isinstance(response.error, tornado.httpclient.HTTPError):
-            self.set_status(500)
-            self.write('Internal server error:\n' + str(response.error))
-        else:
-            self.set_status(response.code)
+    for line in data.splitlines():
+        if line:
+            try:
+                headers.parse_line(line)
+            except Exception, e:
+                break
 
-            for header in ('Date', 'Cache-Control', 'Server', 'Content-Type', 'Location'):
-                v = response.headers.get(header)
+    return headers
 
-                if v:
-                    self.set_header(header, v)
+def is_websocket(headers):
+    """
+    Detect if the data is related to a websocket connection, should be called only once
 
-            if not response.body:
+    http://en.wikipedia.org/wiki/WebSocket
+    """
+    return "Upgrade" in headers and headers["Upgrade"] == "websocket"
+
+class StreamProxy(object):
+    def __init__(self, io_source, io_target):
+        self.public_io = io_source
+        self.internal_io = io_target
+
+        self.reset()
+
+    def reset(self):
+        self.init = False
+        self.is_websocket = None
+        self.is_html = None
+
+        self.public_headers = None
+        self.internal_headers = None
+
+        self.content_length = 0
+
+    def handle(self):
+        self.public_io.read_until_close(callback=self.end_public, streaming_callback=self.proxy_data_to_internal)
+        self.internal_io.read_until_close(callback=self.end_internal, streaming_callback=self.proxy_data_to_public)
+
+    def end_public(self, data):
+        gen_log.debug("Proxy   > callback end_public")
+        self.internal_io.close()
+
+    def end_internal(self, data):
+        gen_log.debug("Proxy   > callback end_internal")
+        self.public_io.close()
+
+    def proxy_data_to_internal(self, data):
+        """
+        This method is used to send streamed data to the internal webserver
+        """
+        if not self.init:
+            self.init = True
+
+            request, headers = data.split("\r\n", 1)
+            gen_log.info("request: %s" % request)
+
+            self.public_headers = parse_headers(headers)
+            self.is_websocket = is_websocket(self.public_headers)
+
+            if not self.is_websocket:
+                # we don't want to deal with gzip content
+                data = data.replace("Accept-Encoding: gzip, deflate\r\n", "")
+
+        self.internal_io.write(data)
+
+    def close_stream(self):
+        if self.internal_headers and 'Content-Length' in self.internal_headers and self.content_length >= int(self.internal_headers['Content-Length']):
+            if self.public_io.writing():
+                gen_log.debug("  > still data being written")
+
                 return
 
-            if response.headers['Content-Type'].startswith('text/html'):
-                self.write(self.replace_tag(response))
-            else:
-                self.write(response.body)
+            gen_log.debug("  > closing all streams")
 
-        self.finish()
+            self.public_io.close()
+            self.internal_io.close()
 
-    def replace_tag(self, response):
+            self.reset()
+
+    def proxy_data_to_public(self, data):
+        if self.is_websocket:
+            self.public_io.write(data)
+            return
+
+        if not self.internal_headers:
+            # we parse the response to replace esi tag
+            self.internal_headers = parse_headers(data.split("\r\n", 1)[1])
+
+            self.is_html = 'Content-Type' in self.internal_headers and self.internal_headers['Content-Type'].startswith('text/html')
+
+        self.content_length += len(data)
+
+        if self.is_html and 'Content-Length' in self.internal_headers:
+            data = data.replace('Content-Length:', 'X-Content-Length:')
+            data = self.replace_tag(data)
+
+        self.public_io.write(data, callback=self.close_stream)
+
+    def replace_tag(self, data):
         client = tornado.httpclient.HTTPClient()
-        headers = self.request.headers.copy()
+        headers = self.public_headers.copy()
         headers['Surrogate-Capability'] = 'abc=ESI/1.0'
 
-        if 'Set-Cookie' in response.headers:
-            headers['Cookie'] = response.headers['Set-Cookie']
+        if 'Set-Cookie' in self.internal_headers:
+            headers['Cookie'] = self.internal_headers['Set-Cookie']
+
+        if 'Accept-Encoding' in headers:
+            # we don't want to deal with gzip content
+            del(headers['Accept-Encoding'])
 
         def get_contents(matcher):
             result = urlparse(matcher.group(2))
 
-            url = "http://%s%s?%s" % (self.proxy, result.path, result.query)
+            url = "http://%s%s?%s" % ("localhost:5001", result.path, result.query)
 
             try:
-                print("FETCHING ESI TAG: %s" % url)
+                gen_log.info("  > start sub-request: %s" % url)
 
                 sub_response = client.fetch(tornado.httpclient.HTTPRequest(url, headers=headers))
+
+                gen_log.debug("  > end sub-request: %s" % url)
 
                 return sub_response.body
             except tornado.httpclient.HTTPError as e:
                 return "<!-- error resolving : %s !-->" % url
 
-        content = re.sub(r"<esi:include\W[^>]*src=(\"|')([^\"']*)(\"|')[^>]*/>", get_contents, response.body, flags=re.IGNORECASE)
+        content = re.sub(r"<esi:include\W[^>]*src=(\"|')([^\"']*)(\"|')[^>]*/>", get_contents, data, flags=re.IGNORECASE)
 
         return content
 
-    @tornado.web.asynchronous
-    def get(self):
+class ProxyTCPServer(TCPServer):
+    def __init__(self, sub_child_port, **kwargs):
+        self.sub_child_port = sub_child_port
 
-        if self.state.reloading:
-            self.write("reloading")
+        super(ProxyTCPServer, self).__init__(**kwargs)
 
-            self.finish()
-            return
-
-        url = "%s://%s%s" % ('http', self.proxy, self.request.uri)
-
-        print("PROXY: Task: %s - %s %s" % (tornado.process.task_id(), self.request.method, url))
-
-        req = tornado.httpclient.HTTPRequest(url=url,
-            method=self.request.method, body=self.request.body,
-            headers=self.request.headers, follow_redirects=False,
-            allow_nonstandard_methods=True
-        )
-
-        try:
-            self.client.fetch(req, self.handle_response)
-        except tornado.httpclient.HTTPError as e:
-            if hasattr(e, 'response') and e.response:
-                self.handle_response(e.response)
-            else:
-                self.set_status(500)
-                self.write('Internal server error:\n' + str(e))
-                self.finish()
-
-    @tornado.web.asynchronous
-    def post(self):
-        return self.get()
-
-    @tornado.web.asynchronous
-    def connect(self):
-        host, port = self.request.uri.split(':')
-        client = self.request.connection.stream
-
-        def read_from_client(data):
-            upstream.write(data)
-
-        def read_from_upstream(data):
-            client.write(data)
-
-        def client_close(data=None):
-            if upstream.closed():
-                return
-            if data:
-                upstream.write(data)
-            upstream.close()
-
-        def upstream_close(data=None):
-            if client.closed():
-                return
-            if data:
-                client.write(data)
-            client.close()
-
-        def start_tunnel():
-            client.read_until_close(client_close, read_from_client)
-            upstream.read_until_close(upstream_close, read_from_upstream)
-            client.write(b'HTTP/1.0 200 Connection established\r\n\r\n')
-
+    def handle_stream(self, io_source, address):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-        upstream = tornado.iostream.IOStream(s)
-        upstream.connect((host, int(port)), start_tunnel)
+        io_target = IOStream(s)
+
+        proxy = StreamProxy(io_source, io_target)
+        io_target.connect(("localhost", self.sub_child_port), proxy.handle)
