@@ -1,6 +1,7 @@
 from element.node import NodeHandler
 from element.plugins.node.jinja import SubRequestHandler
 from tornado.httpserver import HTTPRequest
+from tornado.httputil import HTTPHeaders
 
 class TornadoActionLoader(object):
     def __init__(self, base_url, router):
@@ -81,12 +82,26 @@ class ActionHandler(NodeHandler):
         result = getattr(service, context.node.method)(request_handler, context, **(context.node.kwargs or {}))
 
         if isinstance(result, tuple):
-            status_code, template, params = result
+            status_code = 500
+            template = None
+            params = {}
+            headers = {
+                'Content-Type': 'text/html; charset=utf-8'
+            }
+
+            if len(result) == 3:
+                status_code, template, params = result
+
+            if len(result) == 4:
+                status_code, template, params, headers = result
 
             if 'context' not in params:
                 params['context'] = context
 
             self.render(request_handler, self.templating, template, params)
+
+            for name, value in headers.iteritems():
+                request_handler.add_header(name, value)
 
             request_handler.set_status(status_code)
 
@@ -110,7 +125,7 @@ class DefaultIndex(object):
 
         event.stop_propagation()
 
-        node.id = event.get('path') # restore a valid id, as this one is virtual
+        node.id = event.get('path')  # restore a valid id, as this one is virtual
 
         event.set('node', node)
 

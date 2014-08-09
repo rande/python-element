@@ -6,6 +6,7 @@ from element.plugins.security.exceptions import AccessDeniedException
 from element.plugins.security.handler import AnonymousAuthenticationHandler
 from element.plugins.security.security import SecurityContext
 
+from element.plugins.node.jinja import get_dummy_connection
 from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 
@@ -29,7 +30,7 @@ class AccesMapTest(unittest.TestCase):
         ]
 
         for path, expected in paths:
-            self.assertEquals(expected, map.get_pattern(HTTPRequest("GET", path)))
+            self.assertEquals(expected, map.get_pattern(HTTPRequest("GET", path, connection=get_dummy_connection())))
 
 class FirewallMapTest(unittest.TestCase):
     def test_map(self):
@@ -45,13 +46,13 @@ class FirewallMapTest(unittest.TestCase):
         ]
 
         for path, expected in paths:
-            self.assertEquals(expected, map.get_context(HTTPRequest("GET", path)))
+            self.assertEquals(expected, map.get_context(HTTPRequest("GET", path, connection=get_dummy_connection())))
 
 class FirewallTest(unittest.TestCase):
     def test_get_context_with_no_valid_context(self):
         f = Firewall(FirewallMap())
 
-        rq = BaseHandler(Application(), HTTPRequest("GET", "/"))
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/", connection=get_dummy_connection()))
 
         with self.assertRaises(AccessDeniedException):
             f.onRequest(Event({
@@ -64,7 +65,7 @@ class FirewallTest(unittest.TestCase):
             (re.compile("/admin/.*"), ([], None)),
         ]))
 
-        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard"))
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard", connection=get_dummy_connection()))
 
         with self.assertRaises(AccessDeniedException):
             f.onRequest(Event({
@@ -80,7 +81,7 @@ class FirewallTest(unittest.TestCase):
             ], None)),
         ]))
 
-        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard"))
+        rq = BaseHandler(Application(), HTTPRequest("GET", "/admin/dashboard", connection=get_dummy_connection()))
 
         e = Event({
             'request': rq.request,

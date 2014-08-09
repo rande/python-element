@@ -6,24 +6,25 @@ from element.plugins.profiler.collector import RequestCollector
 from tornado.web import RequestHandler, Application
 from tornado.httpserver import HTTPRequest
 from element.plugins.profiler import Run
+from element.plugins.node.jinja import get_dummy_connection
 
 class RequestCollectorTest(unittest.TestCase):
     def setUp(self):
-        self.handler = RequestHandler(Application(), HTTPRequest('GET', '/'))
+        self.handler = RequestHandler(Application(), HTTPRequest('GET', '/', connection=get_dummy_connection()))
         self.handler.run = Run()
         self.collector = RequestCollector()
 
     def test_on_request(self):
 
         app = Application()
-        request = HTTPRequest('POST', '/collector?hello=world', body=b"foo=bar&bar=foo", headers={'Content-Type': 'application/x-www-form-urlencoded'})
+        request = HTTPRequest('POST', '/collector?hello=world', body=b"foo=bar&bar=foo", headers={'Content-Type': 'application/x-www-form-urlencoded'}, connection=get_dummy_connection())
 
         handler = RequestHandler(app, request)
         handler.run = Run()
 
         self.collector.on_request(handler, handler.run)
 
-        self.assertEquals(handler.run.get_metric('request'), {
+        self.assertEquals({
             'body_arguments': {},
             'cookies': '',
             'headers': {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -34,13 +35,13 @@ class RequestCollectorTest(unittest.TestCase):
             'query': 'hello=world',
             'body': 'foo=bar&bar=foo',
             'query_arguments': {'hello': ['world']},
-            'remote_ip': None,
+            'remote_ip': '127.0.0.1',
             'uri': '/collector?hello=world',
             'version': 'HTTP/1.0',
             'controller': {'class': False, 'file': False, 'line': False, 'method': False},
             'route': False,
             'status_code': False,
-        })
+        }, handler.run.get_metric('request'))
 
 
     def test_on_callback(self):

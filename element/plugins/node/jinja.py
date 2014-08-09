@@ -7,6 +7,9 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+def get_dummy_connection():
+    return SubConnection(SubContext('127.0.0.1', 'http'))
+
 class SubRequestHandler(RequestHandler):
     def get_buffer(self):
         return b"".join(self._write_buffer)
@@ -49,8 +52,7 @@ class Core(object):
         # build the execution context
         context = self.context_creator.build(node, handler, defaults)
 
-
-        request_handler = SubRequestHandler(self.application, HTTPRequest('GET', '/_internal', connection=SubConnection(SubContext('127.0.0.1', 'http'))))
+        request_handler = SubRequestHandler(self.application, HTTPRequest('GET', '/_internal', connection=get_dummy_connection()))
 
         # render the response
         handler.execute(request_handler, context)
@@ -88,14 +90,31 @@ class ResponseListener(object):
         self.templating = templating
 
     def handle(self, event):
-
         result = event.get('result')
 
         if not isinstance(result, tuple):
             return
 
         request_handler = event.get('request_handler')
-        status_code, template_name, params = result
+        handler = event.get('node_handler')
+
+        status_code = 500
+        template = None
+        params = {}
+        headers = {
+            'Content-Type': 'text/html; charset=utf-8'
+        }
+
+        if len(result) == 3:
+            status_code, template, params = result
+
+        if len(result) == 4:
+            status_code, template, params, headers = result
+
+        for name, value in headers.iteritems():
+            request_handler.add_header(name, value)
 
         request_handler.set_status(status_code)
-        request_handler.write(self.templating.get_template(template_name).render(params))
+        request_handler.write(self.templating.get_template(template).render(params))
+
+        handler.finalize(request_handler)

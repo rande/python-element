@@ -3,7 +3,7 @@
 from tornado.httpserver import HTTPRequest
 from tornado.web import Application
 from ioc.extra.tornado.handler import BaseHandler
-
+from element.plugins.node.jinja import get_dummy_connection
 
 class TestHandler(BaseHandler):
     def finish(self):
@@ -11,7 +11,7 @@ class TestHandler(BaseHandler):
 
 
 def get_default_handler():
-    return TestHandler(Application(), HTTPRequest("GET", "/"))
+    return TestHandler(Application(), HTTPRequest("GET", "/", connection=get_dummy_connection()))
 
 
 class TemplateEngine(object):

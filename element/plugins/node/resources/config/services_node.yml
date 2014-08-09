@@ -3,7 +3,6 @@ services:
         class: element.plugins.node.node.IndexHandler
         arguments: 
             - '@element.node.manager'
-
         tags:
             element.handler: 
                 - { name: node.index }
@@ -12,7 +11,6 @@ services:
         class: element.plugins.node.node.TemplateHandler
         arguments:
             - '@element.node.manager'
-
         tags:
             element.handler:
                 - { name: node.template }
@@ -58,4 +56,4 @@ services:
             - '@ioc.extra.jinja2'
         tags:
             event.listener:
-                - { name: handler.response, method: handle }
+                - { name: element.node.render_response, method: handle }

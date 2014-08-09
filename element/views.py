@@ -18,9 +18,10 @@ class NodeRenderer(object):
 
         # allow external services to update the request_handler
         self.event_dispatcher.dispatch('element.node.render_response', {
-            'context': context,
+            'context':         context,
             'request_handler': request_handler,
-            'result': result
+            'node_handler':    node_handler,
+            'result':          result
         })
 
         return result
@@ -31,9 +32,9 @@ class NodeRenderer(object):
 
         if not node_handler:
             event = self.event_dispatcher.dispatch('element.node.internal_error', {
-                'node': node,
-                'reason': 'No handler found',
-                'status_code': 500,
+                'node':            node,
+                'reason':          'No handler found',
+                'status_code':     500,
                 'request_handler': request_handler
             })
 
@@ -81,8 +82,8 @@ class PathView(object):
             status_code = 404
 
             event = self.event_dispatcher.dispatch('element.node.not_found', {
-                'path': id,
-                'status_code': status_code,
+                'path':            id,
+                'status_code':     status_code,
                 'request_handler': request_handler
             })
 

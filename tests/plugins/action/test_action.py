@@ -77,7 +77,7 @@ class ActionHandlerTest(unittest.TestCase):
             element.node.Node('myid', {'type': 'mytype', 'serviceId': 'fake', 'method': 'foo'})
         )
 
-        class Fake(object):
+        class Fake(element.node.NodeHandler):
             def foo(self, request_context, context, **kwargs):
                 return 200, "hello", {}
 

@@ -5,6 +5,7 @@ from element.plugins.profiler import Run
 from tornado.web import RequestHandler, Application
 from tornado.httpserver import HTTPRequest
 from element.plugins.profiler.pycallgraph import PyCallgraphCollector
+from element.plugins.node.jinja import get_dummy_connection
 
 import os, shutil
 
@@ -14,7 +15,7 @@ class PyCallgraphCollectorTest(unittest.TestCase):
     def test_run(self):
 
         app = Application()
-        request = HTTPRequest('GET', '/')
+        request = HTTPRequest('GET', '/', connection=get_dummy_connection())
 
         handler = RequestHandler(app, request)
         handler.run = Run()
