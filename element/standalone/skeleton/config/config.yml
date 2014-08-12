@@ -110,17 +110,23 @@ element.plugins.errors:
 element.plugins.feed:
 element.plugins.media:
 element.plugins.node:
-    render_type: ssi
+    render_type: esi
 
 element.plugins.page:
 element.plugins.static:
 element.plugins.ngadmin:
-#element.plugins.websocket:
 element.plugins.api:
+element.plugins.livestats:
+    websocket:
+        access:  ws://element.vagrant:5000/websocket/system
+        handler: /websocket/system
+
+
 element.plugins.formatter:
 element.plugins.profiler:
 element.plugins.wkhtmltopdf:
 element.plugins.presentation:
+element.plugins.es:
 
 ioc.extra.event:
 ioc.extra.stats:

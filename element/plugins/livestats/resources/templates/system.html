@@ -1,0 +1,103 @@
+{% extends context.base_template %}
+
+{% block element_css %}
+    <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block element_head_js %}
+    <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/raphael/raphael.js') }}"></script>
+    <script src="{{ asset('vendor/justgage-bower/justgage.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <h1>System Health</h1>
+
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div id="cpu" class="200x160px" style="height:200px"></div>
+        </div>
+
+        <div class="col-sm-4">
+            <div id="virtual_memory" class="200x160px" style="height:200px"></div>
+        </div>
+
+        <div class="col-sm-4">
+            <div id="swap_memory" class="200x160px" style="height:200px"></div>
+        </div>
+    </div>
+
+
+    <script>
+
+      parsing = false;
+
+      var gauges = {};
+
+      jQuery(document).ready(function () {
+        var ws, data;
+
+        data = "";
+        ws = new WebSocket("{{ ioc_parameter('element.plugins.livestats.websocket.access') }}");
+
+        ws.onmessage = function(evt) {
+            if (parsing) {
+                return;
+            }
+
+            parsing = true;
+
+            data = JSON.parse(evt.data);
+
+            if (!("host1.memory.swap_memory" in gauges)) {
+                gauges["host1.memory.swap_memory"] = new JustGage({
+                    id: "swap_memory",
+                    value: data['host1']['memory']['swap_memory']['value'],
+                    min:   data['host1']['memory']['swap_memory']['min'],
+                    max:   data['host1']['memory']['swap_memory']['max'],
+                    title: data['host1']['memory']['swap_memory']['name']
+                });
+            } else {
+                gauges["host1.memory.swap_memory"].refresh(data['host1']['memory']['swap_memory']['value'], data['host1']['memory']['swap_memory']['max'])
+            }
+
+            if (!("host1.memory.virtual_memory" in gauges)) {
+                gauges["host1.memory.virtual_memory"] = new JustGage({
+                    id: "virtual_memory",
+                    value: data['host1']['memory']['virtual_memory']['value'],
+                    min:   data['host1']['memory']['virtual_memory']['min'],
+                    max:   data['host1']['memory']['virtual_memory']['max'],
+                    title: data['host1']['memory']['virtual_memory']['name']
+                });
+            } else {
+                gauges["host1.memory.virtual_memory"].refresh(data['host1']['memory']['virtual_memory']['value'], data['host1']['memory']['virtual_memory']['max'])
+            }
+
+            if (!("host1.cpu" in gauges)) {
+                gauges["host1.cpu"] = new JustGage({
+                    id: "cpu",
+                    value: data['host1']['cpu']['value'],
+                    min:   data['host1']['cpu']['min'],
+                    max:   data['host1']['cpu']['max'],
+                    title: 'CPU Load'
+                });
+            } else {
+                gauges["host1.cpu"].refresh(data['host1']['cpu']['value'], data['host1']['cpu']['max'])
+            }
+
+            parsing = false;
+        };
+
+        ws.onclose = function(evt) {
+
+        };
+
+        ws.onopen = function(evt) {
+          this.send("hello");
+        };
+
+      });
+    </script>
+
+{% endblock %}
