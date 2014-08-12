@@ -6,5 +6,3 @@ services:
         tags:
             event.listener: 
                 - { name: element.node.not_found, method: default_index }
-
-                
