@@ -111,7 +111,6 @@ class ResponseListener(object):
             return
 
         request_handler = event.get('request_handler')
-        handler = event.get('node_handler')
 
         status_code = 500
         template = None
@@ -132,4 +131,5 @@ class ResponseListener(object):
         request_handler.set_status(status_code)
         request_handler.write(self.templating.get_template(template).render(params))
 
-        handler.finalize(request_handler)
+        if event.has('node_handler'):
+            event.get('node_handler').finalize(request_handler)

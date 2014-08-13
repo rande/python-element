@@ -56,4 +56,5 @@ services:
             - '@ioc.extra.jinja2'
         tags:
             event.listener:
+                - { name: handler.response, method: handle }
                 - { name: element.node.render_response, method: handle }
