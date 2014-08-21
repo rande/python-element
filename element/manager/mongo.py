@@ -15,13 +15,7 @@
 
 from bson.objectid import ObjectId, InvalidId
 import pymongo
-from element.manager import generate_uuid
-
-class InvalidTreeState(Exception):
-    pass
-
-class InvalidDataFormat(Exception):
-    pass
+from element.manager import generate_uuid, InvalidDataFormat, InvalidTreeState
 
 class MongoManager(object):
     """

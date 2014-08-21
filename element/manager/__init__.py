@@ -20,3 +20,9 @@ def get_uuid(nid):
 
 def generate_uuid():
     return str(uuid4())
+
+class InvalidTreeState(Exception):
+    pass
+
+class InvalidDataFormat(Exception):
+    pass
