@@ -126,10 +126,13 @@ class ResponseListener(object):
             status_code, template, params, headers = result
 
         for name, value in headers.iteritems():
-            request_handler.add_header(name, value)
+            if not request_handler.has_header(name):
+                request_handler.set_header(name, value)
 
         request_handler.set_status(status_code)
         request_handler.write(self.templating.get_template(template).render(params))
 
         if event.has('node_handler'):
             event.get('node_handler').finalize(request_handler)
+
+        event.set('result', None)
