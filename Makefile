@@ -22,10 +22,7 @@ doc:
 	cd docs && sphinx-build -nW -b html -d _build/doctrees . _build/html
 
 dev:
-	cd element/standalone/skeleton && python start.py tornado:start --verbose -d --bind element.vagrant
-
-proxy:
-	cd element/standalone/skeleton && python proxy.py 5000
+	cd element/standalone/skeleton && python proxy.py --bind element.vagrant
 
 prod:
 	cd element/standalone/skeleton && python start.py tornado:start -np 8

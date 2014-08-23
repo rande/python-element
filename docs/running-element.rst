@@ -58,22 +58,25 @@ or the Varnish configuration (from the `Symfony2 documentation`_)::
         }
     }
 
+.. note::
+
+    Depends on the use case, you can use varnish or nginx with specific caching rules, Nginx runs SSI in in parallel
+    while Varnish runs ESI sequentially.
 
 If you don't have a local reverse proxy (ie, varnish) you can use the ``proxy.py`` script which able to render ``esi:include`` tag::
 
     [program:rabaix.net]
-    command=/home/rabaix/site/bin/python proxy.py 5001
+    command=/home/rabaix/site/bin/python proxy.py --bind thomas.rabaix.net -p 5000 -sp 5001
     autostart=true
     autorestart=true
     startsecs=3
     user=rabaix
     directory=/home/rabaix/site/src
 
-
 .. note::
 
-    Depends on the use case, you can use varnish or nginx with specific caching rules, Nginx runs SSI in in parallel
-    while Varnish runs ESI sequentially.
+    This proxy is not save for production usage. And should only be used to your development environment.
+
 
 
 .. _Symfony2 documentation: http://symfony.com/doc/current/cookbook/cache/varnish.html
