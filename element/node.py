@@ -55,7 +55,7 @@ class NodeManager(object):
 
     def get_node(self, uuid):
         if self.logger:
-            self.logger.debug('NodeManager.get_node: %s' % uuid)
+            self.logger.debug('node_manager.get_node: %s' % uuid)
 
         if isinstance(uuid, Node):
             return uuid
@@ -65,7 +65,7 @@ class NodeManager(object):
             data = self.db.retrieve(uuid)
         except Exception, e:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ exception: %s' % (uuid, e.message))
+                self.logger.debug('node_manager.get_node: %s ~ exception: %s' % (uuid, e.message))
 
             data = None
 
@@ -73,7 +73,7 @@ class NodeManager(object):
 
         if not data:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ cannot find node with uuid, looking for alias' % uuid)
+                self.logger.debug('node_manager.get_node: %s ~ cannot find node with uuid, looking for alias' % uuid)
 
             data = self.db.find_one(alias="/%s" % uuid)
 
@@ -83,7 +83,7 @@ class NodeManager(object):
 
         if data:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ Found! ~ %s' % (uuid, data))
+                self.logger.debug('node_manager.get_node: %s ~ Found! ~ %s' % (uuid, data))
 
             event_name = 'element.node.load.success'
             params = {
@@ -92,7 +92,7 @@ class NodeManager(object):
 
         else:
             if self.logger:
-                self.logger.debug('NodeManager.get_node: %s ~ Not Found!' % uuid)
+                self.logger.debug('node_manager.get_node: %s ~ Not Found!' % uuid)
 
         event = self.event_dispatcher.dispatch(event_name, params)
 

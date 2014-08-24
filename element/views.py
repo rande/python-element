@@ -13,10 +13,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-import element.node
-
 class NodeRenderer(object):
-    def __init__(self, node_manager, context_creator, event_dispatcher, logger):
+    def __init__(self, node_manager, context_creator, event_dispatcher, logger=None):
         self.node_manager = node_manager
         self.context_creator = context_creator
         self.event_dispatcher = event_dispatcher
@@ -26,20 +24,21 @@ class NodeRenderer(object):
         # build the execution context
         context = self.context_creator.build(node, node_handler)
 
-        self.logger.debug("element.node.Dispatcher: render node: %s with handler: %s" % (node.id, node_handler))
+        if self.logger:
+            self.logger.debug("element.node.Dispatcher: render node: %s with handler: %s" % (node.id, node_handler))
 
         # render the node
         result = node_handler.execute(request_handler, context)
 
         # allow external services to update the request_handler
-        self.event_dispatcher.dispatch('element.node.render_response', {
+        event = self.event_dispatcher.dispatch('element.node.render_response', {
             'context':         context,
             'request_handler': request_handler,
             'node_handler':    node_handler,
             'result':          result
         })
 
-        return result
+        return event.get('result')
 
     def render(self, request_handler, node):
         # load the related node's handler
@@ -47,7 +46,7 @@ class NodeRenderer(object):
 
         if not node_handler:
             event = self.event_dispatcher.dispatch('element.node.internal_error', {
-                'node':            node,
+                'source_node':     node,
                 'reason':          'No handler found',
                 'status_code':     500,
                 'request_handler': request_handler
