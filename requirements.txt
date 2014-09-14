@@ -12,3 +12,4 @@ Sphinx==1.1.3
 Werkzeug
 pygments
 docutils
+Pillow

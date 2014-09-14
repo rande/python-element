@@ -37,7 +37,8 @@ setup(
         "ioc",
         "docutils",
         "pymongo",
-        "python-dateutil"
+        "python-dateutil",
+        "Pillow"
     ],
     include_package_data = True,
 )
