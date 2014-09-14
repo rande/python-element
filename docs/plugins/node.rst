@@ -98,6 +98,7 @@ This filter take a node and return a formatted string.
 Events
 ------
 
-The plugin listen to two events: ``element.node.load.success`` and ``element.nodes.load.success`` for normalizing a
-node. The normalization make sure that all :doc:`required fields</architecture>` are set.
+The plugin listen to different events:
+
+* ``element.node.load.success`` and ``element.nodes.load.success`` for normalizing a node. The normalization make sure that all :doc:`required fields</architecture>` are set.
 

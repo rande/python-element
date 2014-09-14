@@ -21,3 +21,13 @@ services:
         class: element.plugins.static.views.StaticView
         arguments:
             - '@ioc.locator'
+
+    element.plugins.static.jinja:
+        class: element.plugins.static.jinja.StaticHelper
+        arguments:
+            - '@ioc.extra.tornado.router'
+        tags:
+            jinja2.global:
+                - { name: url_media_resize, method: url_media_resize}
+                - { name: url_media_crop, method: url_media_crop}
+
