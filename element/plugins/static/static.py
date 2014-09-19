@@ -72,7 +72,7 @@ class StaticHandler(element.node.NodeHandler):
 
         path, filename = self.compute_paths(keys)
         if not os.path.exists("%s/%s" % (path, filename)):
-            image = Image.open(file)
+            image, format = self.fix_orientation(Image.open(file))
 
             # ImageOps compatible mode
             if image.mode not in ("L", "RGB"):
@@ -84,7 +84,7 @@ class StaticHandler(element.node.NodeHandler):
 
             imagefit = ImageOps.fit(image, (int(w), int(h)), Image.ANTIALIAS, centering=(float(cx), float(cy)))
             self.make_temp_path(path)
-            imagefit.save("%s/%s" % (path, filename), image.format, quality=95)
+            imagefit.save("%s/%s" % (path, filename), format, quality=95)
 
         request_handler.send_file("%s/%s" % (path, filename))
 
@@ -100,13 +100,11 @@ class StaticHandler(element.node.NodeHandler):
 
         path, filename = self.compute_paths(keys)
         if not os.path.exists("%s/%s" % (path, filename)):
-            image = Image.open(file)
+            image, format = self.fix_orientation(Image.open(file))
 
             # ImageOps compatible mode
             if image.mode not in ("L", "RGB"):
                 image = image.convert("RGB")
-
-            format = image.format
 
             if image.size[0] > w:
                 image = ImageOps.fit(image, (w, int(w * image.size[1] / image.size[0])), Image.ANTIALIAS)
@@ -126,3 +124,28 @@ class StaticHandler(element.node.NodeHandler):
             os.makedirs(path)
 
         return path
+
+    def fix_orientation(self, image):
+
+        exif = image._getexif()
+        format = image.format
+
+        if not exif:
+            return image, format
+
+        orientation_key = 274 # cf ExifTags
+        if not orientation_key in exif:
+            return image, format
+
+        orientation = exif[orientation_key]
+
+        rotate_values = {
+            3: 180,
+            6: 270,
+            8: 90
+        }
+
+        if not orientation in rotate_values:
+            return image, format
+
+        return image.rotate(rotate_values[orientation]), format
