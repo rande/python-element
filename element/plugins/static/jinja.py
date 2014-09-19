@@ -15,13 +15,14 @@
 
 __author__ = 'rande'
 
+import jinja2
 
 class StaticHelper(object):
     def __init__(self, router):
         self.router = router
 
     def url_media_resize(self, media, width=1024):
-        return self.router.generate('element.element_path', path=media.path, mr=width)
+        return jinja2.Markup(self.router.generate('element.element_path', path=media.path, mr=width))
 
     def url_media_crop(self, media, size=(200, 200), crop=(0.5, 0.5)):
-        return self.router.generate('element.element_path', path=media.path, mf='%s,%s,%s,%s' % (size[0], size[1], crop[0], crop[1]))
+        return jinja2.Markup(self.router.generate('element.element_path', path=media.path, mf='%s,%s,%s,%s' % (size[0], size[1], crop[0], crop[1])))

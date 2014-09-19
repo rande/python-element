@@ -4,6 +4,7 @@ services:
         arguments:
             - '%element.data.dir%'
             - '@ioc.extra.jinja2'
+            - ''
 
         tags:
             element.handler:

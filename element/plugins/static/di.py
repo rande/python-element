@@ -40,6 +40,8 @@ class Extension(ioc.component.Extension):
             'html': 'text/html'
         })
 
+        container_builder.get('element.plugins.static').arguments[2] = config.get_all('temp_dir', '%project.root_folder%/data/element.plugins.static')
+
     def post_build(self, container_builder, container):
 
         router = container.get('ioc.extra.tornado.router')

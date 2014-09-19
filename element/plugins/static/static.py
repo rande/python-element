@@ -14,7 +14,8 @@
 # under the License.
 
 import element.node
-import os, hashlib
+import os, hashlib, pickle
+
 try:
     from PIL import Image, ImageOps
 except ImportError:
@@ -22,9 +23,10 @@ except ImportError:
     import ImageOps
 
 class StaticHandler(element.node.NodeHandler):
-    def __init__(self, base_dir, templating):
+    def __init__(self, base_dir, templating, temp_dir):
         self.base_dir = base_dir
         self.templating = templating
+        self.temp_dir = temp_dir
 
     def get_defaults(self, node):
         return {}
@@ -64,38 +66,63 @@ class StaticHandler(element.node.NodeHandler):
             200,200,0.5,0.5 => Width,Height,CropCenterX,CropCenterY
 
         """
-        image = Image.open(file)
-
-        # ImageOps compatible mode
-        if image.mode not in ("L", "RGB"):
-            image = image.convert("RGB")
-
         request_handler.send_file_header(file)
 
-        w, h, cx, cy = request_handler.get_argument('mf').split(',')
+        keys = {'mf': request_handler.get_argument('mf'), 'file': file}
 
-        imagefit = ImageOps.fit(image, (int(w), int(h)), Image.ANTIALIAS, centering=(float(cx), float(cy)))
-        imagefit.save(request_handler, image.format, quality=95)
+        path, filename = self.compute_paths(keys)
+        if not os.path.exists("%s/%s" % (path, filename)):
+            image = Image.open(file)
+
+            # ImageOps compatible mode
+            if image.mode not in ("L", "RGB"):
+                image = image.convert("RGB")
+
+            request_handler.send_file_header(file)
+
+            w, h, cx, cy = request_handler.get_argument('mf').split(',')
+
+            imagefit = ImageOps.fit(image, (int(w), int(h)), Image.ANTIALIAS, centering=(float(cx), float(cy)))
+            self.make_temp_path(path)
+            imagefit.save("%s/%s" % (path, filename), image.format, quality=95)
+
+        request_handler.send_file("%s/%s" % (path, filename))
 
     def image_resize(self, request_handler, context, file):
         """
         Resize an image to match the provided width value, the height is computed automatically
         if the image's width is lower than the width, then no resize will be done.
         """
-        image = Image.open(file)
-
-        # ImageOps compatible mode
-        if image.mode not in ("L", "RGB"):
-            image = image.convert("RGB")
-
         request_handler.send_file_header(file)
 
         w = int(request_handler.get_argument('mr'))
-        format = image.format
+        keys = {'mr': w, 'file': file}
 
-        if image.size[0] > w:
-            image = ImageOps.fit(image, (w, int(w * image.size[1] / image.size[0])), Image.ANTIALIAS)
+        path, filename = self.compute_paths(keys)
+        if not os.path.exists("%s/%s" % (path, filename)):
+            image = Image.open(file)
 
-        image.save(request_handler, format, quality=95)
+            # ImageOps compatible mode
+            if image.mode not in ("L", "RGB"):
+                image = image.convert("RGB")
 
+            format = image.format
 
+            if image.size[0] > w:
+                image = ImageOps.fit(image, (w, int(w * image.size[1] / image.size[0])), Image.ANTIALIAS)
+
+            self.make_temp_path(path)
+            image.save("%s/%s" % (path, filename), format, quality=95)
+
+        request_handler.send_file("%s/%s" % (path, filename))
+
+    def compute_paths(self, keys):
+        hash = hashlib.md5(pickle.dumps(keys)).hexdigest()
+
+        return "%s/%s/%s" % (self.temp_dir, hash[0:2], hash[2:4]), hash[4:]
+
+    def make_temp_path(self, path):
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        return path
