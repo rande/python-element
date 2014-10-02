@@ -47,7 +47,7 @@ class PresentationNode(Node):
             md = markdown.Markdown(extensions = ['tables', 'codehilite', 'fenced_code', 'meta'])
             content = md.convert(raw)
 
-            for field in ['class', 'id', 'data-timing']:
+            for field in ['class', 'id', 'data-timing', 'data-state']:
                 if field not in md.Meta:
                     md.Meta[field] = False
                 else:
@@ -61,3 +61,4 @@ class PresentationListener(object):
         collection = event.get('meta_collection')
 
         collection.add(Meta(PresentationNode, 'presentation.shower'))
+        collection.add(Meta(PresentationNode, 'presentation.reveal'))

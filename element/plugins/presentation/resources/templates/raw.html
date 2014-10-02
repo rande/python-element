@@ -1,0 +1,16 @@
+{% extends context.settings.base_template %}
+
+{% block content %}
+
+    <header class="caption">
+        <h1>{{ context.title }}</h1>
+
+        {% if context.abstract %}
+            <p>{{ context.abstract }}</p>
+        {% endif %}
+    </header>
+
+    <div>
+        {{ context|markup|safe }}
+    </div>
+{% endblock %}

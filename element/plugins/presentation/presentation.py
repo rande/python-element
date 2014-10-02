@@ -25,6 +25,19 @@ class PresentationHandler(element.node.NodeHandler):
 
     def get_defaults(self, node):
 
+        if node.type == 'presentation.reveal':
+            return {
+                'base_template': 'element.plugins.presentation:reveal_base.html',
+                'template':      'element.plugins.presentation:reveal_node.html',
+                'abstract': False
+            }
+
+        if node.type == 'presentation.raw':
+            return {
+                'template': 'element.plugins.presentation:raw.html',
+                'abstract': False
+            }
+
         if node.type == 'presentation.shower':
             return {
                 'theme':         'ribbon',

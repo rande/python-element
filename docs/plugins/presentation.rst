@@ -19,12 +19,13 @@ There is no configuration option. You only need to enable the plugin by adding t
 Bower configuration
 ~~~~~~~~~~~~~~~~~~~
 
-You need to install ``shower``, open your bower.json file and add
+You need to install ``shower`` or/and ``reveal.js``, open your bower.json file and add
 
 .. code-block:: json
 
     "dependencies": {
-        "shower": "~1"
+        "shower": "~1",
+        "reveal.js": "2.6.2"
     }
 
 Shower Presentation
@@ -103,6 +104,42 @@ You can also include some stylesheet to tweak some slides
 
     <img src="http://shwr.me/pictures/cover.jpg" />
 
+Reveal.js Presentation
+----------------------
+
+A shower presentation is defined by ``presentation.reveal`` node type:
+
+.. code-block:: yaml
+
+    # /blog/2009/sept/18/are-my-services-coool.yml
+    type: presentation.reveal
+    title: How to create a good presentation ?
+    published_at: 20 May 2014 12:37:48
+
+    ----
+    ## The presentation
+    ----
+    ## Slide 1
+
+    - My bullet point 1
+    - My bullet point 2
+
+    ----
+    data-state: blackout
+
+    ## Slide 2
+
+    - My bullet point 1
+    - My bullet point 2
+
+    ----
+    ### etc ..
+
+    ...
+
+You can use some metadata to get better support from the theme
+
+- ``data-state`: used to change the background color
 
 Slideshare Presentation
 -----------------------

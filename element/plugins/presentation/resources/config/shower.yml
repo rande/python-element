@@ -9,6 +9,8 @@ services:
             element.handler:
                 - { name: presentation.shower }
                 - { name: presentation.slideshare }
+                - { name: presentation.raw }
+                - { name: presentation.reveal }
 
     element.plugins.presentation.listener:
         class: element.plugins.presentation.listener.PresentationListener
