@@ -74,9 +74,7 @@ class StaticHandler(element.node.NodeHandler):
         if not os.path.exists("%s/%s" % (path, filename)):
             image, format = self.fix_orientation(Image.open(file))
 
-            # ImageOps compatible mode
-            if image.mode not in ("L", "RGB"):
-                image = image.convert("RGB")
+            image = self.fix_color(image, format)
 
             request_handler.send_file_header(file)
 
@@ -102,9 +100,7 @@ class StaticHandler(element.node.NodeHandler):
         if not os.path.exists("%s/%s" % (path, filename)):
             image, format = self.fix_orientation(Image.open(file))
 
-            # ImageOps compatible mode
-            if image.mode not in ("L", "RGB"):
-                image = image.convert("RGB")
+            image = self.fix_color(image, format)
 
             if image.size[0] > w:
                 image = ImageOps.fit(image, (w, int(w * image.size[1] / image.size[0])), Image.ANTIALIAS)
@@ -124,6 +120,13 @@ class StaticHandler(element.node.NodeHandler):
             os.makedirs(path)
 
         return path
+
+    def fix_color(self, image, format):
+        # ImageOps compatible mode
+        if format in ["JPEG"] and image.mode not in ("L", "RGB"):
+            image = image.convert("RGB")
+
+        return image
 
     def fix_orientation(self, image):
 
