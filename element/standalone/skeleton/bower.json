@@ -12,13 +12,14 @@
     "bootstrap": "~3.1.0",
     "angular": "~1.2.0",
     "requirejs": "~2.1.11",
-    "flatui": "https://github.com/designmodo/Flat-UI.git#00a8e14948593d6ef3b3656b2c79d8b432914168",
+    "flatui": "https://github.com/designmodo/Flat-UI.git",
     "socket.io-client": "~1.0.0",
     "html5shiv": "~3.7.0",
     "modernizr": "~2.7.1",
     "lightbox": "~2.7.1",
     "mousetrap": "~1.4.1",
-    "shower": "~1"
+    "shower": "~1",
+    "justgage-official": "*"
   },
   "license": "MIT",
   "private": true,

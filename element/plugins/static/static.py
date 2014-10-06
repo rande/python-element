@@ -127,7 +127,11 @@ class StaticHandler(element.node.NodeHandler):
 
     def fix_orientation(self, image):
 
-        exif = image._getexif()
+        try:
+            exif = image._getexif()
+        except AttributeError:
+            exif = None
+
         format = image.format
 
         if not exif:
