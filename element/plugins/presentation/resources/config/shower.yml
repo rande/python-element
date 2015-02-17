@@ -2,7 +2,6 @@ services:
     element.plugins.presentation:
         class: element.plugins.presentation.presentation.PresentationHandler
         arguments:
-            - '@ioc.extra.jinja2'
             - '@element.plugins.formatter'
 
         tags:

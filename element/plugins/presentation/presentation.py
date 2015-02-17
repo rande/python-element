@@ -16,8 +16,7 @@
 import element.node
 
 class PresentationHandler(element.node.NodeHandler):
-    def __init__(self, templating, formatter):
-        self.templating = templating
+    def __init__(self, formatter):
         self.formatter = formatter
 
     def get_name(self):
@@ -64,6 +63,6 @@ class PresentationHandler(element.node.NodeHandler):
         return {}
 
     def execute(self, request_handler, context):
-        self.render(request_handler, self.templating, context.settings['template'], {
+        return 200, context.settings['template'], {
             'context': context,
-        })
+        }
