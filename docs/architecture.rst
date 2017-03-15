@@ -4,10 +4,10 @@ Architecture
 Definitions
 ~~~~~~~~~~~
 
-* ``node``: the smallest data available, it represents a content stored into the datastore. An node must contains
+* ``node``: the smallest data available, it represents a content stored into the datastore. A node must contain
     * ``id``:   the internal identifier used by the datasource
     * ``path``: the path to reach the node, the path is the external identifier to the node
-    * ``data``: a dictionnary of key-value representing the content
+    * ``data``: a dictionary of key-value representing the content
     * ``type``: the node type, the node type will be used to handle the node
     * ``manager``: the manager code which handle this node
     * ``created_at``
